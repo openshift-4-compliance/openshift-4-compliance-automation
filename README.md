@@ -4,7 +4,7 @@ A repository that aggregates policies from multiple OpenShift compliance product
 The repository provides a framework for organization to build and use pre-configured policies. Using the provided policies, an organization is able to create a fine grained compliance standard in an environment based on OpenShift clusters.
 
 ## Repository Structure
-The repository structure is based on security controls which are presented in the next OpenShift compliance document - [OCP 4.x Platform &Infrastructure Security BestPractices](https://mailman-int.corp.redhat.com/archives/openshift-sme/2021-February/pdfBcaNoHy0jO.pdf).
+The repository structure is based on security controls which are presented in the next OpenShift compliance document - [OCP 4.x Platform &Infrastructure Security Best Practices](https://mailman-int.corp.redhat.com/archives/openshift-sme/2021-February/pdfBcaNoHy0jO.pdf).
 
 The compliance to the standard is achieved by using the next tools -
 - [Red Hat Advanced Cluster Management for Kubernetes](https://github.com/open-cluster-management)
