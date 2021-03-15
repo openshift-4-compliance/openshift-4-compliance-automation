@@ -1,7 +1,7 @@
 apiVersion: templates.gatekeeper.sh/v1beta1
 kind: ConstraintTemplate
 metadata:
-  name: K8sDeleteKubeadmin
+  name: k8sdeletekubeadmin
   annotations:
     description: Disallow kubeadmin user to have secrets (disable kubeadmin).
 spec:
