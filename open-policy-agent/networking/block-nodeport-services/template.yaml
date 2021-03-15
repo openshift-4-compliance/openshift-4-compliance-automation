@@ -18,4 +18,3 @@ spec:
           input.review.object.spec.type == "NodePort"
           msg := "User is not allowed to create service of type NodePort"
         }
----
