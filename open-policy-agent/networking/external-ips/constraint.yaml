@@ -7,6 +7,6 @@ spec:
     kinds:
       - apiGroups: [""]
         kinds: ["Service"]
-    #parameters:
-    #  allowedIPs:
-    #    - "203.0.113.0"
+ #parameters:
+ #  allowedIPs:
+ #    - "203.0.132.4"
