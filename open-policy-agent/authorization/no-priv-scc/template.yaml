@@ -1,0 +1,37 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8snoprivscc
+  annotations:
+    description: Requires service accounts to not run using the privileged SCC.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sNoPrivScc
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8snoprivscc
+
+        violation[{"msg": msg}] {
+          input.review.object.kind == "SecurityContextConstraints"
+          input.review.object.metadata.name == "privileged"
+          re_match("^(security.openshift.io)/", input.review.object.apiVersion)
+          allowedUsers := { user | user := input.parameters.allowedUsers[_]}
+          presentUsers := {user | user := input.review.object.users[_]}
+          forbiddenUsers := presentUsers - allowedUsers
+          count(forbiddenUsers) > 0
+          msg := sprintf("Adding service accounts to the privileged SCC is not allowed. The user %v can not be associated with the privileged SCC.", [forbiddenUsers])
+        }
+
+        violation[{"msg": msg}] {
+          input.review.object.kind == "SecurityContextConstraints"
+          input.review.object.metadata.name == "privileged"
+          re_match("^(security.openshift.io)/", input.review.object.apiVersion)
+          allowedGroups := { group | group := input.parameters.allowedGroups[_]}
+          presentGroups := { group | group := input.review.object.groups[_]}
+          forbiddenGroups := presentGroups - allowedGroups
+          count(forbiddenGroups) > 0
+          msg := sprintf("Adding groups to the privileged SCC is not allowed. The group %v can not be associated with the privileged SCC.", [forbiddenGroups])
+        }
