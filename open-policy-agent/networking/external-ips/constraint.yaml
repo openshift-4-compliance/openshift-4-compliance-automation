@@ -1,3 +1,4 @@
+# The constraint below deny all externalIP for Services, except of the allowedIP
 apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sExternalIPs
 metadata:
@@ -7,6 +8,6 @@ spec:
     kinds:
       - apiGroups: [""]
         kinds: ["Service"]
- #parameters:
- #  allowedIPs:
- #    - "203.0.132.4"
+ parameters:
+   allowedIPs:
+     - "203.0.132.4"
