@@ -1,0 +1,26 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8shttpsonly
+  annotations:
+    description: Requires Route resources to be HTTPS only.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sHttpsOnly
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8shttpsonly
+        violation[{"msg": msg}] {
+          input.review.object.kind == "Route"
+          re_match("^(route.openshift.io)/", input.review.object.apiVersion)
+          route := input.review.object
+          not https_complete(route)
+          msg := sprintf("Ingress should be https. tls configuration is required for %v", [route.metadata.name])
+        }
+        https_complete(route) = true {
+          route.spec["tls"]
+          count(route.spec.tls) > 0
+        }
