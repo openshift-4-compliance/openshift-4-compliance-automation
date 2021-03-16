@@ -23,9 +23,9 @@ spec:
         package ocpdefaultscc
 
         violation[{"msg": msg}] {
-#          input.review.object.kind == "SecurityContextConstraints"
+          input.review.object.kind == "SecurityContextConstraints"
+          input.request.operation == "UPDATE"
           scc := input.review.object.metadata.name[_]
-#          input.parameters.defaultScc[_] == "*"
           default_scc(scc)
           msg := sprintf("Modification of %v scc is forbidden. Please create a new ssc with required configurations", [scc])
         }
