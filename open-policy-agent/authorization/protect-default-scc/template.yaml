@@ -24,8 +24,8 @@ spec:
 
         violation[{"msg": msg}] {
           input.review.object.kind == "SecurityContextConstraints"
-          input.request.operation == "UPDATE"
-          scc := input.review.object.metadata.name[_]
+          input.request.operation == "*"
+          scc := input.review.object.metadata.name
           default_scc(scc)
           msg := sprintf("Modification of %v scc is forbidden. Please create a new ssc with required configurations", [scc])
         }
