@@ -16,16 +16,10 @@ spec:
 
         violation[{"msg": msg}] {
           scc := input.review.object.metadata.name
-          not default_scc(scc)
+          default_scc(scc)
           msg := sprintf("Modification of %v scc is forbidden. Please create a new ssc with required configurations", [scc])
         }
 
         default_scc(scc) {
-            input.parameters.defaultScc[_] == "*"
-        }
-        default_scc(scc) {
             input.parameters.defaultScc[_] == scc
-        }
-        default_scc(scc) {
-            startswith(scc, trim(input.parameters.defaultScc[_], "*"))
         }
