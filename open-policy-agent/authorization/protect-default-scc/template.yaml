@@ -34,7 +34,7 @@ spec:
             input.parameters.defaultScc[_] == "*"
         }
         default_scc(scc) {
-            input.parameters.defaultScc[_] == sysctl
+            input.parameters.defaultScc[_] == scc
         }
         default_scc(scc) {
             startswith(scc, trim(input.parameters.defaultScc[_], "*"))
