@@ -3,6 +3,7 @@ kind: K8sDeleteKubeadmin
 metadata:
   name: delete-kubeadmin
 spec:
+  enforcementAction: dryrun
   match:
     kinds:
       - apiGroups: [""]
