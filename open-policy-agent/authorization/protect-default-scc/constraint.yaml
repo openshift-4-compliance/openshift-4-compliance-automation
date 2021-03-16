@@ -1,0 +1,19 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: OcpDefaultScc
+metadata:
+  name: protect-default-scc
+spec:
+  match:
+    kinds:
+      - apiGroups: ["security.openshift.io"]
+        kinds: ["SecurityContextConstraints"]
+  parameters:
+    defaultScc:
+      - "anyuid"
+      - "hostaccess"
+      - "hostmount-anyuid"
+      - "hostnetwork"
+      - "node-exporter"
+      - "nonroot"
+      - "privileged"
+      - "restricted"
