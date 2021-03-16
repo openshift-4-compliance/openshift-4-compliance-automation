@@ -9,22 +9,12 @@ spec:
     spec:
       names:
         kind: OcpDefaultScc
-      validation:
-        # Schema for the `parameters` field
-        openAPIV3Schema:
-          properties:
-            defaultScc:
-              type: array
-              items:
-                type: string
   targets:
     - target: admission.k8s.gatekeeper.sh
       rego: |
         package ocpdefaultscc
 
-        violation[{"msg": msg}] {
-          input.review.object.kind == "SecurityContextConstraints"
-          input.request.operation == "*"
+        violation[{"msg": msg}, "details": {}] {
           scc := input.review.object.metadata.name
           default_scc(scc)
           msg := sprintf("Modification of %v scc is forbidden. Please create a new ssc with required configurations", [scc])
