@@ -5,15 +5,15 @@ metadata:
 spec:
   match:
     kinds:
-      - apiGroups: ["security.openshift.io"]
+      - apiGroups: [""]
         kinds: ["SecurityContextConstraints"]
   parameters:
     defaultScc:
-      - "anyuid"
-      - "hostaccess"
-      - "hostmount-anyuid"
-      - "hostnetwork"
-      - "node-exporter"
-      - "nonroot"
-      - "privileged"
-      - "restricted"
+    - anyuid
+    - hostaccess
+    - hostmount-anyuid
+    - hostnetwork
+    - node-exporter
+    - nonroot
+    - privileged
+    - restricted

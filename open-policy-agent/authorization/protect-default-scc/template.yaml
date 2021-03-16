@@ -14,7 +14,7 @@ spec:
       rego: |
         package ocpdefaultscc
 
-        violation[{"msg": msg}, "details": {}] {
+        violation[{"msg": msg}, "details": {}}] {
           scc := input.review.object.metadata.name
           default_scc(scc)
           msg := sprintf("Modification of %v scc is forbidden. Please create a new ssc with required configurations", [scc])
