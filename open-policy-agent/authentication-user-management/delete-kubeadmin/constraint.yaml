@@ -1,0 +1,11 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sDeleteKubeadmin
+metadata:
+  name: delete-kubeadmin
+spec:
+  enforcementAction: dryrun
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Secret"]
+    namespaces: ["kube-system"]
