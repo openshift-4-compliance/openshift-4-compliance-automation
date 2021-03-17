@@ -1,9 +1,0 @@
-apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: OcpDefaultScc
-metadata:
-  name: protect-default-scc
-spec:
-  match:
-    kinds:
-      - apiGroups: [""]
-        kinds: ["SecurityContextConstraints"]
