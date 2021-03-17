@@ -15,11 +15,7 @@ spec:
         package ocpdefaultscc
 
         violation[{"msg": msg}] {
-          scc := input.review.object.metadata.name
-          default_scc(scc)
-          msg := sprintf("Modification of %v scc is forbidden. Please create a new ssc with required configurations", [scc])
-        }
-
-        default_scc(scc) {
-            startswith(sysctl, trim(input.parameters.forbiddenSysctls[_], "*"))
+          input.review.object.kind == "SecurityContextConstraints"
+          input.review.object.metadata.name == "anyuid"
+          msg := sprintf("Modification of %v scc is forbidden. Please create a new ssc with required configurations", [input.review.object.metadata.name])
         }

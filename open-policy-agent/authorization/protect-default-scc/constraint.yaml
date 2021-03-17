@@ -7,13 +7,3 @@ spec:
     kinds:
       - apiGroups: [""]
         kinds: ["SecurityContextConstraints"]
-  parameters:
-    defaultScc:
-    - "anyuid"
-    - "hostaccess"
-    - "hostmount-anyuid"
-    - "hostnetwork"
-    - "node-exporter"
-    - "nonroot"
-    - "privileged"
-    - "restricted"
