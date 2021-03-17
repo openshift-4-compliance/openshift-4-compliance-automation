@@ -7,5 +7,7 @@ spec:
     kinds:
       - apiGroups: [""]
         kinds: ["Pod"]
+    excludedNamespaces:
+      - "openshift-marketplace"
   parameters:
     tags: ["latest"]
