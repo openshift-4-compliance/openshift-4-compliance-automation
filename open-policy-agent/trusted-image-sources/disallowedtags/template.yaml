@@ -4,7 +4,7 @@ metadata:
   name: k8sdisallowedtags
   annotations:
     description: Requires container images to have an image tag different
-      from the ones in a specified list.
+      from the ones in a specified list. Prevent empty tagging by disallow 'latest' tag.
 spec:
   crd:
     spec:
