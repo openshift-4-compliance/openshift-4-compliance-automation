@@ -1,0 +1,142 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-gatekeeper-disallow-priv-scc
+  namespace: rhacm-policies
+  annotations:
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+spec:
+  remediationAction: enforce
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-gatekeeper-disallow-priv-scc
+        spec:
+          remediationAction: enforce
+          severity: low
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: templates.gatekeeper.sh/v1beta1
+                kind: ConstraintTemplate
+                metadata:
+                  name: k8snoprivscc
+                  annotations:
+                    description: Requires service accounts to not run using the privileged SCC.
+                spec:
+                  crd:
+                    spec:
+                      names:
+                        kind: K8sNoPrivScc
+                  targets:
+                    - target: admission.k8s.gatekeeper.sh
+                      rego: |
+                        package k8snoprivscc
+
+                        violation[{"msg": msg}] {
+                          input.review.object.kind == "SecurityContextConstraints"
+                          input.review.object.metadata.name == "privileged"
+                          re_match("^(security.openshift.io)/", input.review.object.apiVersion)
+                          allowedUsers := { user | user := input.parameters.allowedUsers[_]}
+                          presentUsers := {user | user := input.review.object.users[_]}
+                          forbiddenUsers := presentUsers - allowedUsers
+                          count(forbiddenUsers) > 0
+                          msg := sprintf("Adding service accounts to the privileged SCC is not allowed. The user %v can not be associated with the privileged SCC.", [forbiddenUsers])
+                        }
+
+                        violation[{"msg": msg}] {
+                          input.review.object.kind == "SecurityContextConstraints"
+                          input.review.object.metadata.name == "privileged"
+                          re_match("^(security.openshift.io)/", input.review.object.apiVersion)
+                          allowedGroups := { group | group := input.parameters.allowedGroups[_]}
+                          presentGroups := { group | group := input.review.object.groups[_]}
+                          forbiddenGroups := presentGroups - allowedGroups
+                          count(forbiddenGroups) > 0
+                          msg := sprintf("Adding groups to the privileged SCC is not allowed. The group %v can not be associated with the privileged SCC.", [forbiddenGroups])
+                        }
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: constraints.gatekeeper.sh/v1beta1
+                kind: K8sNoPrivScc
+                metadata:
+                  name: no-privileged-sccs
+                spec:
+                  match:
+                    kinds:
+                      - apiGroups: ["security.openshift.io"]
+                        kinds: ["SecurityContextConstraints"]
+                  parameters:
+                    allowedUsers:
+                      - "system:admin"
+                      - "system:serviceaccount:openshift-infra:build-controller"
+                    allowedGroups:
+                      - "system:cluster-admins"
+                      - "system:nodes"
+                      - "system:masters"
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-gatekeeper-audit-disallow-priv-scc
+        spec:
+          remediationAction: inform # will be overridden by remediationAction in parent policy
+          severity: low
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: constraints.gatekeeper.sh/v1beta1
+                kind: K8sNoPrivScc
+                metadata:
+                  name: no-privileged-sccs
+                status:
+                  totalViolations: 0
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-gatekeeper-admission-disallow-priv-scc
+        spec:
+          remediationAction: inform # will be overridden by remediationAction in parent policy
+          severity: low
+          object-templates:
+            - complianceType: mustnothave
+              objectDefinition:
+                apiVersion: v1
+                kind: Event
+                metadata:
+                  namespace: openshift-gatekeeper-system # set it to the actual namespace where gatekeeper is running if different
+                  annotations:
+                    constraint_action: deny
+                    constraint_kind: K8sNoPrivScc
+                    constraint_name: no-privileged-sccs
+                    event_type: violation
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-gatekeeper-disallow-priv-scc
+placementRef:
+  name: placement-policy-gatekeeper-disallow-priv-scc
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+  - name: policy-gatekeeper-disallow-priv-scc
+    kind: Policy
+    apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-gatekeeper-disallow-priv-scc
+spec:
+  clusterConditions:
+    - status: "True"
+      type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - { key: environment, operator: In, values: ["dev"] }
