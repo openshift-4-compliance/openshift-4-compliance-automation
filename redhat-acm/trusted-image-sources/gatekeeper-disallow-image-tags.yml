@@ -1,0 +1,143 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-gatekeeper-disallow-image-tags
+  namespace: rhacm-policies
+  annotations:
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+spec:
+  remediationAction: enforce
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-gatekeeper-disallow-image-tags
+        spec:
+          remediationAction: enforce
+          severity: low
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: templates.gatekeeper.sh/v1beta1
+                kind: ConstraintTemplate
+                metadata:
+                  name: k8sdisallowedtags
+                  annotations:
+                    description: Requires container images to have an image tag different
+                      from the ones in a specified list. Prevent empty tagging by disallow 'latest' tag.
+                spec:
+                  crd:
+                    spec:
+                      names:
+                        kind: K8sDisallowedTags
+                      validation:
+                        # Schema for the `parameters` field
+                        openAPIV3Schema:
+                          properties:
+                            tags:
+                              type: array
+                              items:
+                                type: string
+                  targets:
+                    - target: admission.k8s.gatekeeper.sh
+                      rego: |
+                        package k8sdisallowedtags
+                        violation[{"msg": msg}] {
+                          container := input_containers[_]
+                          tags := [forbid | tag = input.parameters.tags[_] ; forbid = endswith(container.image, concat(":", ["", tag]))]
+                          any(tags)
+                          msg := sprintf("container <%v> uses a disallowed tag <%v>; disallowed tags are %v", [container.name, container.image, input.parameters.tags])
+                        }
+                        violation[{"msg": msg}] {
+                          container := input_containers[_]
+                          tag := [contains(container.image, ":")]
+                          not all(tag)
+                          msg := sprintf("container <%v> didn't specify an image tag <%v>", [container.name, container.image])
+                        }
+                        input_containers[c] {
+                          c := input.review.object.spec.containers[_]
+                        }
+                        input_containers[c] {
+                          c := input.review.object.spec.initContainers[_]
+                        }
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: constraints.gatekeeper.sh/v1beta1
+                kind: K8sDisallowedTags
+                metadata:
+                  name: container-image-must-not-have-tags
+                spec:
+                  match:
+                    kinds:
+                      - apiGroups: [""]
+                        kinds: ["Pod"]
+                    excludedNamespaces:
+                      - "openshift-marketplace"
+                  parameters:
+                    tags: ["latest"]
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-gatekeeper-audit-disallow-image-tags
+        spec:
+          remediationAction: inform # will be overridden by remediationAction in parent policy
+          severity: low
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: constraints.gatekeeper.sh/v1beta1
+                kind: K8sDisallowedTags
+                metadata:
+                  name: container-image-must-not-have-tags
+                status:
+                  totalViolations: 0
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-gatekeeper-admission-disallow-image-tags
+        spec:
+          remediationAction: inform # will be overridden by remediationAction in parent policy
+          severity: low
+          object-templates:
+            - complianceType: mustnothave
+              objectDefinition:
+                apiVersion: v1
+                kind: Event
+                metadata:
+                  namespace: openshift-gatekeeper-system # set it to the actual namespace where gatekeeper is running if different
+                  annotations:
+                    constraint_action: deny
+                    constraint_kind: K8sDisallowedTags
+                    constraint_name: container-image-must-not-have-tags
+                    event_type: violation
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-gatekeeper-disallow-image-tags
+placementRef:
+  name: placement-policy-gatekeeper-disallow-image-tags
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+  - name: policy-gatekeeper-disallow-image-tags
+    kind: Policy
+    apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-gatekeeper-disallow-image-tags
+spec:
+  clusterConditions:
+    - status: "True"
+      type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - { key: environment, operator: In, values: ["dev"] }
