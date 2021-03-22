@@ -52,6 +52,12 @@ Policy  | Description | Prerequisites
 [gatekeeper-disallow-external-ip-services](./networking/gatekeeper-disallow-external-ip-services.yml) | Ensures that there are no external ip services configured | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 [gatekeeper-disallow-nodeport](./networking/gatekeeper-disallow-nodeport.yml) | Ensures that there are no node port services configured | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 
+### Resource Exhaustion
+Policy  | Description | Prerequisites
+------- | ----------- | -------------
+[disallow-self-provisioner-policy](./redhat-acm/disallow-self-provisioner-policy.yml) | Ensures that users are not able to provision new namespaces by validating the removal of the `self-provisioners` ClusterRole |
+[limitrange-policy](./resource-exhaustion/limitrange-policy.yml) | Ensures that a Limitrange resource is present in a namespace |
+
 ### Storage
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
