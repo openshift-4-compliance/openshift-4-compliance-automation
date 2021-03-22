@@ -3,7 +3,6 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: policy-disallow-self-provisioner
-  namespace: rhacm-policies
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: AC Access Control
@@ -41,7 +40,6 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
   name: binding-policy-disallow-self-provisioner
-  namespace: rhacm-policies
 placementRef:
   name: placement-policy-disallow-self-provisioner
   kind: PlacementRule
