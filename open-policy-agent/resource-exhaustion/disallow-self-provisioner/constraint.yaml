@@ -1,9 +1,0 @@
-apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sDisallowSelfProvisioner
-metadata:
-  name: no-self-provisioner
-spec:
-  match:
-    kinds:
-      - apiGroups: ["rbac.authorization.k8s.io"]
-        kinds: ["ClusterRoleBinding"]
