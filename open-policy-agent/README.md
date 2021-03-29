@@ -1,8 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # OPA Gatekeeper policies
 =======
 # OPA Gatekeeper Policies
 >>>>>>> upstream/master
+=======
+# OPA Gatekeeper Policies
+>>>>>>> db1b12c1418c8e2e5f498cb2d37a439be16df61a
 Policies in this folder are based on [OPA Gatekeeper for Kubernetes](https://www.openpolicyagent.org/docs/latest/kubernetes-introduction/). The policies in this folder are based on security controls from the [OCP 4.x Platform &Infrastructure Security Best Practices](https://github.com/rhilconsultants/openshift/blob/master/featureReference/Red%20Hat%20Openshift%204.x%20Security%20Best%20Practices%20-%20Public%20Edition%20-%20Final%20v2%20(2).pdf) compliance document. Each security control will be represented by its own directory.
 
 The solution presented in this directory is designed to provide compliance for  [Red Hat OpenShift](https://www.openshift.com/) clusters. Note that some policies can be applied _out of the box_, while other policies may require changes according to organization regulations.
@@ -68,10 +72,14 @@ Policy  | Description | Prerequisites
 
 ## Applying Policies
 <<<<<<< HEAD
+<<<<<<< HEAD
 The policies can be created by applying the `template.yaml` and `contraint.yaml` provided in each policy directory under specific security control.
 =======
 The policies can be created by applying the custom resources defined in the `template.yaml` and `contraint.yaml` files to an OpenShift cluster. The files are provided in each policy directory under specific security control.
 >>>>>>> upstream/master
+=======
+The policies can be created by applying the custom resources defined in the `template.yaml` and `contraint.yaml` files to an OpenShift cluster. The files are provided in each policy directory under specific security control.
+>>>>>>> db1b12c1418c8e2e5f498cb2d37a439be16df61a
 
 For example, applying 'kubeadmin' temporary user removal validation policy
 
