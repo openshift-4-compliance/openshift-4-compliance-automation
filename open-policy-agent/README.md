@@ -63,7 +63,7 @@ Policy  | Description | Prerequisites
 [disallowedtags](./trusted-image-sources/disallowedtags) | Ensures that images do not contain a pre-defined tag (by default, the policy disables the `latest` tag) | 
 
 ## Applying Policies
-The policies can be created by applying the `template.yaml` and `contraint.yaml` provided in each policy directory under specific security control.
+The policies can be created by applying  the custom resources defined in the `template.yaml` and `contraint.yaml` files to an OpenShift cluster. The files are provided in each policy directory under specific security control.
 
 For example, applying 'kubeadmin' temporary user removal validation policy
 
