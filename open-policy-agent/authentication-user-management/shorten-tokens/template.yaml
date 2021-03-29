@@ -27,7 +27,7 @@ spec:
           input.review.object.metadata.name == "cluster"
           oauth := input.review.object
           not oauth_token(oauth)
-          msg := sprintf("The OAuth CR token lifespace was set to 86400, while it must be shorter than %v, refer to 'https://docs.openshift.com/container-platform/4.6/authentication/configuring-internal-oauth.html' for more information", [input.parameters.maxTokenTime])
+          msg := sprintf("The OAuth CR token lifespace was set to 86400, while it must be shorter than %v, refer to 'https://docs.openshift.com/container-platform/4.6/authentication/configuring-internal-oauth.html#oauth-configuring-internal-oauth_configuring-internal-oauth' for more information", [input.parameters.maxTokenTime])
         }
 
         oauth_token(oauth) = true {
