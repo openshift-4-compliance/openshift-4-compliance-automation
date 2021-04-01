@@ -15,7 +15,8 @@ spec:
         package k8sdisallowselfprovisioner
         violation[{"msg": msg}] {
           input.review.kind.kind == "ClusterRoleBinding"
-          input.review.object.metadata.name == "self-provisioners"
+          input.review.object.roleRef.kind == "ClusterRole"
+          input.review.object.roleRef.name == "self-provisioner"
           count(input.review.object.subjects) > 0
-          msg := sprintf("Adding the self-provisioner ClusterRole to users / groups is forbidden. %v can not be added to the self-provisioner ClusterRole", [input.review.object.subjects[_].name])
+          msg := sprintf("Adding the self-provisioner ClusterRole to users / groups is forbidden. The subjects specified in %v can not be added to the self-provisioner ClusterRole", [input.review.object.metadata.name])
         }
