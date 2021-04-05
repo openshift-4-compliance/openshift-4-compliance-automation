@@ -35,10 +35,12 @@ spec:
 
         # Prevents "encryption: {}"
         violation[{"msg": msg}] {
-          input.kind == "APIServer"
-          input.metadata.name == "cluster"
+          input.review.kind.kind == "APIServer"
+          input.review.object.metadata.name == "cluster"
 
-          missing(input.spec.encryption, "type")
+          etcd := input.review.object
+
+          missing(etcd.spec.encryption, "type")
 
           msg := "Etcd not encrypted, missing 'type' in apiserver object's spec.encryption"
         }
