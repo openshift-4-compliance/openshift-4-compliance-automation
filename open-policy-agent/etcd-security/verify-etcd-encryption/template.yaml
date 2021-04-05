@@ -33,6 +33,16 @@ spec:
           msg := "Etcd not encrypted, missing 'encryption' in apiserver object's spec"
         }
 
+        # Prevents "encryption: {}"
+        violation[{"msg": msg}] {
+          input.kind == "APIServer"
+          input.metadata.name == "cluster"
+
+          missing(input.spec.encryption, "type")
+
+          msg := "Etcd not encrypted, missing 'type' in apiserver object's spec.encryption"
+        }
+
         violation[{"msg": msg}] {
           input.review.kind.kind == "APIServer"
           input.review.object.metadata.name == "cluster"
