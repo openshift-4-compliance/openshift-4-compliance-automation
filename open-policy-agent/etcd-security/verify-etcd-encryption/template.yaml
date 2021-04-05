@@ -1,0 +1,58 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8setcdencryptionverification
+  annotations:
+    description: Verify Etcd Encryption.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sEtcdEncryptionVerification
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package K8sEtcdEncryptionVerification
+
+        missing(obj, field) = true {
+          not obj[field]
+        }
+        
+        missing(obj, field) = true {
+          obj[field] == ""
+        }
+
+        violation[{"msg": msg}] {
+          input.review.kind.kind == "APIServer"
+          input.review.object.metadata.name == "cluster"
+
+          etcd := input.review.object
+
+          missing(etcd.spec, "encryption")
+
+          msg := "Etcd not encrypted, missing 'encryption' in apiserver object's spec"
+        }
+
+        # Prevents "encryption: {}"
+        violation[{"msg": msg}] {
+          input.review.kind.kind == "APIServer"
+          input.review.object.metadata.name == "cluster"
+
+          etcd := input.review.object
+
+          missing(etcd.spec.encryption, "type")
+
+          msg := "Etcd not encrypted, missing 'type' in apiserver object's spec.encryption"
+        }
+
+        violation[{"msg": msg}] {
+          input.review.kind.kind == "APIServer"
+          input.review.object.metadata.name == "cluster"
+
+          etcd := input.review.object
+
+          # AES-CBC, PKCS#7 padding, 32-byte key
+          etcd.spec.encryption.type != "aescbc" 
+          
+          msg := "Etcd not encrypted properly, 'spec.encryption.type' should be 'aescbc'"
+        }

@@ -28,7 +28,7 @@ Policy  | Description | Prerequisites
 ### ETCD Security
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-No policies yet
+[verify-etcd-encryption](./etcd-security/verify-etcd-encryption) | Ensures that the etcd is encrypted properly |
 
 ### Infrastructure General
 Policy  | Description | Prerequisites
