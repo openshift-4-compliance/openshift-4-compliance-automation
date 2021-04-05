@@ -19,6 +19,7 @@ The solution presented in this directory is designed to provide compliance for  
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [delete-kubeadmin](./authentication-user-management/delete-kubeadmin) | Validates the removal of the kubeadmin temporary user |
+[shorten-tokens](./authentication-user-management/authentication-user-management) | Validate that tokens are shorted than the defined lifespan period |
 
 ### Authorization
 Policy  | Description | Prerequisites
@@ -51,6 +52,8 @@ Policy  | Description | Prerequisites
 ### Resource Exhaustion
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
+[disallow-selfprovisioner-clusterrolebindings](./resource-exhaustion/disallow-self-provisioner/) | Ensures that there are no users assigned to the self-provisioner ClusterRole |
+
 
 ### Storage
 Policy  | Description | Prerequisites
