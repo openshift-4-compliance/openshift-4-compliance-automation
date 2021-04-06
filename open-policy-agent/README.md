@@ -19,6 +19,7 @@ The solution presented in this directory is designed to provide compliance for  
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [delete-kubeadmin](./authentication-user-management/delete-kubeadmin) | Validates the removal of the kubeadmin temporary user |
+[shorten-tokens](./authentication-user-management/authentication-user-management) | Validate that tokens are shorter than the defined lifespan period |
 
 ### Authorization
 Policy  | Description | Prerequisites
@@ -28,7 +29,7 @@ Policy  | Description | Prerequisites
 ### ETCD Security
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-No policies yet
+[verify-etcd-encryption](./etcd-security/verify-etcd-encryption) | Ensures that the etcd is encrypted properly |
 
 ### Infrastructure General
 Policy  | Description | Prerequisites
@@ -51,6 +52,8 @@ Policy  | Description | Prerequisites
 ### Resource Exhaustion
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
+[disallow-selfprovisioners](./resource-exhaustion/disallow-self-provisioner/) | Ensures that there are no users assigned to the self-provisioner ClusterRole |
+
 
 ### Storage
 Policy  | Description | Prerequisites
