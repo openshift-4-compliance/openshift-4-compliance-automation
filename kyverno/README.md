@@ -23,6 +23,7 @@ Policy  | Description | Prerequisites
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [protect-default-scc](./authorization/protect-default-scc.yaml) | Ensures that default scc are not being modified or deleted |
+[protect-host-namespaces](./authorization/protect-host-namespaces.yaml) | Ensures that SCC do not allow unnecessary hosts namespaces access |
 
 ### ETCD Security
 Policy  | Description | Prerequisites
