@@ -18,14 +18,17 @@ The solution presented in this directory is designed to provide compliance for  
 ### Authentication and User Management
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
+No policies yet       |  | 
 
 ### Authorization
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
+[protect-default-scc](./authorization/protect-default-scc.yaml) | Ensures that default scc are not being modified or deleted |
 
 ### ETCD Security
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
+No policies yet       |  | 
 
 ### Infrastructure General
 Policy  | Description | Prerequisites
@@ -40,10 +43,12 @@ No policies yet       |  |
 ### Networking
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
+No policies yet       |  | 
 
 ### Resource Exhaustion
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
+No policies yet       |  | 
 
 ### Storage
 Policy  | Description | Prerequisites
@@ -53,3 +58,13 @@ No policies yet       |  |
 ### Trusted Image Sources
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
+No policies yet       |  | 
+
+## Applying Policies
+The policies can be created by applying the custom resources defined in the cluster policy 'yaml' files to an OpenShift cluster. The files are provided in each policy directory under specific security control.
+
+For example, applying 'protect-default-scc' policy which prevents from default OpenShift scc to be modified or deleted by users
+
+```
+$ oc apply -f https://raw.githubusercontent.com/openshift-4-compliance/openshift-4-compliance-automation/master/kyverno/authentication-user-management/protect-default-scc.yaml
+```
