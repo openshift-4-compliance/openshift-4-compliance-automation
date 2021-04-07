@@ -9,7 +9,6 @@ The repository structure is based on security controls which are presented in th
 The compliance to the standard is achieved by using the next tools -
 - [Red Hat Advanced Cluster Management for Kubernetes](https://github.com/open-cluster-management)
 - [Open Policy Agent Gatekeeper](https://github.com/open-policy-agent/gatekeeper)
-- [OpenShift Compliance Operator](https://github.com/openshift/compliance-operator)
 
 The repository's structure devides policies into one of the three mentioned above products. Each product's policies are devided into multiple compliance controls:
 - authentication-user-management
