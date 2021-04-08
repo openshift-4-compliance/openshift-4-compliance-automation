@@ -1,0 +1,25 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: protect-host-namespaces
+spec:
+  validationFailureAction: enforce
+  background: true
+  rules:
+    - name: Prevent from any scc to grant access to hosts' namespaces
+      exclude:
+        resources:
+          kinds:
+            - SecurityContextConstraints
+          name: privileged
+      match:
+        resources:
+          kinds:
+            - SecurityContextConstraints
+      validate:
+        message: "Allowing access to any of the following is forbidden: allowHostIPC/allowHostNetwork/allowHostPID/allowHostPorts"
+        pattern:
+          allowHostIPC: false
+          allowHostNetwork: false
+          allowHostPID: false
+          allowHostPorts: false
