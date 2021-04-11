@@ -43,7 +43,7 @@ No policies yet       |  |
 ### Networking
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-No policies yet       |  | 
+[httpsonly](./networking/httpsonly.yaml) | Ensures that there are *no* http routes | 
 
 ### Resource Exhaustion
 Policy  | Description | Prerequisites
