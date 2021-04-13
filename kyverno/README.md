@@ -24,7 +24,7 @@ No policies yet       |  |
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [protect-default-scc](./authorization/protect-default-scc.yaml) | Ensures that default scc are not being modified or deleted |
-[disallow-host-ipc-scc](./authorization/disallow-host-ipc-scc.yaml) | Ensures that created scc are not allowing access to the host PID and IPC namespaces |
+[disallow-host-ipc-scc](./authorization/disallow-host-ipc-scc.yaml) | Ensures that access to the host PID and IPC namespaces is restricted |
 
 ### ETCD Security
 Policy  | Description | Prerequisites

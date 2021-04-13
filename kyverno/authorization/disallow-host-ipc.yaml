@@ -3,7 +3,6 @@ kind: ClusterPolicy
 metadata:
   name: disallow-host-ipc
   annotations:
-    policies.kyverno.io/category: SecurityContextConstraints Reccomended practices (Default)
     policies.kyverno.io/description: Sharing the host's PID namespace allows visibility of process
       on the host, potentially exposing process information. Sharing the host's IPC namespace allows
       the container process to communicate with processes on the host. To avoid pod container from
@@ -11,7 +10,7 @@ metadata:
 spec:
   validationFailureAction: enforce
   rules:
-    - name: validate-hostIPC
+    - name: validate-hostIPC-scc
       match:
         resources:
           kinds:
@@ -21,3 +20,14 @@ spec:
         pattern:
           =(allowHostPID): "false"
           =(allowHostIPC): "false"
+    - name: validate-hostIPC-pod
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate:
+        message: "Use of host PID ands IPC namespaces is not allowed"
+        pattern:
+          spec:
+            =(hostPID): "false"
+            =(hostIPC): "false"
