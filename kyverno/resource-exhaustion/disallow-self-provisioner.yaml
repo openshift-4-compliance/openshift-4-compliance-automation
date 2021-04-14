@@ -4,8 +4,9 @@ metadata:
   name: disallow-self-provisioners
   annotations:
     policies.kyverno.io/description: >-
-      The policy does not allow ClusterRoleBinding resources to associate to the self-provisioner
-      ClusterRole. ClusterRoleBindings with a reference to the self-provisioner ClusterRole must be deleted. Thereby, disallowing regular users to provision their own namespaces.
+      The policy does not allow ClusterRoleBinding resources to associate to the self-provisioner ClusterRole.
+      ClusterRoleBindings with a reference to the self-provisioner ClusterRole must be deleted. Thereby, 
+      disallowing regular users to provision their own namespaces.
 spec:
   background: false
   validationFailureAction: enforce
