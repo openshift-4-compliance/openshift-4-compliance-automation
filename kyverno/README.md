@@ -44,6 +44,7 @@ No policies yet       |  |
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [httpsonly](./networking/httpsonly.yaml) | Ensures that there are *no* http routes | 
+[block-nodeport-services](./networking/block-nodeport-services.yaml) | Ensures that there are *no* node port services configured |
 
 ### Resource Exhaustion
 Policy  | Description | Prerequisites
