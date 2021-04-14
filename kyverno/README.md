@@ -48,7 +48,7 @@ Policy  | Description | Prerequisites
 ### Resource Exhaustion
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-No policies yet       |  | 
+[disallow-selfprovisioners](./resource-exhaustion/disallow-self-provisioner.yaml) | Ensures that the self-provisioner ClusterRole is not associated to any ClusterRoleBinding |
 
 ### Storage
 Policy  | Description | Prerequisites
