@@ -1,2 +1,0 @@
-resources:
-- ./networking/gatekeeper-allow-httpsonly.yml
