@@ -1,0 +1,5 @@
+bases:
+- ../networking/
+        #- ../authorization/gatekeeper-disalllow-priv-scc.yml
+        #- ../networking/gatekeeper-disallow-nodeport.yml
+
