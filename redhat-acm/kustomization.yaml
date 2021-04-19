@@ -8,3 +8,4 @@ resources:
 - ./networking/gatekeeper-disallow-nodeport.yml
 - ./resource-exhaustion/disallow-self-provisioner-policy.yml
 - ./trusted-image-sources/gatekeeper-disallow-image-tags.yml
+- ./authentication-user-management/kubeadmin-policy.yml
