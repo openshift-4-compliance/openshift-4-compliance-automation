@@ -24,6 +24,7 @@ No policies yet       |  |
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [protect-default-scc](./authorization/protect-default-scc.yaml) | Ensures that default scc are not being modified or deleted |
+[disallow-host-network](authorization/host-namespaces/disallow-host-network.yaml) | Ensures that access to the host network namespaces is restricted in PODs that are not OpenShift System PODs, and prevent custom SCCs to allow host network access |
 
 ### ETCD Security
 Policy  | Description | Prerequisites
