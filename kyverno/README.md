@@ -24,7 +24,7 @@ No policies yet       |  |
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [protect-default-scc](./authorization/protect-default-scc.yaml) | Ensures that default scc are not being modified or deleted |
-[disallow-scc-runasany](./authorization/disallow-scc-runasany.yaml) | Ensures that SCC Strategies used in custom created scc are not permissive. **This policy excludes default scc policies, it is highly recommended to apply 'protect-default-scc'k  |
+[disallow-scc-runasany](./authorization/disallow-scc-runasany.yaml) | Ensures that SCC Strategies used in custom created scc are not permissive. **This policy excludes default scc policies, it is highly recommended to apply 'protect-default-scc' |
 
 ### ETCD Security
 Policy  | Description | Prerequisites
