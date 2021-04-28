@@ -15,11 +15,10 @@ spec:
         resources:
           kinds:
             - SecurityContextConstraints
-      exclude:
-        resources:
-          name: hostaccess
-          name: privileged
-          name: host-exporter
+      preconditions:
+        - key: "{{ request.object.metadata.name }}"
+          operator: NotIn
+          value: ["privileged", "hostaccess", "host-exporter"]
       validate:
         message: "Creating SCC that allows host PID namespaces in custom created scc is forbidden"
         pattern:
