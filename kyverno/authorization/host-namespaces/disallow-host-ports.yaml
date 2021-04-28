@@ -15,12 +15,10 @@ spec:
         resources:
           kinds:
             - SecurityContextConstraints
-      exclude:
-        resources:
-          name: hostaccess
-          name: hostnetwork
-          name: node-exporter
-          name: privileged
+      preconditions:
+        - key: "{{ request.object.metadata.name }}"
+          operator: NotIn
+          value: ["privileged", "hostaccess", "hostnetwork"]
       validate:
         message: "Creating or modifying custom SCC that allows host ports is forbidden"
         pattern:
@@ -34,6 +32,9 @@ spec:
         resources:
           namespaces:
             - "openshift-*"
+            - "openshift*"
+            - "kube-*"
+            - "kube*"
       validate:
         message: >-
           Use of host ports is disallowed. The fields spec.containers[*].ports[*].hostPort
