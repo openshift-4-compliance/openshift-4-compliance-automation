@@ -32,6 +32,9 @@ spec:
         resources:
           namespaces:
             - "openshift-*"
+            - "openshift*"
+            - "kube-*"
+            - "kube*"
       validate:
         message: "Use of host PID namespaces is not allowed in pods"
         pattern:
