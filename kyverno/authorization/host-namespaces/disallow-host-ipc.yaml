@@ -15,11 +15,10 @@ spec:
         resources:
           kinds:
             - SecurityContextConstraints
-      exclude:
-        resources:
-          name: hostaccess
-        resources:
-          name: privileged
+      preconditions:
+        - key: "{{ request.object.metadata.name }}"
+          operator: NotIn
+          value: ["privileged", "hostaccess"]
       validate:
         message: "Creating SCC that allows host IPC namespaces in custom created scc is forbidden"
         pattern:
