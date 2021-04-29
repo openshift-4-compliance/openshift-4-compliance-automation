@@ -3,9 +3,8 @@ kind: ClusterPolicy
 metadata:
   name: disallow-host-ports
   annotations:
-    policies.kyverno.io/description: Provides a list of ranges of allowable ports in the host network namespace.
-      Access to host ports allows potential snooping of network traffic and should not be allowed,
-      or at minimum restricted to a known list.
+    policies.kyverno.io/description: Provides a list of allowed ports in the host network namespace.
+      Access to host ports allows potential snooping of network traffic and should be forbidden / minimized.
 spec:
   background: true
   validationFailureAction: enforce
