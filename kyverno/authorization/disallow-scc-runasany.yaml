@@ -13,6 +13,13 @@ spec:
         resources:
           kinds:
             - SecurityContextConstraints
+      exclude:
+        resources:
+          namespaces:
+            - "openshift-*"
+            - "openshift*"
+            - "kube-*"
+            - "kube*"
       preconditions:
         - key: "{{ request.object.metadata.name }}"
           operator: NotIn
@@ -27,6 +34,13 @@ spec:
         resources:
           kinds:
             - SecurityContextConstraints
+      exclude:
+        resources:
+          namespaces:
+            - "openshift-*"
+            - "openshift*"
+            - "kube-*"
+            - "kube*"
       preconditions:
         - key: "{{ request.object.metadata.name }}"
           operator: NotIn
@@ -41,6 +55,13 @@ spec:
         resources:
           kinds:
             - SecurityContextConstraints
+      exclude:
+        resources:
+          namespaces:
+            - "openshift-*"
+            - "openshift*"
+            - "kube-*"
+            - "kube*"
       preconditions:
         - key: "{{ request.object.metadata.name }}"
           operator: NotIn
