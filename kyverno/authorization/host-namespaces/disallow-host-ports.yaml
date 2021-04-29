@@ -18,7 +18,7 @@ spec:
       preconditions:
         - key: "{{ request.object.metadata.name }}"
           operator: NotIn
-          value: ["privileged", "hostaccess", "hostnetwork"]
+          value: ["privileged", "hostaccess", "hostnetwork", "node-exporter"]
       validate:
         message: "Creating or modifying custom SCC that allows host ports is forbidden"
         pattern:
