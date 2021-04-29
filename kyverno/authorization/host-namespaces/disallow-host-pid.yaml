@@ -18,7 +18,7 @@ spec:
       preconditions:
         - key: "{{ request.object.metadata.name }}"
           operator: NotIn
-          value: ["privileged", "hostaccess", "host-exporter"]
+          value: ["privileged", "hostaccess", "node-exporter"]
       validate:
         message: "Creating SCC that allows host PID namespaces in custom created scc is forbidden"
         pattern:
