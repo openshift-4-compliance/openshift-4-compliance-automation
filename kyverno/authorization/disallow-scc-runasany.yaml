@@ -13,17 +13,10 @@ spec:
         resources:
           kinds:
             - SecurityContextConstraints
-      exclude:
-        resources:
-          namespaces:
-            - "openshift-*"
-            - "openshift*"
-            - "kube-*"
-            - "kube*"
       preconditions:
         - key: "{{ request.object.metadata.name }}"
           operator: NotIn
-          value: ["privileged", "hostaccess", "hostnetwork", "anyuid", "hostmount-anyuid", "restricted", "nonroot"]
+          value: ["privileged", "hostaccess", "hostnetwork", "anyuid", "hostmount-anyuid", "restricted", "nonroot", "node-exporter", "machine-api-termination-handler"]
       validate:
         message: "Avoid using `RunAsAny` for `runAsUser.type`. Use `MustRunAsRange` / `MustRunAs` / `MustRunAsNonRoot` instead"
         pattern:
@@ -34,17 +27,10 @@ spec:
         resources:
           kinds:
             - SecurityContextConstraints
-      exclude:
-        resources:
-          namespaces:
-            - "openshift-*"
-            - "openshift*"
-            - "kube-*"
-            - "kube*"
       preconditions:
         - key: "{{ request.object.metadata.name }}"
           operator: NotIn
-          value: ["privileged", "hostaccess", "hostnetwork", "anyuid", "hostmount-anyuid", "restricted", "nonroot"]
+          value: ["privileged", "hostaccess", "hostnetwork", "anyuid", "hostmount-anyuid", "restricted", "nonroot", "node-exporter"]
       validate:
         message: "Avoid using `RunAsAny` for `seLinuxContext.type`. Use `MustRunAs` instead"
         pattern:
@@ -55,17 +41,10 @@ spec:
         resources:
           kinds:
             - SecurityContextConstraints
-      exclude:
-        resources:
-          namespaces:
-            - "openshift-*"
-            - "openshift*"
-            - "kube-*"
-            - "kube*"
       preconditions:
         - key: "{{ request.object.metadata.name }}"
           operator: NotIn
-          value: ["privileged", "hostaccess", "hostnetwork", "anyuid", "hostmount-anyuid", "restricted", "nonroot"]
+          value: ["privileged", "hostaccess", "hostnetwork", "anyuid", "hostmount-anyuid", "restricted", "nonroot", "node-exporter"]
       validate:
         message: "Avoid using `RunAsAny` for `fsGroup.type`. Use `MustRunAs` instead"
         pattern:
