@@ -24,6 +24,7 @@ No policies yet       |  |
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [protect-default-scc](./authorization/protect-default-scc.yaml) | Ensures that default scc are not being modified or deleted |
+[disallow-host-pid](authorization/host-namespaces/disallow-host-pid.yaml) | Ensures that access to the host PID namespaces is restricted in PODs that are not OpenShift System PODs, and prevent custom SCCs to allow host PID access |
 [disallow-host-ipc](authorization/host-namespaces/disallow-host-ipc.yaml) | Ensures that access to the host IPC namespaces is restricted in PODs that are not OpenShift System PODs, and prevent custom SCCs to allow host IPC access |
 
 ### ETCD Security
