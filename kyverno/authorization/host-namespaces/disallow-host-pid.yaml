@@ -3,7 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: disallow-host-pid
   annotations:
-    policies.kyverno.io/description: Sharing the host's PID namespace allows visibility of process
+    policies.kyverno.io/description: Sharing the host's PID namespace allows process visibility
       on the host, potentially exposing process information. To avoid pod container from
       having visibility to host process space, validate that 'hostPID' is set to 'false'.
 spec:
