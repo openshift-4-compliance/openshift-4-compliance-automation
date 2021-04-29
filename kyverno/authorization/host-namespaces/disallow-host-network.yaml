@@ -18,7 +18,7 @@ spec:
       preconditions:
         - key: "{{ request.object.metadata.name }}"
           operator: NotIn
-          value: ["privileged", "hostaccess", "hostnetwork", "node-exporter"]
+          value: ["privileged", "hostaccess", "hostnetwork", "node-exporter", "machine-api-termination-handler"]
       validate:
         message: "Creating SCC that allows access to hosts network namespace in custom created scc is forbidden"
         pattern:
