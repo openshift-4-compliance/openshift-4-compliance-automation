@@ -9,3 +9,5 @@ resources:
 - ./resource-exhaustion/disallow-self-provisioner-policy.yml
 - ./trusted-image-sources/gatekeeper-disallow-image-tags.yml
 - ./authentication-user-management/kubeadmin-policy.yml
+
+- ./infrastructure-general/gatekeeper-operator-policy.yaml

@@ -37,7 +37,7 @@ Policy  | Description | Prerequisites
 ### Infrastructure General
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-No policies yet       |  | 
+[gatekeeper-operator-policy](./infrastructure-general/gatekeeper-operator-policy.yaml) | Ensures that the Gatekeeper operator is running |
 
 ### Monitoring and Observability
 Policy  | Description | Prerequisites
