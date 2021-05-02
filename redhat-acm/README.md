@@ -20,6 +20,7 @@ Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [kubeadmin-policy](./authentication-user-management/kubeadmin-policy.yml) | Validates the removal of the kubeadmin temporary user |
 [group-policy](./authentication-user-management/group-policy.yml) | Ensures that a group is created with the defined users in it |
+[gatekeeper-shorten-tokens](./authentication-user-management/gatekeeper-shorten-tokens.yaml) | Ensure that authentication tokens have a restricted lifespan | 
 
 ### Authorization
 Policy  | Description | Prerequisites
