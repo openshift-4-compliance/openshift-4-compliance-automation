@@ -10,3 +10,4 @@ resources:
 - ./trusted-image-sources/gatekeeper-disallow-image-tags.yaml
 - ./authentication-user-management/kubeadmin-policy.yaml
 - ./authentication-user-management/gatekeeper-shorten-tokens.yaml
+- ./infrastructure-general/gatekeeper-operator-policy.yaml
