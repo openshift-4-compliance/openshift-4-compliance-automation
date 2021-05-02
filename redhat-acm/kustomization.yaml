@@ -1,11 +1,11 @@
 resources:
-- ./authorization/disallowed-role-policy.yml
-- ./authorization/gatekeeper-disalllow-priv-scc.yml
-- ./authorization/restricted-scc-validation-policy.yml
-- ./etcd-security/etcdencryption-policy.yml
-- ./networking/gatekeeper-allow-httpsonly.yml
-- ./networking/gatekeeper-disallow-external-ip-services.yml
-- ./networking/gatekeeper-disallow-nodeport.yml
-- ./resource-exhaustion/disallow-self-provisioner-policy.yml
-- ./trusted-image-sources/gatekeeper-disallow-image-tags.yml
-- ./authentication-user-management/kubeadmin-policy.yml
+- ./authorization/disallowed-role-policy.yaml
+- ./authorization/gatekeeper-disalllow-priv-scc.yaml
+- ./authorization/restricted-scc-validation-policy.yaml
+- ./etcd-security/etcdencryption-policy.yaml
+- ./networking/gatekeeper-allow-httpsonly.yaml
+- ./networking/gatekeeper-disallow-external-ip-services.yaml
+- ./networking/gatekeeper-disallow-nodeport.yaml
+- ./resource-exhaustion/disallow-self-provisioner-policy.yaml
+- ./trusted-image-sources/gatekeeper-disallow-image-tags.yaml
+- ./authentication-user-management/kubeadmin-policy.yaml
