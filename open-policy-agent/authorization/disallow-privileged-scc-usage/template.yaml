@@ -35,3 +35,11 @@ spec:
           count(forbiddenGroups) > 0
           msg := sprintf("Adding groups to the privileged SCC is not allowed. The group %v can not be associated with the privileged SCC.", [forbiddenGroups])
         }
+
+        violation[{"msg": msg}] {
+          input.review.kind.kind == "ClusterRoleBinding"
+          input.review.object.roleRef.kind == "ClusterRole"
+          input.review.object.roleRef.name == "system:openshift:scc:privileged"
+          count(input.review.object.subjects) > 0
+          msg := sprintf("Adding service accounts to the privileged SCC is not allowed. The user / group - %v can not be associated with the privileged SCC.", [input.review.object.subjects[_].name])
+        }
