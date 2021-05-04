@@ -28,6 +28,8 @@ Policy  | Description | Prerequisites
 [disallowed-role-policy](./authorization/disallowed-role-policy.yaml) | Ensures that the defined role pattern does not exist in the cluster |
 [role-policy](./authorization/role-policy.yaml) | Ensures that a role exists in the cluster |
 [role-binding-policy](./authorization/role-binding-policy.yaml) | Ensures that a role is bound to a user / group |
+[gatekeeper-disalllow-privileged-scc-usage](./authorization/gatekeeper-disalllow-privileged-scc-usage.yaml) | Ensures that privilged scc is not being used by unlisted service accounts, users and groups |
+[restricted-scc-validation-policy](./authorization/restricted-scc-validation-policy.yaml) | Ensures that the restricted scc is not modified |
 
 ### ETCD Security
 Policy  | Description | Prerequisites
