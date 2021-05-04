@@ -7,6 +7,8 @@ spec:
     kinds:
       - apiGroups: ["security.openshift.io"]
         kinds: ["SecurityContextConstraints"]
+      - apiGroups: ["rbac.authorization.k8s.io"]
+        kinds: ["ClusterRoleBinding"]
   parameters:
     allowedUsers:
       - "system:admin"
