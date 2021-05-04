@@ -57,7 +57,7 @@ Policy  | Description | Prerequisites
 ### Resource Exhaustion
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[disallow-self-provisioner-policy](./redhat-acm/disallow-self-provisioner-policy.yaml) | Ensures that users are not able to provision new namespaces by validating the removal of the `self-provisioners` ClusterRole |
+[disallow-self-provisioner-policy](./resource-exhaustion/disallow-self-provisioner-policy.yaml) | Ensures that users are not able to provision new namespaces by validating the removal of the `self-provisioners` ClusterRole |
 [limitrange-policy](./resource-exhaustion/limitrange-policy.yaml) | Ensures that a Limitrange resource is present in a namespace |
 
 ### Storage
