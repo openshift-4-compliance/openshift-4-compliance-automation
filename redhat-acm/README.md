@@ -33,7 +33,7 @@ Policy  | Description | Prerequisites
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [etcdencryption-policy](./etcd-security/etcdencryption-policy.yaml) | Ensures that the etcd database is encrypted |
-[etcd-backup-policy](./etcd-security/policy-etcd-backup.yaml) | Backup the etcd data on a weekly basis into a PersistentVolume and rotate the backups to avoid over consumption |
+[etcd-backup-policy](./etcd-security/etcdbackup-policy.yaml) | Backup the etcd data on a weekly basis into a PersistentVolume and rotate the backups to avoid over consumption |
 
 ### Infrastructure General
 Policy  | Description | Prerequisites
