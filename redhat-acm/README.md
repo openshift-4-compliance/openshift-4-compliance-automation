@@ -35,6 +35,12 @@ Policy  | Description | Prerequisites
 [etcdencryption-policy](./etcd-security/etcdencryption-policy.yaml) | Ensures that the etcd database is encrypted |
 [etcd-backup-policy](./etcd-security/policy-etcd-backup.yaml) | Backup the etcd data on a weekly basis into a PersistentVolume and rotate the backups to avoid over consumption |
 
+### ServiceAccount Management
+Policy  | Description | Prerequisites
+------- | ----------- | -------------
+[unique-serviceaccount-per-pod](./service-account-mgmt/unique-serviceaccount-per-pod-policy.yaml) | Ensures that every pod/service/deployment etc. has a unique serviceaccount attached to it |
+[serviceaccount-automount-token-prevention](.//service-account-mgmt/serviceaccount-automount-token-prevention-policy.yaml) | Ensures that serviceAccounts' tokens are unmountable by default  |
+
 ### Infrastructure General
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
