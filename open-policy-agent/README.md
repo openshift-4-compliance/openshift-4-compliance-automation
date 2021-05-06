@@ -34,8 +34,8 @@ Policy  | Description | Prerequisites
 ### ServiceAccount Management
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[unique-serviceaccount-per-pod](./service-account-mgmt/unique_serviceaccount_per_pod) | Ensures that every pod/service/deployment etc. has a unique serviceaccount attached to it |
-[serviceaccount-automount-token-prevention](.//service-account-mgmt/serviceaccount_automounttoken_prevention) | Ensures that serviceAccounts' tokens are unmountable by default  |
+[unique-serviceaccount-per-pod](./service-account-mgmt/unique_serviceaccount_per_pod) | Ensures that every pod/deployment etc. has a unique serviceaccount attached to it |
+[serviceaccount-automount-token-prevention](./service-account-mgmt/serviceaccount_automounttoken_prevention) | Ensures that serviceAccounts' tokens are unmountable by default  |
 
 
 ### Infrastructure General
