@@ -4,65 +4,6 @@ The policy disallows creating serviceAccounts that does not include the followin
 
 It is useful (security-wise) so that by default services' pods won't be able to mount the token of the serviceAccount which deployed them if they aren't meant to. In case that a serviceAccount token is required it can be excluded.
 
-The required procedure to deploy the policy:
-
-1. Add the subscription for the gatekeeper operator
-2. Generate the relevant gatekeeper object CR
-3. Deploy the template & constraint yamls that define the policy
-* Note that any openshift-* & kubernetes-* default namespaces are excluded
-4. Deploy the test serviceAccount objects to make sure the policy works as expected
-
-`You should be logged in as cluster-admin privilaged user`
-
-## Add the subscription for the gatekeeper operator
-
-```bash
-cat > subscription.yaml << EOF
-apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
-metadata:
-  name: gatekeeper-operator-product
-  namespace: openshift-operators
-spec:
-  channel: stable
-  installPlanApproval: Automatic
-  name: gatekeeper-operator-product
-  source: redhat-operators
-  sourceNamespace: openshift-marketplace
-EOF
-
-oc create -f subscription.yaml
-oc get subscriptions.operators.coreos.com -A | grep -i gatekeeper
-```
-
-
-## Generate the relevant gatekeeper object CR
-
-```bash
-cat > gatekeeper_cr.yaml << EOF
-apiVersion: operator.gatekeeper.sh/v1alpha1
-kind: Gatekeeper
-metadata:
-  name: gatekeeper
-spec:
-  audit:
-    logLevel: INFO
-    replicas: 1
-  image:
-    image: 'registry.redhat.io/rhacm2/gatekeeper-rhel8:v3.3.0'
-  validatingWebhook: Enabled
-  mutatingWebhook: Disabled
-  webhook:
-    emitAdmissionEvents: Enabled
-    logLevel: INFO
-    replicas: 2
-EOF
-
-oc create -f gatekeeper_cr.yaml
-oc get pods -n openshift-gatekeeper-system
-
-```
-
 ## Deploy the template & constraint yamls that define the policy
 
 ```bash
