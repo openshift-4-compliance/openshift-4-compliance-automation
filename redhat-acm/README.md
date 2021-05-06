@@ -38,8 +38,8 @@ Policy  | Description | Prerequisites
 ### ServiceAccount Management
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[unique-serviceaccount-per-pod](./service-account-mgmt/unique-serviceaccount-per-pod-policy.yaml) | Ensures that every pod/service/deployment etc. has a unique serviceaccount attached to it |
-[serviceaccount-automount-token-prevention](.//service-account-mgmt/serviceaccount-automount-token-prevention-policy.yaml) | Ensures that serviceAccounts' tokens are unmountable by default  |
+[gatekeeper-unique-serviceaccount-per-pod](./service-account-mgmt/gatekeeper-unique-serviceaccount-per-pod-policy.yaml) | Ensures that every pod/service/deployment etc. has a unique serviceaccount attached to it | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
+[gatekeeper-serviceaccount-automount-token-prevention](.//service-account-mgmt/gatekeeper-serviceaccount-automount-token-prevention-policy.yaml) | Ensures that serviceAccounts' tokens are unmountable by default  | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 
 ### Infrastructure General
 Policy  | Description | Prerequisites
