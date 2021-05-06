@@ -1,6 +1,6 @@
 resources:
 - ./authorization/disallowed-role-policy.yaml
-- ./authorization/gatekeeper-disalllow-priv-scc.yaml
+- ./authorization/gatekeeper-disalllow-privileged-scc-usage/gatekeeper-disalllow-privileged-scc-usage.yaml
 - ./authorization/restricted-scc-validation-policy.yaml
 - ./etcd-security/etcdencryption-policy.yaml
 - ./networking/gatekeeper-allow-httpsonly.yaml
