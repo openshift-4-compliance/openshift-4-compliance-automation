@@ -2,7 +2,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-gatekeeper-disallow-priv-scc
+  name: policy-gatekeeper-disallow-privileged-scc-usage
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
@@ -15,7 +15,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-gatekeeper-disallow-priv-scc
+          name: policy-gatekeeper-disallow-privileged-scc-usage
         spec:
           remediationAction: enforce
           severity: low
@@ -59,6 +59,14 @@ spec:
                           count(forbiddenGroups) > 0
                           msg := sprintf("Adding groups to the privileged SCC is not allowed. The group %v can not be associated with the privileged SCC.", [forbiddenGroups])
                         }
+
+                        violation[{"msg": msg}] {
+                          input.review.kind.kind == "ClusterRoleBinding"
+                          input.review.object.roleRef.kind == "ClusterRole"
+                          input.review.object.roleRef.name == "system:openshift:scc:privileged"
+                          count(input.review.object.subjects) > 0
+                          msg := sprintf("Adding service accounts to the privileged SCC is not allowed. The user / group - %v can not be associated with the privileged SCC.", [input.review.object.subjects[_].name])
+                        }
             - complianceType: musthave
               objectDefinition:
                 apiVersion: constraints.gatekeeper.sh/v1beta1
@@ -70,6 +78,8 @@ spec:
                     kinds:
                       - apiGroups: ["security.openshift.io"]
                         kinds: ["SecurityContextConstraints"]
+                      - apiGroups: ["rbac.authorization.k8s.io"]
+                        kinds: ["ClusterRoleBinding"]
                   parameters:
                     allowedUsers:
                       - "system:admin"
@@ -82,7 +92,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-gatekeeper-audit-disallow-priv-scc
+          name: policy-gatekeeper-audit-disallow-privileged-scc-usage
         spec:
           remediationAction: inform # will be overridden by remediationAction in parent policy
           severity: low
@@ -99,7 +109,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-gatekeeper-admission-disallow-priv-scc
+          name: policy-gatekeeper-admission-disallow-privileged-scc-usage
         spec:
           remediationAction: inform # will be overridden by remediationAction in parent policy
           severity: low
@@ -119,20 +129,20 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-gatekeeper-disallow-priv-scc
+  name: binding-policy-gatekeeper-disallow-privileged-scc-usage
 placementRef:
-  name: placement-policy-gatekeeper-disallow-priv-scc
+  name: placement-policy-gatekeeper-disallow-privileged-scc-usage
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: policy-gatekeeper-disallow-priv-scc
+  - name: policy-gatekeeper-disallow-privileged-scc-usage
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-gatekeeper-disallow-priv-scc
+  name: placement-policy-gatekeeper-disallow-privileged-scc-usage
 spec:
   clusterConditions:
     - status: "True"

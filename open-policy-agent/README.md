@@ -24,7 +24,7 @@ Policy  | Description | Prerequisites
 ### Authorization
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[no-priv-scc](./authorization/no-priv-scc) | Ensures that privilged scc is not being used by unlisted Services |
+[disallow-privileged-scc-usage](./authorization/disallow-privileged-scc-usage) | Ensures that privilged scc is not being used by unlisted service accounts, users and groups |
 
 ### ETCD Security
 Policy  | Description | Prerequisites
