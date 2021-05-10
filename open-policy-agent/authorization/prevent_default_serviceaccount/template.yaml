@@ -24,13 +24,11 @@ spec:
 
         violation[{"msg": msg}] {
           pod := input.review.object
-
           missing(pod.spec, "serviceAccountName")
-
           msg := "serviceAccountName is required in the pod spec"
         }
 
         violation[{"msg": msg}] {
-          input.review.object.spec.serviceAccountName != input.review.object.metadata.name
-          msg := sprintf("serviceAccountName should be the same as the name of the pod: <%v>. In case you do not have such an serviceAccount already, you are required to generate one.", [input.review.object.metadata.name])
+          input.review.object.spec.serviceAccountName == "default"
+          msg := "A dedicated serviceAccount should be generated for the application"
         }
