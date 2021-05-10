@@ -1,8 +1,8 @@
-# Policy Explainer & Testing - ServiceAccount Automount Token Prevention
+# Unique ServiceAccount Per-Pod
 
-The policy disallows creating serviceAccounts that does not include the following key:value pair in its manifest: `"automountServiceAccountToken": false`
+The policy disallows creating pods/service/deployment/deploymentconfig/replicaset (and every object that includes pod creation in any shape) that does not include a dedicated service account with name equals to the name of the pod itself.
 
-It is useful (security-wise) so that by default services' pods won't be able to mount the token of the serviceAccount which deployed them if they aren't meant to. In case that a serviceAccount token is required it can be excluded.
+It is useful (security-wise) so that developers will get use to generate dedicated serviceAccount per micro-service, so it will be easier to audit its logs and grant elevated permissions to serviceaccounts that really requires it, without effecting multiple services at once.
 
 The required procedure to deploy the policy:
 
@@ -10,7 +10,7 @@ The required procedure to deploy the policy:
 2. Generate the relevant gatekeeper object CR
 3. Deploy the template & constraint yamls that define the policy
 * Note that any openshift-* & kubernetes-* default namespaces are excluded
-4. Deploy the test serviceAccount objects to make sure the policy works as expected
+4. Deploy test pods & deployment object to make sure the policy works as expected
 
 `You should be logged in as cluster-admin privilaged user`
 
@@ -68,14 +68,14 @@ oc get pods -n openshift-gatekeeper-system
 ```bash
 cat > constraint.yaml << EOF
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sServiceAccountAutomountTokenPrevention
+kind: K8sPodUniqueServiceAccountValidation
 metadata:
-  name: serviceaccount-automounttoken-prevention
+  name: pod-unique-serviceaccount-validation
 spec:
   match:
     kinds:
       - apiGroups: [""]
-        kinds: ["ServiceAccount"]
+        kinds: ["Pod"]
     excludedNamespaces: 
       - hive
       - kube-node-lease
@@ -153,82 +153,143 @@ cat > template.yaml << EOF
 apiVersion: templates.gatekeeper.sh/v1beta1
 kind: ConstraintTemplate
 metadata:
-  name: k8sserviceaccountautomounttokenprevention
+  name: k8spoduniqueserviceaccountvalidation
   annotations:
     description: Checks wheter the pod has a unique serviceAccount, correlated with the pod's name
 spec:
   crd:
     spec:
       names:
-        kind: K8sServiceAccountAutomountTokenPrevention
+        kind: K8sPodUniqueServiceAccountValidation
   targets:
     - target: admission.k8s.gatekeeper.sh
       rego: |
-        package K8sServiceAccountAutomountTokenPrevention
+        package K8sPodUniqueServiceAccountValidation
 
-        violation[{"msg": msg}] {
-          not has_key(input.review.object, "automountServiceAccountToken")
-          msg := "The key automountServiceAccountToken should exist in your serviceAccount object"
+        missing(obj, field) = true {
+          not obj[field]
         }
         
-        violation[{"msg": msg}]{
-        	input.review.object["automountServiceAccountToken"] != false
-          msg := "The automountServiceAccountToken key in your serviceAccount object MUST have the value of false"
+        missing(obj, field) = true {
+          obj[field] == ""
         }
 
-        has_key(x, k) { _ = x[k] }
+        violation[{"msg": msg}] {
+          pod := input.review.object
+
+          missing(pod.spec, "serviceAccountName")/k8spoduniqueserviceaccountvalidation one.", [input.review.object.metadata.name])
+        }
 EOF
 
 oc create -f template.yaml -n openshift-gatekeeper-system
 oc create -f constraint.yaml -n openshift-gatekeeper-system
 
-oc describe constrainttemplate/k8sserviceaccountautomounttokenprevention
-oc describe k8sserviceaccountautomounttokenprevention
+oc describe ConstraintTemplate/k8spoduniqueserviceaccountvalidation -n openshift-gatekeeper-system
+oc describe K8sPodUniqueServiceAccountValidation -n openshift-gatekeeper-system
 ```
 
 ## Deploy test pods & deployment object to make sure the policy works as expected
 ```bash
+# No spec.serviceAccountName == metadata.name == "test"
+cat > approved_pod.yaml << EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test
+spec:
+  serviceAccountName: test
+  containers:
+   - name: web
+     image: nginx
+     ports:
+     - name: web
+       containerPort: 80
+       protocol: TCP
+EOF
 
+# No "serviceAccountName"
+cat > not_approved_pod_1.yaml << EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test
+spec:
+  containers:
+   - name: web
+     image: nginx
+     ports:
+     - name: web
+       containerPort: 80
+       protocol: TCP
+EOF
+
+# No spec.serviceAccountName ("not-test") != metadata.name ("test") 
+cat > not_approved_pod_2.yaml << EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test
+spec:
+  serviceAccountName: not-test
+  containers:
+   - name: web
+     image: nginx
+     ports:
+     - name: web
+       containerPort: 80
+       protocol: TCP
+EOF
+
+# No "serviceAccountName"
+cat > test_deployment_not_approved.yaml << EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-openshift
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-openshift
+  template:
+    metadata:
+      labels:
+        app: hello-openshift
+    spec:
+      containers:
+      - name: hello-openshift
+        image: openshift/hello-openshift:latest
+        ports:
+        - containerPort: 80
+EOF
+```
+
+```bash
 oc new-project test
+oc create serviceaccount test -n test
+oc create serviceaccount not-test -n test
 
-# No automountServiceAccountToken <=> not approved 
-cat > service_account_should_not_work_basic.yaml << EOF
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: example
-EOF
+# Should be rejected
+oc create -f not_approved_pod_1.yaml -n test
 
-# expect failure
-oc create -f service_account_should_not_work_basic.yaml -n test
+# Should be rejected
+oc create -f not_approved_pod_2.yaml -n test
 
-# automountServiceAccountToken != false <=> not approved 
-cat > service_account_should_not_work_advanced.yaml << EOF
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: example
-automountServiceAccountToken: true
-EOF
+# Should work fine
+oc create -f approved_pod.yaml -n test
 
-# automountServiceAccountToken == false <=> approved
-oc create -f service_account_should_not_work_advanced.yaml -n test
+# Examin violation
+oc describe k8spoduniqueserviceaccountvalidation.constraints.gatekeeper.sh/pod-unique-serviceaccount-validation -n openshift-gatekeeper-system
 
-cat > service_account_should_work.yaml << EOF
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: example
-automountServiceAccountToken: false
-EOF
+# Should work because of namespace excluding
+oc create -f not_approved_pod_1.yaml -n openshift-operators
 
-# expect success
-oc create -f service_account_should_work.yaml -n test
+# Should not work as well
+oc create -f test_deployment_not_approved.yaml -n test
 
-## Test namespace excluding ##
-# expect success
-oc create -f service_account_should_not_work_basic.yaml -n openshift-operators
-oc delete -f service_account_should_not_work_basic.yaml -n openshift-operators
-oc create -f service_account_should_not_work_advanced.yaml -n openshift-operators
-oc delete -f service_account_should_not_work_advanced.yaml -n openshift-operators
+# Verify option 1
+oc get events | grep -i hello-openshift
+
+# Verify option 2
+oc get events -n openshift-gatekeeper-system | grep -i hello-openshift
 ```
