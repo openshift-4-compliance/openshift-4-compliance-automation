@@ -1,0 +1,34 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8spoduniqueserviceaccountvalidation
+  annotations:
+    description: Checks wheter the pod has a unique serviceAccount, correlated with the pod's name
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sPodUniqueServiceAccountValidation
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package K8sPodUniqueServiceAccountValidation
+
+        missing(obj, field) = true {
+          not obj[field]
+        }
+        
+        missing(obj, field) = true {
+          obj[field] == ""
+        }
+
+        violation[{"msg": msg}] {
+          pod := input.review.object
+          missing(pod.spec, "serviceAccountName")
+          msg := "serviceAccountName is required in the pod spec"
+        }
+
+        violation[{"msg": msg}] {
+          input.review.object.spec.serviceAccountName == "default"
+          msg := "A dedicated serviceAccount should be generated for the application"
+        }
