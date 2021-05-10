@@ -28,14 +28,18 @@ Policy  | Description | Prerequisites
 [disallowed-role-policy](./authorization/disallowed-role-policy.yaml) | Ensures that the defined role pattern does not exist in the cluster |
 [role-policy](./authorization/role-policy.yaml) | Ensures that a role exists in the cluster |
 [role-binding-policy](./authorization/role-binding-policy.yaml) | Ensures that a role is bound to a user / group |
-[gatekeeper-disalllow-privileged-scc-usage](./authorization/gatekeeper-disalllow-privileged-scc-usage.yaml) | Ensures that privilged scc is not being used by unlisted service accounts, users and groups |
-[restricted-scc-validation-policy](./authorization/restricted-scc-validation-policy.yaml) | Ensures that the restricted scc is not modified |
 
 ### ETCD Security
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [etcdencryption-policy](./etcd-security/etcdencryption-policy.yaml) | Ensures that the etcd database is encrypted |
-[etcd-backup-policy](./etcd-security/etcdbackup-policy.yaml) | Backup the etcd data on a weekly basis into a PersistentVolume and rotate the backups to avoid over consumption |
+[etcd-backup-policy](./etcd-security/policy-etcd-backup.yaml) | Backup the etcd data on a weekly basis into a PersistentVolume and rotate the backups to avoid over consumption |
+
+### ServiceAccount Management
+Policy  | Description | Prerequisites
+------- | ----------- | -------------
+[gatekeeper-unique-serviceaccount-per-pod](./authorization/gatekeeper-prevent-default-serviceaccount-policy) | Ensures that every pod/service/deployment etc. has a unique serviceaccount attached to it which is not the 'default' serviceaccount | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
+[gatekeeper-serviceaccount-automount-token-prevention](.//authorization/gatekeeper-serviceaccount-automount-token-prevention-policy) | Ensures that serviceAccounts' tokens are unmountable by default  | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 
 ### Infrastructure General
 Policy  | Description | Prerequisites
@@ -59,7 +63,7 @@ Policy  | Description | Prerequisites
 ### Resource Exhaustion
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[disallow-self-provisioner-policy](./resource-exhaustion/disallow-self-provisioner-policy.yaml) | Ensures that users are not able to provision new namespaces by validating the removal of the `self-provisioners` ClusterRole |
+[disallow-self-provisioner-policy](./redhat-acm/disallow-self-provisioner-policy.yaml) | Ensures that users are not able to provision new namespaces by validating the removal of the `self-provisioners` ClusterRole |
 [limitrange-policy](./resource-exhaustion/limitrange-policy.yaml) | Ensures that a Limitrange resource is present in a namespace |
 
 ### Storage
