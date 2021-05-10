@@ -1,6 +1,6 @@
 # Unique ServiceAccount Per-Pod
 
-The policy disallows creating pods/service/deployment/deploymentconfig/replicaset (and every object that includes pod creation in any shape) that does not include a dedicated service account with name equals to the name of the pod itself.
+The policy disallows creating pods/service/deployment/deploymentconfig/replicaset (and every object that includes pod creation in any shape) that is not associated with a dedicated service account. The name of the service account must be equal to the name of the pod.
 
 It is useful (security-wise) so that developers will get use to generate dedicated serviceAccount per micro-service, so it will be easier to audit its logs and grant elevated permissions to serviceaccounts that really requires it, without effecting multiple services at once.
 
