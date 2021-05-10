@@ -24,12 +24,18 @@ Policy  | Description | Prerequisites
 ### Authorization
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[disallow-privileged-scc-usage](./authorization/disallow-privileged-scc-usage) | Ensures that privilged scc is not being used by unlisted service accounts, users and groups |
+[no-priv-scc](./authorization/no-priv-scc) | Ensures that privilged scc is not being used by unlisted Services |
 
 ### ETCD Security
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [verify-etcd-encryption](./etcd-security/verify-etcd-encryption) | Ensures that the etcd is encrypted properly |
+
+### ServiceAccount Management
+Policy  | Description | Prerequisites
+------- | ----------- | -------------
+[prevent_default_serviceaccount_usage](./authorization/prevent_default_serviceaccount_usage) | Ensures that every pod/service/deployment etc. has a unique serviceaccount attached to it which is not 'default' |
+[serviceaccount-automount-token-prevention](./authorization/serviceaccount_automounttoken_prevention) | Ensures that serviceAccounts' tokens are unmountable by default  |
 
 ### Infrastructure General
 Policy  | Description | Prerequisites
