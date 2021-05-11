@@ -26,7 +26,7 @@ Each product's policies are devided into multiple compliance controls -
 - storage
 - trusted-image-sources
 
-Each compliance control will have its own directory in each tool directory. The compliance control directories are based own the next [doc](https://docs.google.com/spreadsheets/d/1vhtWJYgvbVlW58D-jL9s-iBA56aT3m9Sf_qnME9gDyw/edit?usp=sharing).
+Each compliance control will have its own directory in each tool directory. The compliance control directories are based on the next [doc](https://docs.google.com/spreadsheets/d/1vhtWJYgvbVlW58D-jL9s-iBA56aT3m9Sf_qnME9gDyw/edit?usp=sharing).
 
 The directory structure is constant, and should not be changed.
 
@@ -71,7 +71,7 @@ $ ls -l ./open-policy-agent/networking/httpsonly/
 ### Networking
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[httpsonly](./networking/httpsonly.yaml) | Ensures that there are *no* http routes |
+[httpsonly](./networking/httpsonly) | Ensures that there are *no* http routes |
 ```
 
 ### Kyverno
@@ -103,7 +103,7 @@ $ ls -l ./kyverno/networking/httpsonly/
 ### Networking
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[httpsonly](./networking/httpsonly.yaml) | Ensures that there are *no* http routes |
+[httpsonly](./networking/httpsonly/httpsonly.yaml) | Ensures that there are *no* http routes |
 ```
 
 ### Red Hat Advanced Cluster Management for Kubernetes
@@ -135,7 +135,7 @@ $ ls -l ./redhat-acm/networking/gatekeeper-allow-httpsonly/
 ### Networking
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[gatekeeper-allow-httpsonly](./networking/gatekeeper-allow-httpsonly.yaml) | Ensures that there are *no* http routes | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
+[gatekeeper-allow-httpsonly](./networking/gatekeeper-allow-httpsonly/gatekeeper-allow-httpsonly.yaml) | Ensures that there are *no* http routes | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 ```
 
 ### Contributing
