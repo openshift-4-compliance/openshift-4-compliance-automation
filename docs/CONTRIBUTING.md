@@ -172,7 +172,7 @@ $ git push origin master
 - Assign a reviewer.
 - Before submitting, please be familiar with [contributing policies](./docs/CONTRIBUTING.md) guide.
 
-###Reporting Bugs
+### Reporting Bugs
 - Ensure the bug was not already reported by searching on GitHub under [issues](https://github.com/openshift-4-compliance/openshift-4-compliance-automation/issues).
 - If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/openshift-4-compliance/openshift-4-compliance-automation/issues/new). Be sure to include a title
   and clear description, and a clear example of the issue.
