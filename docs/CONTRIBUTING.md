@@ -159,7 +159,7 @@ $ get commit -m "Added a policy that disables http routes from being created"
 $ git push origin master
 ```
 
-4. Follow the instructions [below](#Pull-Request-Guidelines) in order to create a Pull Request in the repository.
+4. Follow the "Pull Request Guidelines" below in order to create a Pull Request in the repository.
 
 ##Pull Request Guidelines
 
