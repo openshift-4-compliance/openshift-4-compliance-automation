@@ -1,6 +1,8 @@
 ### Description
+<!-- Describe the issue shortly -->
 
 ### Steps to reproduce
+<!-- Describe the steps in order to reproduce the issue -->
 
 ### Expected behavior
 <!-- what should happen -->
