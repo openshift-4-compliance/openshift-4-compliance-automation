@@ -161,7 +161,7 @@ $ git push origin master
 
 4. Follow the "Pull Request Guidelines" below in order to create a Pull Request in the repository.
 
-##Pull Request Guidelines
+## Pull Request Guidelines
 
 ### Contributing new policy
 - Open a new GitHub pull request with the policy.
