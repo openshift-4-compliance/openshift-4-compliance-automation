@@ -125,7 +125,7 @@ $ ls -l ./redhat-acm/networking/gatekeeper-allow-httpsonly/
 
 ```
 $ ls -l ./redhat-acm/networking/gatekeeper-allow-httpsonly/
--rw-rw-r--. 1 mkotelni mkotelni 199 Apr 29 16:30 httpsonly.yaml
+-rw-rw-r--. 1 mkotelni mkotelni 199 Apr 29 16:30 gatekeeper-allow-httpsonly.yaml
 -rw-rw-r--. 1 mkotelni mkotelni 154 Apr 29 16:30 README.md
 ```
 
