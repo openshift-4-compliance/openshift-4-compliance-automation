@@ -1,0 +1,27 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8sserviceaccountautomounttokenprevention
+  annotations:
+    description: Checks wheter the pod has a unique serviceAccount, correlated with the pod's name
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sServiceAccountAutomountTokenPrevention
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package K8sServiceAccountAutomountTokenPrevention
+
+        violation[{"msg": msg}] {
+          not has_key(input.review.object, "automountServiceAccountToken")
+          msg := "The key automountServiceAccountToken should exist in your serviceAccount object"
+        }
+        
+        violation[{"msg": msg}]{
+        	input.review.object["automountServiceAccountToken"] != false
+          msg := "The automountServiceAccountToken key in your serviceAccount object MUST have the value of false"
+        }
+
+        has_key(x, k) { _ = x[k] }
