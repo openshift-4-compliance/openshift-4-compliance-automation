@@ -31,6 +31,12 @@ Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [verify-etcd-encryption](./etcd-security/verify-etcd-encryption) | Ensures that the etcd is encrypted properly |
 
+### ServiceAccount Management
+Policy  | Description | Prerequisites
+------- | ----------- | -------------
+[prevent_default_serviceaccount_usage](./authorization/prevent_default_serviceaccount_usage) | Ensures that every pod/service/deployment etc. has a unique serviceaccount attached to it which is not 'default' |
+[serviceaccount-automount-token-prevention](./authorization/serviceaccount_automounttoken_prevention) | Ensures that serviceAccounts' tokens are unmountable by default  |
+
 ### Infrastructure General
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
