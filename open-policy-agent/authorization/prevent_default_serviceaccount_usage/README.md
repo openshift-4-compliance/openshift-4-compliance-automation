@@ -4,6 +4,8 @@ The policy disallows creating pods/service/deployment/deploymentconfig/replicase
 
 Generating a dedicated service account per micro service is a common security practice for developers. Creating a service account per micro service provides more control over the pod's permissions and audit logs, without affecting other micro services.
 
+`This policy has been tested on openshift cluster & oc client version 4.6.9`
+
 The required procedure to deploy the policy:
 
 1. Add the subscription for the gatekeeper operator
