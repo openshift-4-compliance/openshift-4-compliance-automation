@@ -36,12 +36,8 @@ oc create serviceaccount not-test -n test
 # No "serviceAccountName"
 oc apply -f ./test/not_approved_pod_1.yaml -n test
 
-# Should be rejected
-# No spec.serviceAccountName ("not-test") != metadata.name ("test") 
-oc apply -f ./test/not_approved_pod_2.yaml -n test
-
 # Should work fine
-# No spec.serviceAccountName == metadata.name == "test"
+# No spec.serviceAccountName == "some-sa"
 oc apply -f ./test/approved_pod.yaml -n test
 
 # Examin violation
