@@ -8,7 +8,7 @@ spec:
   crd:
     spec:
       names:
-        kind: K8sPreventDefaultServiceAccountUsage PodUniqueServiceAccountValidation
+        kind: K8sPreventDefaultServiceAccountUsage
   targets:
     - target: admission.k8s.gatekeeper.sh
       rego: |
