@@ -37,6 +37,12 @@ Policy  | Description | Prerequisites
 [etcdencryption-policy](./etcd-security/etcdencryption-policy.yaml) | Ensures that the etcd database is encrypted |
 [etcd-backup-policy](./etcd-security/etcdbackup-policy.yaml) | Backup the etcd data on a weekly basis into a PersistentVolume and rotate the backups to avoid over consumption |
 
+### Serviceaccount Security
+Policy  | Description | Prerequisites
+------- | ----------- | -------------
+[prevent-default-serviceaccount-usage](./authorization/gatekeeper-prevent-default-serviceaccount-usage/gatekeeper-prevent-default-serviceaccount-usage.yaml) | Ensures that the `default` serviceaccount is not usable by any pod | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
+
+
 ### Infrastructure General
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
