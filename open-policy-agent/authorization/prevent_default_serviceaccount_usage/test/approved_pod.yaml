@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: test
 spec:
-  serviceAccountName: test
+  serviceAccountName: some-sa 
   containers:
    - name: web
      image: nginx
