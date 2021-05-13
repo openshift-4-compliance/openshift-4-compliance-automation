@@ -1,7 +1,7 @@
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sOauthOpenIDConnectIdentityProvidersOnly
+kind: K8sOAuthSecuredIdentityProvidersOnly
 metadata:
-  name: oauth-openid-connect-identity-providers-only
+  name: oauth-secured-identity-providers-only
 spec:
   match:
     kinds:
