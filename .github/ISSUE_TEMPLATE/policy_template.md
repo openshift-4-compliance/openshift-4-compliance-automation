@@ -1,6 +1,6 @@
 ---
-name: Policy Request
-about: Create a new policy request 
+name: Policy Submission
+about: Submit a new policy to the repository
 title: ''
 labels: ''
 assignees: ''
