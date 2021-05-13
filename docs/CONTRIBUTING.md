@@ -159,29 +159,27 @@ $ get commit -m "Added a policy that disables http routes from being created"
 $ git push origin master
 ```
 
-4. Follow the "Pull Request Guidelines" below in order to create a Pull Request in the repository.
+4. Follow the [Pull Request Guidelines](#pull-request-guidelines) in order to create a Pull Request in the repository.
 
 ## Pull Request Guidelines
+This section describes guidelines for submitting new pull requests to the repository.
 
 ### Contributing new policy
-- Open a new GitHub pull request with the policy.
+- Create a new [Policy Submission](https://github.com/openshift-4-compliance/openshift-4-compliance-automation/issues/new/choose) Issue. Make sure to provide relevant information.
+- Open a new GitHub pull request from the fork containing the policy resources.
 - Only one policy should be submitted in a single pull request.
-- Ensure PR description clearly describes the policy. Include the relevant [issue](https://github.com/openshift-4-compliance/openshift-4-compliance-automation/issues) number if applicable.
-- Submit the policy after appropriate testing is done and the policy behaves as expected.
-- Include only files that are relevant to the policy and matches PR description.
+- Ensure that the PR's description clearly describes the policy. Include the relevant [issue](https://github.com/openshift-4-compliance/openshift-4-compliance-automation/issues) reference in the PR.
+- Submit the policy after appropriate testing is done. Make sure that the policy behaves as expected.
+- Include only files that are relevant to the policy and match the PR's description.
 - Assign a reviewer.
-- Before submitting, please be familiar with [contributing policies](./docs/CONTRIBUTING.md) guide.
+- Before submitting, please be familiar with [contributing policies](./CONTRIBUTING.md) guide.
 
-### Reporting Bugs
-- Ensure the bug was not already reported by searching on GitHub under [issues](https://github.com/openshift-4-compliance/openshift-4-compliance-automation/issues).
-- If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/openshift-4-compliance/openshift-4-compliance-automation/issues/new?assignees=&labels=&template=issue_template.md&title=). Be sure to include a title
-  and clear description, and a clear example of the issue.
+### Reporting bugs
+- Ensure the bug was not reported already by searching the repository at the [issues](https://github.com/openshift-4-compliance/openshift-4-compliance-automation/issues) section.
+- If you're unable to find an open issue addressing the problem, open a new [Bug Report](https://github.com/openshift-4-compliance/openshift-4-compliance-automation/issues/new/choose). Be sure to include a title and a clear description of the issue. Examples can be added in order to demonstrate the issue's behaviour.
   
-### Fixing existing policy
-- Ensure PR description clearly describes the policy. Include the relevant [issue](https://github.com/openshift-4-compliance/openshift-4-compliance-automation/issues) number if applicable.
-- Include only changes in files that are relevant to the policy and matches PR description.
+### Fixing an existing policy
+- Create a [Bug Report](https://github.com/openshift-4-compliance/openshift-4-compliance-automation/issues/new/choose) for your PR.
+- Ensure that the PR's description clearly describes the changes done to the policy. Include the relevant [issue](https://github.com/openshift-4-compliance/openshift-4-compliance-automation/issues).
+- Include only changes that are relevant to the policy and match the PR's description.
 - Assign a reviewer.
-
-
-
-
