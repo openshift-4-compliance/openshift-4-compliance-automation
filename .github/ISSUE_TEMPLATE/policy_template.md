@@ -1,3 +1,12 @@
+---
+name: Policy Request
+about: Create a new policy request 
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 ### Description
 <!-- Describe the policy shortly -->
 
