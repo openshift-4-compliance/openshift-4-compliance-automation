@@ -1,0 +1,10 @@
+resources:
+- ./authentication-user-management/delete-kubeadmin
+- ./authentication-user-management/shorten-tokens
+- ./authorization/disallow-privileged-scc-usage
+- ./etcd-security/verify-etcd-encryption
+- ./networking/block-nodeport-services
+- ./networking/external-ips
+- ./networking/httpsonly
+- ./resource-exhaustion/disallow-self-provisioner
+- ./trusted-image-sources/disallowedtags
