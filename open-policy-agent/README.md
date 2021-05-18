@@ -19,7 +19,7 @@ The solution presented in this directory is designed to provide compliance for  
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [delete-kubeadmin](./authentication-user-management/delete-kubeadmin) | Validates the removal of the kubeadmin temporary user |
-[shorten-tokens](./authentication-user-management/authentication-user-management) | Validate that tokens are shorter than the defined lifespan period |
+[shorten-tokens](./authentication-user-management/shorten-tokens) | Validate that tokens are shorter than the defined lifespan period |
 
 ### Authorization
 Policy  | Description | Prerequisites

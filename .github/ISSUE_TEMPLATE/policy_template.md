@@ -1,3 +1,12 @@
+---
+name: Policy Submission
+about: Submit a new policy to the repository
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 ### Description
 <!-- Describe the policy shortly -->
 

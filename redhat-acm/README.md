@@ -28,7 +28,7 @@ Policy  | Description | Prerequisites
 [disallowed-role-policy](./authorization/disallowed-role-policy.yaml) | Ensures that the defined role pattern does not exist in the cluster |
 [role-policy](./authorization/role-policy.yaml) | Ensures that a role exists in the cluster |
 [role-binding-policy](./authorization/role-binding-policy.yaml) | Ensures that a role is bound to a user / group |
-[gatekeeper-disalllow-privileged-scc-usage](./authorization/gatekeeper-disalllow-privileged-scc-usage.yaml) | Ensures that privilged scc is not being used by unlisted service accounts, users and groups |
+[gatekeeper-disalllow-privileged-scc-usage](./authorization/gatekeeper-disalllow-privileged-scc-usage/gatekeeper-disalllow-privileged-scc-usage.yaml) | Ensures that privilged scc is not being used by unlisted service accounts, users and groups |
 [restricted-scc-validation-policy](./authorization/restricted-scc-validation-policy.yaml) | Ensures that the restricted scc is not modified |
 
 ### ETCD Security
@@ -70,7 +70,7 @@ No policies yet       |  |
 ### Trusted Image Sources
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[gatekeeper-disallow-image-tags](./networking/gatekeeper-disallow-image-tags.yaml) | Ensures that images do not contain a pre-defined tag (by default, the policy disables the `latest` tag) | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
+[gatekeeper-disallow-image-tags](./trusted-image-sources/gatekeeper-disallow-image-tags.yaml) | Ensures that images do not contain a pre-defined tag (by default, the policy disables the `latest` tag) | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 
 ## Applying Policies
 The policies can be applied to the Advanced Cluster Management hub cluster. By default all policies take effect on all managed clusters with the `environment=dev` label. To apply a policy from the collection, run the next command -
