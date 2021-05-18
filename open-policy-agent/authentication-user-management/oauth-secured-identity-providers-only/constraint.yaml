@@ -8,5 +8,6 @@ spec:
       - apiGroups: ["config.openshift.io"]
         kinds: ["OAuth"]
   parameters:
+    # Options: HTPasswd, Keystone, LDAP, Basic Authentication, Request Header, Github, Gitlab, Google, OpenID Connect
     approvedProviders: ["OpenID"]
           
