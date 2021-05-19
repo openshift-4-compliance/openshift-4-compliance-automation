@@ -2,24 +2,24 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-oauth-secured-identity-providers-only
+  name: policy-gatekeeper-oauth-secured-identity-providers-only
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
     policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
 spec:
-  remediationAction: inform
+  remediationAction: enforce 
   disabled: false
   policy-templates:
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-oauth-secured-identity-providers-only
+          name: policy-gatekeeper-oauth-secured-identity-providers-only
         spec:
           remediationAction: enforce
           severity: low
-          object-templates:
+          object-templates: 
             - complianceType: musthave
               objectDefinition:
                 apiVersion: templates.gatekeeper.sh/v1beta1
@@ -37,8 +37,7 @@ spec:
                     - target: admission.k8s.gatekeeper.sh
                       rego: |
                         package K8sOAuthSecuredIdentityProvidersOnly
-                        
-                          violation[{"msg": msg}] {
+                        violation[{"msg": msg}] {
                           input.review.kind.kind == "OAuth"
                           input.review.object.metadata.name == "cluster"
                           oauth := input.review.object 
@@ -49,7 +48,7 @@ spec:
                           forbiddenTypes := allowedTypes - presentTypes
                           count(forbiddenTypes) > 0 
                     
-                          msg:= sprintf("You have at least %v unapproved identity provider types in your OAuth object. Make sure you only configure the following types: %v ",[count(forbiddenTypes),allowedTypes])
+                          msg:= sprintf("You have at least %v unapproved identity provider types in your OAuth object. Make sure you only configure the following types: %v",[count(forbiddenTypes),allowedTypes])
                         }
             - complianceType: musthave
               objectDefinition:
@@ -65,24 +64,41 @@ spec:
                   parameters:
                     # Options: HTPasswd, Keystone, LDAP, Basic Authentication, Request Header, Github, Gitlab, Google, OpenID Connect
                     approvedProviders: ["OpenID"]
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-gatekeeper-oauth-secured-identity-providers-only-verification
+        spec:
+          remediationAction: inform # will be overridden by remediationAction in parent policy
+          severity: low
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: constraints.gatekeeper.sh/v1beta1
+                kind: K8sOAuthSecuredIdentityProvidersOnly
+                metadata:
+                  name: oauth-secured-identity-providers-only
+                status:
+                  totalViolations: 0        
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-oauth-secured-identity-providers-only
+  name: binding-policy-gatekeeper-oauth-secured-identity-providers-only
 placementRef:
-  name: placement-policy-oauth-secured-identity-providers-only
+  name: placement-policy-gatekeeper-oauth-secured-identity-providers-only
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: policy-oauth-secured-identity-providers-only
+  - name: policy-gatekeeper-oauth-secured-identity-providers-only
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-oauth-secured-identity-providers-only
+  name: placement-policy-gatekeeper-oauth-secured-identity-providers-only
 spec:
   clusterConditions:
     - status: "True"
