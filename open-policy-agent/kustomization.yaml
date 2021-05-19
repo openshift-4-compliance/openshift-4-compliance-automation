@@ -1,10 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 resources:
-- ./authentication-user-management/delete-kubeadmin
-- ./authentication-user-management/shorten-tokens
-- ./authorization/disallow-privileged-scc-usage
-- ./etcd-security/verify-etcd-encryption
-- ./networking/block-nodeport-services
-- ./networking/external-ips
-- ./networking/httpsonly
-- ./resource-exhaustion/disallow-self-provisioner
-- ./trusted-image-sources/disallowedtags
+- authentication-user-management/delete-kubeadmin/template.yaml
+- authentication-user-management/shorten-tokens/template.yaml
+- authorization/disallow-privileged-scc-usage/template.yaml
+- authorization/prevent-default-serviceaccount-usage/template.yaml
+- etcd-security/verify-etcd-encryption/template.yaml
+- networking/block-nodeport-services/template.yaml
+- networking/external-ips/template.yaml
+- networking/httpsonly/template.yaml
+- resource-exhaustion/disallow-self-provisioner/template.yaml
+- trusted-image-sources/disallowedtags/template.yaml
