@@ -1,9 +1,9 @@
 resources:
-- ./authorization/protect-default-scc.yaml
+- ./authorization/protect-default-scc/protect-default-scc.yaml
 - ./authorization/host-namespaces/disallow-host-ports.yaml
 - ./authorization/host-namespaces/disallow-host-network.yaml
 - ./authorization/host-namespaces/disallow-host-pid.yaml
 - ./authorization/host-namespaces/disallow-host-ipc.yaml
-- ./networking/block-nodeport-services.yaml
-- ./networking/httpsonly.yaml
-- ./resource-exhaustion/disallow-self-provisioner.yaml
+- ./networking/block-nodeport-services/block-nodeport-services.yaml
+- ./networking/httpsonly/httpsonly.yaml
+- ./resource-exhaustion/disallow-self-provisioner/disallow-self-provisioner.yaml
