@@ -1,7 +1,6 @@
 resources:
 - ./authorization/disallowed-role-policy/disallowed-role-policy.yaml
 - ./authorization/gatekeeper-disalllow-privileged-scc-usage/gatekeeper-disalllow-privileged-scc-usage.yaml
-- ./authorization/gatekeeper-prevent-default-serviceaccount-usage/gatekeeper-prevent-default-serviceaccount-usage.yaml
 - ./authorization/restricted-scc-validation-policy/restricted-scc-validation-policy.yaml
 - ./authorization/role-binding-policy/role-binding-policy.yaml
 - ./authorization/role-policy/role-policy.yaml
