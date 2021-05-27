@@ -4,6 +4,7 @@ resources:
 - ./authorization/restricted-scc-validation-policy/restricted-scc-validation-policy.yaml
 - ./authorization/role-binding-policy/role-binding-policy.yaml
 - ./authorization/role-policy/role-policy.yaml
+- ./authorization/gatekeeper-prevent-default-serviceaccount-usage/gatekeeper-prevent-default-serviceaccount-usage.yaml
 - ./etcd-security/etcdencryption-policy/etcdencryption-policy.yaml
 - ./etcd-security/etcdbackup-policy/etcdbackup-policy.yaml
 - ./networking/allow-port-from-namespace-networkpolicy-policy/allow-port-from-namespace-networkpolicy-policy.yaml
