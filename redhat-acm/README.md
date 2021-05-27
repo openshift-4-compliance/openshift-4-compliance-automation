@@ -60,7 +60,7 @@ Policy  | Description | Prerequisites
 ### Resource Exhaustion
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[disallow-self-provisioner-policy](resource-exhaustion/disallow-self-provisioner-policy/disallow-self-provisioner-policy.yaml) | Ensures that users are not able to provision new namespaces by validating the removal of the `self-provisioners` ClusterRole |
+[gatekeeper-disallow-self-provisioner-policy](resource-exhaustion/gatekeeper-disallow-self-provisioner-policy/gatekeeper-disallow-self-provisioner-policy.yaml) | Ensures that users are not able to provision new namespaces by disabling any ClusterRoleBinding that associates with the `self-provisioner` ClusterRole | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 [limitrange-policy](resource-exhaustion/limitrange-policy/limitrange-policy.yaml) | Ensures that a Limitrange resource is present in a namespace |
 
 ### Storage
