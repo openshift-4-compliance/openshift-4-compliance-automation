@@ -30,18 +30,13 @@ Policy  | Description | Prerequisites
 [role-binding-policy](./authorization/role-binding-policy.yaml) | Ensures that a role is bound to a user / group |
 [gatekeeper-disalllow-privileged-scc-usage](./authorization/gatekeeper-disalllow-privileged-scc-usage.yaml) | Ensures that privilged scc is not being used by unlisted service accounts, users and groups |
 [restricted-scc-validation-policy](./authorization/restricted-scc-validation-policy.yaml) | Ensures that the restricted scc is not modified |
+[prevent-default-serviceaccount-usage](./authorization/gatekeeper-prevent-default-serviceaccount-usage/gatekeeper-prevent-default-serviceaccount-usage.yaml) | Ensures that the `default` serviceaccount is not usable by any pod | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 
 ### ETCD Security
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [etcdencryption-policy](./etcd-security/etcdencryption-policy.yaml) | Ensures that the etcd database is encrypted |
 [etcd-backup-policy](./etcd-security/etcdbackup-policy.yaml) | Backup the etcd data on a weekly basis into a PersistentVolume and rotate the backups to avoid over consumption |
-
-### Serviceaccount Security
-Policy  | Description | Prerequisites
-------- | ----------- | -------------
-[prevent-default-serviceaccount-usage](./authorization/gatekeeper-prevent-default-serviceaccount-usage/gatekeeper-prevent-default-serviceaccount-usage.yaml) | Ensures that the `default` serviceaccount is not usable by any pod | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
-
 
 ### Infrastructure General
 Policy  | Description | Prerequisites
