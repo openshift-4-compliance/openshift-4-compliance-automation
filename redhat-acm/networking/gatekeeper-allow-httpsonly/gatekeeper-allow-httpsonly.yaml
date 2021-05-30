@@ -55,6 +55,7 @@ spec:
                 metadata:
                   name: route-https-only
                 spec:
+                  enforcementAction: dryrun
                   match:
                     kinds:
                       - apiGroups: ["route.openshift.io"]

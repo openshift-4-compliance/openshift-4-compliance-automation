@@ -49,6 +49,7 @@ spec:
                 metadata:
                   name: block-node-port
                 spec:
+                  enforcementAction: dryrun
                   match:
                     kinds:
                       - apiGroups: [""]
