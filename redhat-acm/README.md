@@ -22,7 +22,6 @@ Policy  | Description | Prerequisites
 [group-policy](./authentication-user-management/group-policy.yaml) | Ensures that a group is created with the defined users in it |
 [gatekeeper-shorten-tokens](./authentication-user-management/gatekeeper-shorten-tokens.yaml) | Ensure that authentication tokens have a restricted lifespan |
 
-
 ### Authorization
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
