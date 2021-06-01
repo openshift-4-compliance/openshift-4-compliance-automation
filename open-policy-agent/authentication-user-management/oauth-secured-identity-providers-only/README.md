@@ -1,6 +1,6 @@
 # OAuth Secured IdentityProviders Only
 
-The policy ensures that only secured identityProviders (based on a dynamic,customable list from the [constraint obejct](./constraint.yaml)) are allowed in the cluster. 
+The policy ensures that only secured identityProviders (based on a dynamic, customizable list from the [constraint obejct](./constraint.yaml)) are allowed in the cluster. 
 
 The recommended identityProvider is OpenID Connect, and thus, the list in the [constraint obejct](./constraint.yaml) currently contains only this identityProvider. The list can be expended if the organization requires other identity providers.
 
