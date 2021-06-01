@@ -3,7 +3,8 @@ kind: ConstraintTemplate
 metadata:
   name: k8soauthsecuredidentityprovidersonly
   annotations:
-    description: 
+    description: Validates that only identity providers from the input.parameters.approvedProviders
+      are present in the config.openshift.io/OAuth cluster object.
 spec:
   crd:
     spec:
@@ -20,10 +21,9 @@ spec:
     
           presentTypes := { type | type := oauth.spec.identityProviders[_].type}
           allowedTypes := { type | type := input.parameters.approvedProviders[_]}
-    
-          forbiddenTypes := allowedTypes - presentTypes
-          count(forbiddenTypes) > 0 
-    
-          msg:= sprintf("You have at least %v unapproved identity provider types in your OAuth object. Make sure you only configure the following types: %v ",[count(forbiddenTypes),allowedTypes])
-        }
 
+          forbiddenTypes := presentTypes - allowedTypes
+          count(forbiddenTypes) > 0
+
+          msg:= sprintf("Found %v unapproved identity providers types in the OAuth object. Make sure that only providers with the %v type are configured!",[count(forbiddenTypes),allowedTypes])
+        }
