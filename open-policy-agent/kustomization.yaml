@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 - authentication-user-management/delete-kubeadmin/template.yaml
 - authentication-user-management/shorten-tokens/template.yaml
+- authentication-user-management/oauth-secured-identity-providers-only/template.yaml
 - authorization/disallow-privileged-scc-usage/template.yaml
 - authorization/prevent-default-serviceaccount-usage/template.yaml
 - etcd-security/verify-etcd-encryption/template.yaml
