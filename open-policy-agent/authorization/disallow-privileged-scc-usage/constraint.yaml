@@ -3,6 +3,7 @@ kind: K8sNoPrivScc
 metadata:
   name: no-privileged-sccs
 spec:
+  enforcementAction: dryrun
   match:
     kinds:
       - apiGroups: ["security.openshift.io"]

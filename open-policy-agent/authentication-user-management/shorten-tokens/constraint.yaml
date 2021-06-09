@@ -3,6 +3,7 @@ kind: K8sShortenToken
 metadata:
   name: shorten-oauth-token
 spec:
+  enforcementAction: dryrun
   match:
     kinds:
       - apiGroups: ["config.openshift.io"]
