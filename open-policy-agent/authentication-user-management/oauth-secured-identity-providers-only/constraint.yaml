@@ -1,0 +1,14 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sOAuthSecuredIdentityProvidersOnly
+metadata:
+  name: oauth-secured-identity-providers-only
+spec:
+  enforcementAction: dryrun
+  match:
+    kinds:
+      - apiGroups: ["config.openshift.io"]
+        kinds: ["OAuth"]
+  parameters:
+    # Options: HTPasswd, Keystone, LDAP, Basic Authentication, Request Header, Github, Gitlab, Google, OpenID Connect
+    approvedProviders: ["OpenID"]
+          

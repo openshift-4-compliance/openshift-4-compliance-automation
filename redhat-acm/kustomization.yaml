@@ -4,6 +4,7 @@ resources:
 - ./authorization/restricted-scc-validation-policy/restricted-scc-validation-policy.yaml
 - ./authorization/role-binding-policy/role-binding-policy.yaml
 - ./authorization/role-policy/role-policy.yaml
+- ./authorization/gatekeeper-prevent-default-serviceaccount-usage/gatekeeper-prevent-default-serviceaccount-usage.yaml
 - ./etcd-security/etcdencryption-policy/etcdencryption-policy.yaml
 - ./etcd-security/etcdbackup-policy/etcdbackup-policy.yaml
 - ./networking/allow-port-from-namespace-networkpolicy-policy/allow-port-from-namespace-networkpolicy-policy.yaml
@@ -11,7 +12,7 @@ resources:
 - ./networking/gatekeeper-allow-httpsonly/gatekeeper-allow-httpsonly.yaml
 - ./networking/gatekeeper-disallow-external-ip-services/gatekeeper-disallow-external-ip-services.yaml
 - ./networking/gatekeeper-disallow-nodeport/gatekeeper-disallow-nodeport.yaml
-- ./resource-exhaustion/disallow-self-provisioner-policy/disallow-self-provisioner-policy.yaml
+- ./resource-exhaustion/gatekeeper-disallow-self-provisioner-policy/gatekeeper-disallow-self-provisioner-policy.yaml
 - ./resource-exhaustion/limitrange-policy/limitrange-policy.yaml
 - ./trusted-image-sources/gatekeeper-disallow-image-tags/gatekeeper-disallow-image-tags.yaml
 - ./authentication-user-management/kubeadmin-policy/kubeadmin-policy.yaml

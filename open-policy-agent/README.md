@@ -20,6 +20,7 @@ Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [delete-kubeadmin](./authentication-user-management/delete-kubeadmin) | Validates the removal of the kubeadmin temporary user |
 [shorten-tokens](./authentication-user-management/shorten-tokens) | Validate that tokens are shorter than the defined lifespan period |
+[oauth-secured-identity-providers-only](./authentication-user-management/oauth-secured-identity-providers-only) | Ensures that only secured identityProviders are allowed in the cluster |
 
 ### Authorization
 Policy  | Description | Prerequisites
