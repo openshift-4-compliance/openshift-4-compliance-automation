@@ -1,0 +1,130 @@
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-gatekeeper-oauth-secured-identity
+  annotations:
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+spec:
+  remediationAction: enforce 
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-gatekeeper-oauth-secured-identity
+        spec:
+          remediationAction: enforce
+          severity: low
+          object-templates: 
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: templates.gatekeeper.sh/v1beta1
+                kind: ConstraintTemplate
+                metadata:
+                  name: k8soauthsecuredidentityprovidersonly
+                  annotations:
+                    description: Validates that only identity providers from the input.parameters.approvedProviders
+                      are present in the config.openshift.io/OAuth cluster object.
+                spec:
+                  crd:
+                    spec:
+                      names:
+                        kind: K8sOAuthSecuredIdentityProvidersOnly
+                  targets:
+                    - target: admission.k8s.gatekeeper.sh
+                      rego: |
+                        package K8sOAuthSecuredIdentityProvidersOnly
+                        violation[{"msg": msg}] {
+                          input.review.kind.kind == "OAuth"
+                          input.review.object.metadata.name == "cluster"
+                          oauth := input.review.object 
+                    
+                          presentTypes := { type | type := oauth.spec.identityProviders[_].type}
+                          allowedTypes := { type | type := input.parameters.approvedProviders[_]}
+                
+                          forbiddenTypes := presentTypes - allowedTypes
+                          count(forbiddenTypes) > 0
+                
+                          msg:= sprintf("Found %v unapproved identity providers types in the OAuth object. Make sure that only providers with the %v type are configured!",[count(forbiddenTypes),allowedTypes])
+                        }                
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: constraints.gatekeeper.sh/v1beta1
+                kind: K8sOAuthSecuredIdentityProvidersOnly
+                metadata:
+                  name: oauth-secured-identity-providers-only
+                spec:
+                  enforcementAction: dryrun
+                  match:
+                    kinds:
+                      - apiGroups: ["config.openshift.io"]
+                        kinds: ["OAuth"]
+                  parameters:
+                    # Options: HTPasswd, Keystone, LDAP, Basic Authentication, Request Header, Github, Gitlab, Google, OpenID Connect
+                    approvedProviders: ["OpenID"]
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-gatekeeper-audit-oauth-secured-identity
+        spec:
+          remediationAction: inform # will be overridden by remediationAction in parent policy
+          severity: low
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: constraints.gatekeeper.sh/v1beta1
+                kind: K8sOAuthSecuredIdentityProvidersOnly
+                metadata:
+                  name: oauth-secured-identity-providers-only
+                status:
+                  totalViolations: 0
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-gatekeeper-admission-oauth-secured-identity
+        spec:
+          remediationAction: inform # will be overridden by remediationAction in parent policy
+          severity: low
+          object-templates:
+            - complianceType: mustnothave
+              objectDefinition:
+                apiVersion: v1
+                kind: Event
+                metadata:
+                  namespace: openshift-gatekeeper-system # set it to the actual namespace where gatekeeper is running if different
+                  annotations:
+                    constraint_action: deny
+                    constraint_kind: K8sOAuthSecuredIdentityProvidersOnly
+                    constraint_name: oauth-secured-identity-providers-only
+                    event_type: violation       
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-gatekeeper-oauth-secured-identity
+placementRef:
+  name: placement-policy-gatekeeper-oauth-secured-identity
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+  - name: policy-gatekeeper-oauth-secured-identity
+    kind: Policy
+    apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-gatekeeper-oauth-secured-identity
+spec:
+  clusterConditions:
+    - status: "True"
+      type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - { key: environment, operator: In, values: ["dev"] }
