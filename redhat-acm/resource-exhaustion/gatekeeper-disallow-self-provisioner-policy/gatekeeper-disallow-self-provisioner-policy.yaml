@@ -51,6 +51,7 @@ spec:
                 metadata:
                   name: no-self-provisioner
                 spec:
+                  enforcementAction: dryrun
                   match:
                     kinds:
                       - apiGroups: ["rbac.authorization.k8s.io"]

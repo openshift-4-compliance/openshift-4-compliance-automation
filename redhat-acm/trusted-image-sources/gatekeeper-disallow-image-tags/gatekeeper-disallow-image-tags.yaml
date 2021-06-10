@@ -71,6 +71,7 @@ spec:
                 metadata:
                   name: container-image-must-not-have-tags
                 spec:
+                  enforcementAction: dryrun
                   match:
                     kinds:
                       - apiGroups: [""]
