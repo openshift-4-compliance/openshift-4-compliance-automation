@@ -4,6 +4,7 @@ kind: K8sEtcdEncryptionVerification
 metadata:
   name: verify-etcd-encryption
 spec:
+  enforcementAction: dryrun
   match:
     kinds:
       - apiGroups: ["config.openshift.io"]

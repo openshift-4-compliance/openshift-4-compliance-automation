@@ -3,6 +3,7 @@ kind: K8sPreventDefaultServiceAccountUsage
 metadata:
   name: prevent-default-serviceaccount-usage
 spec:
+  enforcementAction: dryrun
   match:
     kinds:
       - apiGroups: [""]

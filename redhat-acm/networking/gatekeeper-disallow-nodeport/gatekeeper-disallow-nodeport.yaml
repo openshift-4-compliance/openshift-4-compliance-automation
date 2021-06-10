@@ -2,7 +2,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-gatekeeper-disallow-image-tags
+  name: policy-gatekeeper-disallow-nodeport
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
@@ -15,7 +15,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-gatekeeper-disallow-image-tags
+          name: policy-gatekeeper-disallow-nodeport
         spec:
           remediationAction: enforce
           severity: low
@@ -25,65 +25,40 @@ spec:
                 apiVersion: templates.gatekeeper.sh/v1beta1
                 kind: ConstraintTemplate
                 metadata:
-                  name: k8sdisallowedtags
+                  name: k8sblocknodeport
                   annotations:
-                    description: Requires container images to have an image tag different
-                      from the ones in a specified list. Prevent empty tagging by disallow 'latest' tag.
+                    description: Disallows all Services with type NodePort.
                 spec:
                   crd:
                     spec:
                       names:
-                        kind: K8sDisallowedTags
-                      validation:
-                        # Schema for the `parameters` field
-                        openAPIV3Schema:
-                          properties:
-                            tags:
-                              type: array
-                              items:
-                                type: string
+                        kind: K8sBlockNodePort
                   targets:
                     - target: admission.k8s.gatekeeper.sh
                       rego: |
-                        package k8sdisallowedtags
+                        package k8sblocknodeport
                         violation[{"msg": msg}] {
-                          container := input_containers[_]
-                          tags := [forbid | tag = input.parameters.tags[_] ; forbid = endswith(container.image, concat(":", ["", tag]))]
-                          any(tags)
-                          msg := sprintf("container <%v> uses a disallowed tag <%v>; disallowed tags are %v", [container.name, container.image, input.parameters.tags])
-                        }
-                        violation[{"msg": msg}] {
-                          container := input_containers[_]
-                          tag := [contains(container.image, ":")]
-                          not all(tag)
-                          msg := sprintf("container <%v> didn't specify an image tag <%v>", [container.name, container.image])
-                        }
-                        input_containers[c] {
-                          c := input.review.object.spec.containers[_]
-                        }
-                        input_containers[c] {
-                          c := input.review.object.spec.initContainers[_]
+                          input.review.kind.kind == "Service"
+                          input.review.object.spec.type == "NodePort"
+                          msg := "User is not allowed to create service of type NodePort"
                         }
             - complianceType: musthave
               objectDefinition:
                 apiVersion: constraints.gatekeeper.sh/v1beta1
-                kind: K8sDisallowedTags
+                kind: K8sBlockNodePort
                 metadata:
-                  name: container-image-must-not-have-tags
+                  name: block-node-port
                 spec:
+                  enforcementAction: dryrun
                   match:
                     kinds:
                       - apiGroups: [""]
-                        kinds: ["Pod"]
-                    excludedNamespaces:
-                      - "openshift-marketplace"
-                  parameters:
-                    tags: ["latest"]
+                        kinds: ["Service"]
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-gatekeeper-audit-disallow-image-tags
+          name: policy-gatekeeper-audit-disallow-nodeport
         spec:
           remediationAction: inform # will be overridden by remediationAction in parent policy
           severity: low
@@ -91,16 +66,16 @@ spec:
             - complianceType: musthave
               objectDefinition:
                 apiVersion: constraints.gatekeeper.sh/v1beta1
-                kind: K8sDisallowedTags
+                kind: K8sBlockNodePort
                 metadata:
-                  name: container-image-must-not-have-tags
+                  name: block-node-port
                 status:
                   totalViolations: 0
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-gatekeeper-admission-disallow-image-tags
+          name: policy-gatekeeper-admission-disallow-nodeport
         spec:
           remediationAction: inform # will be overridden by remediationAction in parent policy
           severity: low
@@ -113,27 +88,27 @@ spec:
                   namespace: openshift-gatekeeper-system # set it to the actual namespace where gatekeeper is running if different
                   annotations:
                     constraint_action: deny
-                    constraint_kind: K8sDisallowedTags
-                    constraint_name: container-image-must-not-have-tags
+                    constraint_kind: K8sBlockNodePort
+                    constraint_name: block-node-port
                     event_type: violation
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-gatekeeper-disallow-image-tags
+  name: binding-policy-gatekeeper-disallow-nodeport
 placementRef:
-  name: placement-policy-gatekeeper-disallow-image-tags
+  name: placement-policy-gatekeeper-disallow-nodeport
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: policy-gatekeeper-disallow-image-tags
+  - name: policy-gatekeeper-disallow-nodeport
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-gatekeeper-disallow-image-tags
+  name: placement-policy-gatekeeper-disallow-nodeport
 spec:
   clusterConditions:
     - status: "True"
