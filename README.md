@@ -27,4 +27,4 @@ Each product has a different method of deploying policies. Make sure that you fo
 Not all compliance controls have a corresponding policy. The policy development status can be found at - [Compliance Automation Sheets](https://docs.google.com/spreadsheets/d/1vhtWJYgvbVlW58D-jL9s-iBA56aT3m9Sf_qnME9gDyw/edit?usp=sharing)
 
 ## How to Contribute
-If you would like to write a policy to the repository, make sure to fork the main repository, and commit your changes in your local repository. Afterwards, create a pull request and tag one of the project owners as a reviewer. The project owner will review the repository and merge the changes.
+If you would like to write a policy to the repository, make sure to fork the main repository, and commit your changes in your local repository. Afterwards, create a pull request according to the [Contribution Document](./docs/CONTRIBUTING.md).

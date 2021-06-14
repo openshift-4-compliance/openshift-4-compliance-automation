@@ -1,0 +1,29 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8soauthsecuredidentityprovidersonly
+  annotations:
+    description: Validates that only identity providers from the input.parameters.approvedProviders
+      are present in the config.openshift.io/OAuth cluster object.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sOAuthSecuredIdentityProvidersOnly
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package K8sOAuthSecuredIdentityProvidersOnly
+        violation[{"msg": msg}] {
+          input.review.kind.kind == "OAuth"
+          input.review.object.metadata.name == "cluster"
+          oauth := input.review.object 
+    
+          presentTypes := { type | type := oauth.spec.identityProviders[_].type}
+          allowedTypes := { type | type := input.parameters.approvedProviders[_]}
+
+          forbiddenTypes := presentTypes - allowedTypes
+          count(forbiddenTypes) > 0
+
+          msg:= sprintf("Found %v unapproved identity providers types in the OAuth object. Make sure that only providers with the %v type are configured!",[count(forbiddenTypes),allowedTypes])
+        }

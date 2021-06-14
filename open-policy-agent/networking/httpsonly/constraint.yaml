@@ -4,6 +4,7 @@ kind: K8sHttpsOnly
 metadata:
   name: ingress-https-only
 spec:
+  enforcementAction: dryrun
   match:
     kinds:
       - apiGroups: ["route.openshift.io"]

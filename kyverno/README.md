@@ -24,6 +24,8 @@ No policies yet       |  |
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [protect-default-scc](./authorization/protect-default-scc.yaml) | Ensures that default scc are not being modified or deleted |
+[disallow-scc-runasany](./authorization/disallow-scc-runasany.yaml) | Ensures that SCC Strategies used in custom created scc are not permissive. **This policy excludes default scc policies, it is highly recommended to apply 'protect-default-scc' |
+[protect-default-scc](authorization/protect-default-scc/protect-default-scc.yaml) | Ensures that default scc are not being modified or deleted |
 [disallow-host-ports](authorization/host-namespaces/disallow-host-ports.yaml) | Ensures that access to the host ports is restricted in PODs that are not OpenShift System PODs, and prevent custom SCCs to allow host ports access |
 [disallow-host-network](authorization/host-namespaces/disallow-host-network.yaml) | Ensures that access to the host network namespaces is restricted in PODs that are not OpenShift System PODs, and prevent custom SCCs to allow host network access |
 [disallow-host-pid](authorization/host-namespaces/disallow-host-pid.yaml) | Ensures that access to the host PID namespaces is restricted in PODs that are not OpenShift System PODs, and prevent custom SCCs to allow host PID access |
@@ -47,13 +49,13 @@ No policies yet       |  |
 ### Networking
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[httpsonly](./networking/httpsonly.yaml) | Ensures that there are *no* http routes | 
-[block-nodeport-services](./networking/block-nodeport-services.yaml) | Ensures that there are *no* node port services configured |
+[httpsonly](networking/httpsonly/httpsonly.yaml) | Ensures that there are *no* http routes | 
+[block-nodeport-services](networking/block-nodeport-services/block-nodeport-services.yaml) | Ensures that there are *no* node port services configured |
 
 ### Resource Exhaustion
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[disallow-selfprovisioners](./resource-exhaustion/disallow-self-provisioner.yaml) | Ensures that the self-provisioner ClusterRole is not associated to any ClusterRoleBinding |
+[disallow-selfprovisioners](resource-exhaustion/disallow-self-provisioner/disallow-self-provisioner.yaml) | Ensures that the self-provisioner ClusterRole is not associated to any ClusterRoleBinding |
 
 ### Storage
 Policy  | Description | Prerequisites

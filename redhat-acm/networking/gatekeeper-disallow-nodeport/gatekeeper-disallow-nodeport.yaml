@@ -2,7 +2,7 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-gatekeeper-route-httpsonly
+  name: policy-gatekeeper-disallow-nodeport
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
@@ -15,7 +15,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-gatekeeper-route-httpsonly
+          name: policy-gatekeeper-disallow-nodeport
         spec:
           remediationAction: enforce
           severity: low
@@ -25,45 +25,40 @@ spec:
                 apiVersion: templates.gatekeeper.sh/v1beta1
                 kind: ConstraintTemplate
                 metadata:
-                  name: k8shttpsonly
+                  name: k8sblocknodeport
                   annotations:
-                    description: Requires Route resources to be HTTPS only.
+                    description: Disallows all Services with type NodePort.
                 spec:
                   crd:
                     spec:
                       names:
-                        kind: K8sHttpsOnly
+                        kind: K8sBlockNodePort
                   targets:
                     - target: admission.k8s.gatekeeper.sh
                       rego: |
-                        package k8shttpsonly
+                        package k8sblocknodeport
                         violation[{"msg": msg}] {
-                          input.review.object.kind == "Route"
-                          re_match("^(route.openshift.io)/", input.review.object.apiVersion)
-                          route := input.review.object
-                          not https_complete(route)
-                          msg := sprintf("Route should be https. tls configuration is required for %v", [route.metadata.name])
-                        }
-                        https_complete(route) = true {
-                          route.spec["tls"]
-                          count(route.spec.tls) > 0
+                          input.review.kind.kind == "Service"
+                          input.review.object.spec.type == "NodePort"
+                          msg := "User is not allowed to create service of type NodePort"
                         }
             - complianceType: musthave
               objectDefinition:
                 apiVersion: constraints.gatekeeper.sh/v1beta1
-                kind: K8sHttpsOnly
+                kind: K8sBlockNodePort
                 metadata:
-                  name: route-https-only
+                  name: block-node-port
                 spec:
+                  enforcementAction: dryrun
                   match:
                     kinds:
-                      - apiGroups: ["route.openshift.io"]
-                        kinds: ["Route"]
+                      - apiGroups: [""]
+                        kinds: ["Service"]
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-gatekeeper-audit-httpsonly
+          name: policy-gatekeeper-audit-disallow-nodeport
         spec:
           remediationAction: inform # will be overridden by remediationAction in parent policy
           severity: low
@@ -71,16 +66,16 @@ spec:
             - complianceType: musthave
               objectDefinition:
                 apiVersion: constraints.gatekeeper.sh/v1beta1
-                kind: K8sHttpsOnly
+                kind: K8sBlockNodePort
                 metadata:
-                  name: route-https-only
+                  name: block-node-port
                 status:
                   totalViolations: 0
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-gatekeeper-admission-httpsonly
+          name: policy-gatekeeper-admission-disallow-nodeport
         spec:
           remediationAction: inform # will be overridden by remediationAction in parent policy
           severity: low
@@ -93,27 +88,27 @@ spec:
                   namespace: openshift-gatekeeper-system # set it to the actual namespace where gatekeeper is running if different
                   annotations:
                     constraint_action: deny
-                    constraint_kind: K8sHttpsOnly
-                    constraint_name: route-https-only
+                    constraint_kind: K8sBlockNodePort
+                    constraint_name: block-node-port
                     event_type: violation
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-gatekeeper-route-httpsonly
+  name: binding-policy-gatekeeper-disallow-nodeport
 placementRef:
-  name: placement-policy-gatekeeper-route-httpsonly
+  name: placement-policy-gatekeeper-disallow-nodeport
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: policy-gatekeeper-route-httpsonly
+  - name: policy-gatekeeper-disallow-nodeport
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-gatekeeper-route-httpsonly
+  name: placement-policy-gatekeeper-disallow-nodeport
 spec:
   clusterConditions:
     - status: "True"

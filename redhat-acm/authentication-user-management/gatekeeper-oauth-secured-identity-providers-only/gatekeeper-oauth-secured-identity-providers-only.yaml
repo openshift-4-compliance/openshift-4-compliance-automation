@@ -2,88 +2,75 @@
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: policy-gatekeeper-disallow-image-tags
+  name: policy-gatekeeper-oauth-secured-identity
   annotations:
     policy.open-cluster-management.io/standards: NIST SP 800-53
     policy.open-cluster-management.io/categories: CM Configuration Management
     policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
 spec:
-  remediationAction: enforce
+  remediationAction: enforce 
   disabled: false
   policy-templates:
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-gatekeeper-disallow-image-tags
+          name: policy-gatekeeper-oauth-secured-identity
         spec:
           remediationAction: enforce
           severity: low
-          object-templates:
+          object-templates: 
             - complianceType: musthave
               objectDefinition:
                 apiVersion: templates.gatekeeper.sh/v1beta1
                 kind: ConstraintTemplate
                 metadata:
-                  name: k8sdisallowedtags
+                  name: k8soauthsecuredidentityprovidersonly
                   annotations:
-                    description: Requires container images to have an image tag different
-                      from the ones in a specified list. Prevent empty tagging by disallow 'latest' tag.
+                    description: Validates that only identity providers from the input.parameters.approvedProviders
+                      are present in the config.openshift.io/OAuth cluster object.
                 spec:
                   crd:
                     spec:
                       names:
-                        kind: K8sDisallowedTags
-                      validation:
-                        # Schema for the `parameters` field
-                        openAPIV3Schema:
-                          properties:
-                            tags:
-                              type: array
-                              items:
-                                type: string
+                        kind: K8sOAuthSecuredIdentityProvidersOnly
                   targets:
                     - target: admission.k8s.gatekeeper.sh
                       rego: |
-                        package k8sdisallowedtags
+                        package K8sOAuthSecuredIdentityProvidersOnly
                         violation[{"msg": msg}] {
-                          container := input_containers[_]
-                          tags := [forbid | tag = input.parameters.tags[_] ; forbid = endswith(container.image, concat(":", ["", tag]))]
-                          any(tags)
-                          msg := sprintf("container <%v> uses a disallowed tag <%v>; disallowed tags are %v", [container.name, container.image, input.parameters.tags])
-                        }
-                        violation[{"msg": msg}] {
-                          container := input_containers[_]
-                          tag := [contains(container.image, ":")]
-                          not all(tag)
-                          msg := sprintf("container <%v> didn't specify an image tag <%v>", [container.name, container.image])
-                        }
-                        input_containers[c] {
-                          c := input.review.object.spec.containers[_]
-                        }
-                        input_containers[c] {
-                          c := input.review.object.spec.initContainers[_]
-                        }
+                          input.review.kind.kind == "OAuth"
+                          input.review.object.metadata.name == "cluster"
+                          oauth := input.review.object 
+                    
+                          presentTypes := { type | type := oauth.spec.identityProviders[_].type}
+                          allowedTypes := { type | type := input.parameters.approvedProviders[_]}
+                
+                          forbiddenTypes := presentTypes - allowedTypes
+                          count(forbiddenTypes) > 0
+                
+                          msg:= sprintf("Found %v unapproved identity providers types in the OAuth object. Make sure that only providers with the %v type are configured!",[count(forbiddenTypes),allowedTypes])
+                        }                
             - complianceType: musthave
               objectDefinition:
                 apiVersion: constraints.gatekeeper.sh/v1beta1
-                kind: K8sDisallowedTags
+                kind: K8sOAuthSecuredIdentityProvidersOnly
                 metadata:
-                  name: container-image-must-not-have-tags
+                  name: oauth-secured-identity-providers-only
                 spec:
+                  enforcementAction: dryrun
                   match:
                     kinds:
-                      - apiGroups: [""]
-                        kinds: ["Pod"]
-                    excludedNamespaces:
-                      - "openshift-marketplace"
+                      - apiGroups: ["config.openshift.io"]
+                        kinds: ["OAuth"]
                   parameters:
-                    tags: ["latest"]
+                    # Options: HTPasswd, Keystone, LDAP, Basic Authentication, Request Header, Github, Gitlab, Google, OpenID Connect
+                    approvedProviders: ["OpenID"]
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-gatekeeper-audit-disallow-image-tags
+          name: policy-gatekeeper-audit-oauth-secured-identity
         spec:
           remediationAction: inform # will be overridden by remediationAction in parent policy
           severity: low
@@ -91,16 +78,16 @@ spec:
             - complianceType: musthave
               objectDefinition:
                 apiVersion: constraints.gatekeeper.sh/v1beta1
-                kind: K8sDisallowedTags
+                kind: K8sOAuthSecuredIdentityProvidersOnly
                 metadata:
-                  name: container-image-must-not-have-tags
+                  name: oauth-secured-identity-providers-only
                 status:
                   totalViolations: 0
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: policy-gatekeeper-admission-disallow-image-tags
+          name: policy-gatekeeper-admission-oauth-secured-identity
         spec:
           remediationAction: inform # will be overridden by remediationAction in parent policy
           severity: low
@@ -113,27 +100,27 @@ spec:
                   namespace: openshift-gatekeeper-system # set it to the actual namespace where gatekeeper is running if different
                   annotations:
                     constraint_action: deny
-                    constraint_kind: K8sDisallowedTags
-                    constraint_name: container-image-must-not-have-tags
-                    event_type: violation
+                    constraint_kind: K8sOAuthSecuredIdentityProvidersOnly
+                    constraint_name: oauth-secured-identity-providers-only
+                    event_type: violation       
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: binding-policy-gatekeeper-disallow-image-tags
+  name: binding-policy-gatekeeper-oauth-secured-identity
 placementRef:
-  name: placement-policy-gatekeeper-disallow-image-tags
+  name: placement-policy-gatekeeper-oauth-secured-identity
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: policy-gatekeeper-disallow-image-tags
+  - name: policy-gatekeeper-oauth-secured-identity
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: placement-policy-gatekeeper-disallow-image-tags
+  name: placement-policy-gatekeeper-oauth-secured-identity
 spec:
   clusterConditions:
     - status: "True"
