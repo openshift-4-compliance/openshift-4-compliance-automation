@@ -2,6 +2,8 @@
 
 The policy disallows creating serviceAccounts that does not include the following key:value pair in its manifest: `"automountServiceAccountToken": false`
 
+This policy does not monitor the three default serviceaccounts that are getting generated in new Openshift projects - default, builder, deployer
+
 It is useful (security-wise) so that by default services' pods won't be able to mount the token of the serviceAccount which deployed them if they aren't meant to. In case that a serviceAccount token is required it can be excluded.
 
 `This policy has been tested on openshift cluster & oc client version 4.6.9`

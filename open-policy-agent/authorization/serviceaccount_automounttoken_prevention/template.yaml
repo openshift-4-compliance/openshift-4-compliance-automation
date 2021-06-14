@@ -13,15 +13,27 @@ spec:
     - target: admission.k8s.gatekeeper.sh
       rego: |
         package K8sServiceAccountAutomountTokenPrevention
-
+        
+        allow {
+          input.review.object.metadata.name == "default"
+        }
+        allow {
+          input.review.object.metadata.name == "builder"
+        }
+        allow {
+          input.review.object.metadata.name == "deployer"
+        }
+        
         violation[{"msg": msg}] {
-          not has_key(input.review.object, "automountServiceAccountToken")
-          msg := "The key automountServiceAccountToken should exist in your serviceAccount object"
+            not allow
+            not has_key(input.review.object, "automountServiceAccountToken") 
+            msg := "The key automountServiceAccountToken should exist in your serviceAccount object"
         }
         
         violation[{"msg": msg}]{
-        	input.review.object["automountServiceAccountToken"] != false
-          msg := "The automountServiceAccountToken key in your serviceAccount object MUST have the value of false"
+            not allow
+            input.review.object["automountServiceAccountToken"] != false
+            msg := "The automountServiceAccountToken key in your serviceAccount object MUST have the value of false"
         }
-
+        
         has_key(x, k) { _ = x[k] }
