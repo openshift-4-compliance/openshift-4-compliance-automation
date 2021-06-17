@@ -26,6 +26,7 @@ Policy  | Description | Prerequisites
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [disallow-privileged-scc-usage](./authorization/disallow-privileged-scc-usage) | Ensures that privilged scc is not being used by unlisted service accounts, users and groups |
+[prevent-default-serviceaccount-usage](./authorization/gatekeeper-prevent-default-serviceaccount-usage) | Ensures that the `default` serviceaccount is not usable by any pod |
 
 ### ETCD Security
 Policy  | Description | Prerequisites
