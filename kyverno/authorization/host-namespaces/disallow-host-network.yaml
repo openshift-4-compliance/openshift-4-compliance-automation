@@ -8,7 +8,7 @@ metadata:
       Pods with access to the host's network devices can be used to snoop on network activity of other pods on the same node.
 spec:
   background: true
-  validationFailureAction: enforce
+  validationFailureAction: audit
   rules:
     - name: validate-host-network-scc
       match:
