@@ -14,6 +14,7 @@ resources:
 - ./networking/gatekeeper-disallow-nodeport/gatekeeper-disallow-nodeport.yaml
 - ./resource-exhaustion/gatekeeper-disallow-self-provisioner-policy/gatekeeper-disallow-self-provisioner-policy.yaml
 - ./resource-exhaustion/limitrange-policy/limitrange-policy.yaml
+- ./resource-exhaustion/resourcequota-policy/resourcequota-policy.yaml
 - ./trusted-image-sources/gatekeeper-disallow-image-tags/gatekeeper-disallow-image-tags.yaml
 - ./authentication-user-management/kubeadmin-policy/kubeadmin-policy.yaml
 - ./authentication-user-management/gatekeeper-shorten-tokens/gatekeeper-shorten-tokens.yaml
