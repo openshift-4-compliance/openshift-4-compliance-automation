@@ -55,7 +55,7 @@ Policy  | Description | Prerequisites
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [disallow-selfprovisioners](./resource-exhaustion/disallow-self-provisioner/) | Ensures that there are no users assigned to the self-provisioner ClusterRole |
-
+[pod-resource-limits](./resource-exhaustion/pod-resource-limits/) | Ensures that all pods have a resource request / limit associated with them |
 
 ### Storage
 Policy  | Description | Prerequisites
