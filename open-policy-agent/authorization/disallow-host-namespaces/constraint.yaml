@@ -3,6 +3,7 @@ kind: K8sDisallowHostNamespaces
 metadata:
   name: disallow-host-namespaces
 spec:
+  enforcementAction: dryrun
   match:
     kinds:
       - apiGroups: [""]
