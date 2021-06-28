@@ -1,0 +1,25 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8sdisallowhostnetwork
+  annotations:
+    description: Disallow usage of `hostNetwork` and `hostPort` in pod definition.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sDisallowHostNetwork
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package K8sDisallowHostNetwork
+
+        violation[{"msg": msg}] {
+          input.review.object.spec.hostNetwork
+          msg := sprintf("The specified hostNetwork is not allowed, pod: %v. Delete any reference to `hostNetwork` in the deployment.", [input.review.object.metadata.name])
+        }
+
+        violation[{"msg": msg}] {
+          input.review.object.spec.containers[_].ports[_].hostPort
+          msg := sprintf("The specified hostPort is not allowed, pod: %v. Delete any reference to `hostPort` in the deployment.", [input.review.object.metadata.name])
+        }
