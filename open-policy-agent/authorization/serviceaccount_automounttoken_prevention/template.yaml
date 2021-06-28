@@ -3,7 +3,7 @@ kind: ConstraintTemplate
 metadata:
   name: k8sserviceaccountautomounttokenprevention
   annotations:
-    description: Checks wheter the pod has a unique serviceAccount, correlated with the pod's name
+    description: Checks if the automountServiceAccountToken is set to `false`
 spec:
   crd:
     spec:
@@ -33,7 +33,7 @@ spec:
         violation[{"msg": msg}]{
             not allow
             input.review.object["automountServiceAccountToken"] != false
-            msg := "The automountServiceAccountToken key in your serviceAccount object MUST have the value of false"
+            msg := "The automountServiceAccountToken key in your serviceAccount object must be set to `false`"
         }
         
         has_key(x, k) { _ = x[k] }
