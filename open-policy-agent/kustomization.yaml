@@ -12,3 +12,4 @@ resources:
 - networking/httpsonly/template.yaml
 - resource-exhaustion/disallow-self-provisioner/template.yaml
 - trusted-image-sources/disallowedtags/template.yaml
+- authorization/disallow-host-namespaces/template.yaml
