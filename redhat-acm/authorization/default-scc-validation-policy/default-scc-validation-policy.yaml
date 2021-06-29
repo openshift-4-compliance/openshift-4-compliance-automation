@@ -1,0 +1,477 @@
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-securitycontextconstraints-validation
+  annotations:
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+    policy.open-cluster-management.io/categories: SC System and Communications Protection
+    policy.open-cluster-management.io/controls: SC-4 Information in Shared Resources
+spec:
+  remediationAction: inform
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-securitycontextconstraints-restricted
+        spec:
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          severity: high
+          namespaceSelector:
+            include: ["*"]
+          object-templates:
+            - complianceType: mustonlyhave
+              objectDefinition:
+                allowHostDirVolumePlugin: false
+                allowHostIPC: false
+                allowHostNetwork: false
+                allowHostPID: false
+                allowHostPorts: false
+                allowPrivilegeEscalation: true
+                allowPrivilegedContainer: false
+                allowedCapabilities: null
+                apiVersion: security.openshift.io/v1
+                defaultAddCapabilities: null
+                fsGroup:
+                  type: MustRunAs
+                groups:
+                - system:authenticated
+                kind: SecurityContextConstraints
+                metadata:
+                  annotations:
+                    include.release.openshift.io/self-managed-high-availability: "true"
+                    kubernetes.io/description: restricted denies access to all host features and requires
+                      pods to be run with a UID, and SELinux context that are allocated to the namespace.  This
+                      is the most restrictive SCC and it is used by default for authenticated users.
+                    release.openshift.io/create-only: "true"
+                  name: restricted
+                priority: null
+                readOnlyRootFilesystem: false
+                requiredDropCapabilities:
+                - KILL
+                - MKNOD
+                - SETUID
+                - SETGID
+                runAsUser:
+                  type: MustRunAsRange
+                seLinuxContext:
+                  type: MustRunAs
+                supplementalGroups:
+                  type: RunAsAny
+                users: []
+                volumes:
+                - configMap
+                - downwardAPI
+                - emptyDir
+                - persistentVolumeClaim
+                - projected
+                - secret
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-securitycontextconstraints-anyuid
+        spec:
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          severity: high
+          namespaceSelector:
+            include: ["*"]
+          object-templates:
+            - complianceType: mustonlyhave
+              objectDefinition:
+                allowHostDirVolumePlugin: false
+                allowHostIPC: false
+                allowHostNetwork: false
+                allowHostPID: false
+                allowHostPorts: false
+                allowPrivilegeEscalation: true
+                allowPrivilegedContainer: false
+                allowedCapabilities: null
+                apiVersion: security.openshift.io/v1
+                defaultAddCapabilities: null
+                fsGroup:
+                  type: RunAsAny
+                groups:
+                - system:cluster-admins
+                kind: SecurityContextConstraints
+                metadata:
+                  annotations:
+                    include.release.openshift.io/self-managed-high-availability: "true"
+                    kubernetes.io/description: anyuid provides all features of the restricted SCC
+                      but allows users to run with any UID and any GID.
+                    release.openshift.io/create-only: "true"
+                  name: anyuid
+                priority: 10
+                readOnlyRootFilesystem: false
+                requiredDropCapabilities:
+                - MKNOD
+                runAsUser:
+                  type: RunAsAny
+                seLinuxContext:
+                  type: MustRunAs
+                supplementalGroups:
+                  type: RunAsAny
+                users: []
+                volumes:
+                - configMap
+                - downwardAPI
+                - emptyDir
+                - persistentVolumeClaim
+                - projected
+                - secret
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-securitycontextconstraints-hostaccess
+        spec:
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          severity: high
+          namespaceSelector:
+            include: ["*"]
+          object-templates:
+            - complianceType: mustonlyhave
+              objectDefinition:
+                allowHostDirVolumePlugin: true
+                allowHostIPC: true
+                allowHostNetwork: true
+                allowHostPID: true
+                allowHostPorts: true
+                allowPrivilegeEscalation: true
+                allowPrivilegedContainer: false
+                allowedCapabilities: null
+                apiVersion: security.openshift.io/v1
+                defaultAddCapabilities: null
+                fsGroup:
+                  type: MustRunAs
+                groups: []
+                kind: SecurityContextConstraints
+                metadata:
+                  annotations:
+                    include.release.openshift.io/self-managed-high-availability: "true"
+                    kubernetes.io/description: 'hostaccess allows access to all host namespaces but
+                      still requires pods to be run with a UID and SELinux context that are allocated
+                      to the namespace. WARNING: this SCC allows host access to namespaces, file systems,
+                      and PIDS.  It should only be used by trusted pods.  Grant with caution.'
+                    release.openshift.io/create-only: "true"
+                  name: hostaccess
+                priority: null
+                readOnlyRootFilesystem: false
+                requiredDropCapabilities:
+                - KILL
+                - MKNOD
+                - SETUID
+                - SETGID
+                runAsUser:
+                  type: MustRunAsRange
+                seLinuxContext:
+                  type: MustRunAs
+                supplementalGroups:
+                  type: RunAsAny
+                users: []
+                volumes:
+                - configMap
+                - downwardAPI
+                - emptyDir
+                - hostPath
+                - persistentVolumeClaim
+                - projected
+                - secret
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-securitycontextconstraints-hostmount-anyuid
+        spec:
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          severity: high
+          namespaceSelector:
+            include: ["*"]
+          object-templates:
+            - complianceType: mustonlyhave
+              objectDefinition:
+                allowHostDirVolumePlugin: true
+                allowHostIPC: false
+                allowHostNetwork: false
+                allowHostPID: false
+                allowHostPorts: false
+                allowPrivilegeEscalation: true
+                allowPrivilegedContainer: false
+                allowedCapabilities: null
+                apiVersion: security.openshift.io/v1
+                defaultAddCapabilities: null
+                fsGroup:
+                  type: RunAsAny
+                groups: []
+                kind: SecurityContextConstraints
+                metadata:
+                  annotations:
+                    include.release.openshift.io/self-managed-high-availability: "true"
+                    kubernetes.io/description: |-
+                      hostmount-anyuid provides all the features of the
+                      restricted SCC but allows host mounts and any UID by a pod.  This is primarily
+                      used by the persistent volume recycler. WARNING: this SCC allows host file
+                      system access as any UID, including UID 0.  Grant with caution.
+                    release.openshift.io/create-only: "true"
+                  name: hostmount-anyuid
+                priority: null
+                readOnlyRootFilesystem: false
+                requiredDropCapabilities:
+                - MKNOD
+                runAsUser:
+                  type: RunAsAny
+                seLinuxContext:
+                  type: MustRunAs
+                supplementalGroups:
+                  type: RunAsAny
+                users:
+                - system:serviceaccount:openshift-infra:pv-recycler-controller
+                volumes:
+                - configMap
+                - downwardAPI
+                - emptyDir
+                - hostPath
+                - nfs
+                - persistentVolumeClaim
+                - projected
+                - secret
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-securitycontextconstraints-privileged
+        spec:
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          severity: high
+          namespaceSelector:
+            include: ["*"]
+          object-templates:
+            - complianceType: mustonlyhave
+              objectDefinition:
+                allowHostDirVolumePlugin: true
+                allowHostIPC: true
+                allowHostNetwork: true
+                allowHostPID: true
+                allowHostPorts: true
+                allowPrivilegeEscalation: true
+                allowPrivilegedContainer: true
+                allowedCapabilities:
+                - '*'
+                allowedUnsafeSysctls:
+                - '*'
+                apiVersion: security.openshift.io/v1
+                defaultAddCapabilities: null
+                fsGroup:
+                  type: RunAsAny
+                groups:
+                - system:cluster-admins
+                - system:nodes
+                - system:masters
+                kind: SecurityContextConstraints
+                metadata:
+                  annotations:
+                    include.release.openshift.io/self-managed-high-availability: "true"
+                    kubernetes.io/description: 'privileged allows access to all privileged and host
+                      features and the ability to run as any user, any group, any fsGroup, and with
+                      any SELinux context.  WARNING: this is the most relaxed SCC and should be used
+                      only for cluster administration. Grant with caution.'
+                    release.openshift.io/create-only: "true"
+                  name: privileged
+                priority: null
+                readOnlyRootFilesystem: false
+                requiredDropCapabilities: null
+                runAsUser:
+                  type: RunAsAny
+                seLinuxContext:
+                  type: RunAsAny
+                seccompProfiles:
+                - '*'
+                supplementalGroups:
+                  type: RunAsAny
+                users:
+                - system:admin
+                - system:serviceaccount:openshift-infra:build-controller
+                volumes:
+                - '*'
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-securitycontextconstraints-nonroot
+        spec:
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          severity: high
+          namespaceSelector:
+            include: ["*"]
+          object-templates:
+            - complianceType: mustonlyhave
+              objectDefinition:
+                allowHostDirVolumePlugin: false
+                allowHostIPC: false
+                allowHostNetwork: false
+                allowHostPID: false
+                allowHostPorts: false
+                allowPrivilegeEscalation: true
+                allowPrivilegedContainer: false
+                allowedCapabilities: null
+                apiVersion: security.openshift.io/v1
+                defaultAddCapabilities: null
+                fsGroup:
+                  type: RunAsAny
+                groups: []
+                kind: SecurityContextConstraints
+                metadata:
+                  annotations:
+                    include.release.openshift.io/self-managed-high-availability: "true"
+                    kubernetes.io/description: nonroot provides all features of the restricted SCC
+                      but allows users to run with any non-root UID.  The user must specify the UID
+                      or it must be specified on the by the manifest of the container runtime.
+                    release.openshift.io/create-only: "true"
+                  name: nonroot
+                priority: null
+                readOnlyRootFilesystem: false
+                requiredDropCapabilities:
+                - KILL
+                - MKNOD
+                - SETUID
+                - SETGID
+                runAsUser:
+                  type: MustRunAsNonRoot
+                seLinuxContext:
+                  type: MustRunAs
+                supplementalGroups:
+                  type: RunAsAny
+                users: []
+                volumes:
+                - configMap
+                - downwardAPI
+                - emptyDir
+                - persistentVolumeClaim
+                - projected
+                - secret
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-securitycontextconstraints-hostnetwork
+        spec:
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          severity: high
+          namespaceSelector:
+            include: ["*"]
+          object-templates:
+            - complianceType: mustonlyhave
+              objectDefinition:
+                allowHostDirVolumePlugin: false
+                allowHostIPC: false
+                allowHostNetwork: true
+                allowHostPID: false
+                allowHostPorts: true
+                allowPrivilegeEscalation: true
+                allowPrivilegedContainer: false
+                allowedCapabilities: null
+                apiVersion: security.openshift.io/v1
+                defaultAddCapabilities: null
+                fsGroup:
+                  type: MustRunAs
+                groups: []
+                kind: SecurityContextConstraints
+                metadata:
+                  annotations:
+                    include.release.openshift.io/self-managed-high-availability: "true"
+                    kubernetes.io/description: hostnetwork allows using host networking and host ports
+                      but still requires pods to be run with a UID and SELinux context that are allocated
+                      to the namespace.
+                    release.openshift.io/create-only: "true"
+                  name: hostnetwork
+                priority: null
+                readOnlyRootFilesystem: false
+                requiredDropCapabilities:
+                - KILL
+                - MKNOD
+                - SETUID
+                - SETGID
+                runAsUser:
+                  type: MustRunAsRange
+                seLinuxContext:
+                  type: MustRunAs
+                supplementalGroups:
+                  type: MustRunAs
+                users: []
+                volumes:
+                - configMap
+                - downwardAPI
+                - emptyDir
+                - persistentVolumeClaim
+                - projected
+                - secret
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-securitycontextconstraints-node-exporter
+        spec:
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          severity: high
+          namespaceSelector:
+            include: ["*"]
+          object-templates:
+            - complianceType: mustonlyhave
+              objectDefinition:
+                allowHostDirVolumePlugin: true
+                allowHostIPC: false
+                allowHostNetwork: true
+                allowHostPID: true
+                allowHostPorts: true
+                allowPrivilegeEscalation: true
+                allowPrivilegedContainer: true
+                allowedCapabilities: null
+                apiVersion: security.openshift.io/v1
+                defaultAddCapabilities: null
+                fsGroup:
+                  type: RunAsAny
+                groups: []
+                kind: SecurityContextConstraints
+                metadata:
+                  annotations:
+                    kubernetes.io/description: node-exporter scc is used for the Prometheus node exporter
+                  name: node-exporter
+                priority: null
+                readOnlyRootFilesystem: false
+                requiredDropCapabilities: null
+                runAsUser:
+                  type: RunAsAny
+                seLinuxContext:
+                  type: RunAsAny
+                supplementalGroups:
+                  type: RunAsAny
+                users: []
+                volumes:
+                - '*'
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-securitycontextconstraints-validation
+placementRef:
+  name: placement-policy-securitycontextconstraints-validation
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+- name: policy-securitycontextconstraints-validation
+  kind: Policy
+  apiGroup: policy.open-cluster-management.io
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-securitycontextconstraints-validation
+spec:
+  clusterConditions:
+  - status: "True"
+    type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - {key: environment, operator: In, values: ["dev"]}

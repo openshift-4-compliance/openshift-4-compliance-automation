@@ -29,7 +29,7 @@ Policy  | Description | Prerequisites
 [role-policy](./authorization/role-policy/role-policy.yaml) | Ensures that a role exists in the cluster |
 [role-binding-policy](./authorization/role-binding-policy/role-binding-policy.yaml) | Ensures that a role is bound to a user / group |
 [gatekeeper-disalllow-privileged-scc-usage](./authorization/gatekeeper-disalllow-privileged-scc-usage/gatekeeper-disalllow-privileged-scc-usage.yaml) | Ensures that privilged scc is not being used by unlisted service accounts, users and groups |
-[restricted-scc-validation-policy](./authorization/restricted-scc-validation-policy/restricted-scc-validation-policy.yaml) | Ensures that the restricted scc is not modified |
+[default-scc-validation-policy](./authorization/default-scc-validation-policy/default-scc-validation-policy.yaml) | Ensures that the defaults SCC's are not modified |
 [prevent-default-serviceaccount-usage](./authorization/gatekeeper-prevent-default-serviceaccount-usage/gatekeeper-prevent-default-serviceaccount-usage.yaml) | Ensures that the `default` serviceaccount is not usable by any pod | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 
 ### ETCD Security
