@@ -14,12 +14,13 @@ spec:
       rego: |
         package K8sDisallowHostNetwork
 
-        violation[{"msg": msg}] {
-          input.review.object.spec.hostNetwork
-          msg := sprintf("The specified hostNetwork is not allowed, pod: %v. Delete any reference to `hostNetwork` in the deployment.", [input.review.object.metadata.name])
+        violation[{"msg": msg, "details": {}}] {
+            input_share_host_network(input.review.object)
+            msg := sprintf("Sharing the host netowrk is not allowed, hostNetwork must set to false, and hostPort not being used. violation found in: %v", [input.review.object.metadata.name])
         }
-
-        violation[{"msg": msg}] {
-          input.review.object.spec.containers[_].ports[_].hostPort
-          msg := sprintf("The specified hostPort is not allowed, pod: %v. Delete any reference to `hostPort` in the deployment.", [input.review.object.metadata.name])
+        input_share_host_network(o) {
+            o.spec.hostNetwork
+        }
+        input_share_host_network(o) {
+            o.spec.containers[_].ports[_].hostPort
         }
