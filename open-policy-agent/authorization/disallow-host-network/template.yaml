@@ -1,0 +1,26 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8sdisallowhostnetwork
+  annotations:
+    description: Disallow usage of `hostNetwork` and `hostPort` in pod definition.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sDisallowHostNetwork
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package K8sDisallowHostNetwork
+
+        violation[{"msg": msg, "details": {}}] {
+            input_share_host_network(input.review.object)
+            msg := sprintf("Sharing the host netowrk is not allowed, hostNetwork must set to false, and hostPort not being used. violation found in: %v", [input.review.object.metadata.name])
+        }
+        input_share_host_network(o) {
+            o.spec.hostNetwork
+        }
+        input_share_host_network(o) {
+            o.spec.containers[_].ports[_].hostPort
+        }
