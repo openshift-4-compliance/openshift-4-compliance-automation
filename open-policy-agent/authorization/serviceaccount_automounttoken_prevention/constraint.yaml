@@ -3,6 +3,7 @@ kind: K8sServiceAccountAutomountTokenPrevention
 metadata:
   name: serviceaccount-automounttoken-prevention
 spec:
+  enforcementAction: dryrun
   match:
     kinds:
       - apiGroups: [""]
