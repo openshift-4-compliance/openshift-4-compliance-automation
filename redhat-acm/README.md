@@ -51,7 +51,7 @@ No policies yet       |  |
 ### Networking
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[allow-port-from-namespace-networkpolicy-policy](networking/deny-all-networkpolicy-policy/deny-all-networkpolicy-policy.yaml) | Ensures that all traffic to a namespace is denied by default |
+[deny-all-networkpolicy-policy](networking/deny-all-networkpolicy-policy/deny-all-networkpolicy-policy.yaml) | Ensures that all traffic to a namespace is denied by default |
 [allow-port-from-namespace-networkpolicy-policy](networking/allow-port-from-namespace-networkpolicy-policy/allow-port-from-namespace-networkpolicy-policy.yaml) | Ensures that a custom NetworkPolicy is available in a namespace |
 [gatekeeper-allow-httpsonly](networking/gatekeeper-allow-httpsonly/gatekeeper-allow-httpsonly.yaml) | Ensures that there are *no* http routes | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 [gatekeeper-disallow-external-ip-services](networking/gatekeeper-disallow-external-ip-services/gatekeeper-disallow-external-ip-services.yaml) | Ensures that there are no external ip services configured | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
