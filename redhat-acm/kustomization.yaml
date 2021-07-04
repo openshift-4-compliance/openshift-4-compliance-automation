@@ -20,4 +20,5 @@ resources:
 - ./authentication-user-management/gatekeeper-shorten-tokens/gatekeeper-shorten-tokens.yaml
 - ./authentication-user-management/group-policy/group-policy.yaml
 - ./infrastructure-general/gatekeeper-operator-policy/gatekeeper-operator-policy.yaml
+- ./authorization/gatekeeper-disallow-host-namespaces/gatekeeper-disallow-host-namespaces.yaml
 - ./authorization/gatekeeper-disallow-host-namespaces/gatekeeper-disallow-host-network.yaml
