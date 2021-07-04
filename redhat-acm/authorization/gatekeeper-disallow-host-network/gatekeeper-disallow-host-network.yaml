@@ -40,7 +40,7 @@ spec:
 
                         violation[{"msg": msg, "details": {}}] {
                             input_share_host_network(input.review.object)
-                            msg := sprintf("Sharing the host netowrk is not allowed, hostNetwork must set to false, and hostPort not being used. violation found in: %v", [input.review.object.metadata.name])
+                            msg := sprintf("Sharing the host network is not allowed, hostNetwork must set to false, and hostPort not being used. violation found in: %v", [input.review.object.metadata.name])
                         }
                         input_share_host_network(o) {
                             o.spec.hostNetwork
