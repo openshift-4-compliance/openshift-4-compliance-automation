@@ -25,12 +25,13 @@ Policy  | Description | Prerequisites
 ### Authorization
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[disallowed-role-policy](./authorization/disallowed-role-policy.yaml) | Ensures that the defined role pattern does not exist in the cluster |
-[role-policy](./authorization/role-policy.yaml) | Ensures that a role exists in the cluster |
-[role-binding-policy](./authorization/role-binding-policy.yaml) | Ensures that a role is bound to a user / group |
-[gatekeeper-disalllow-privileged-scc-usage](./authorization/gatekeeper-disalllow-privileged-scc-usage.yaml) | Ensures that privilged scc is not being used by unlisted service accounts, users and groups |
-[restricted-scc-validation-policy](./authorization/restricted-scc-validation-policy.yaml) | Ensures that the restricted scc is not modified |
+[disallowed-role-policy](./authorization/disallowed-role-policy/disallowed-role-policy.yaml) | Ensures that the defined role pattern does not exist in the cluster |
+[role-policy](./authorization/role-policy/role-policy.yaml) | Ensures that a role exists in the cluster |
+[role-binding-policy](./authorization/role-binding-policy/role-binding-policy.yaml) | Ensures that a role is bound to a user / group |
+[gatekeeper-disalllow-privileged-scc-usage](./authorization/gatekeeper-disalllow-privileged-scc-usage/gatekeeper-disalllow-privileged-scc-usage.yaml) | Ensures that privilged scc is not being used by unlisted service accounts, users and groups |
+[default-scc-validation-policy](./authorization/default-scc-validation-policy/default-scc-validation-policy.yaml) | Ensures that the defaults SCC's are not modified |
 [prevent-default-serviceaccount-usage](./authorization/gatekeeper-prevent-default-serviceaccount-usage/gatekeeper-prevent-default-serviceaccount-usage.yaml) | Ensures that the `default` serviceaccount is not usable by any pod | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
+[gatekeeper-disallow-host-network](./authorization/gatekeeper-disallow-host-namespaces/gatekeeper-disallow-host-network.yaml) | Ensures that `HostNetwork` and `HostPort` are not set in the pod's definition | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 
 ### ETCD Security
 Policy  | Description | Prerequisites
@@ -51,7 +52,7 @@ No policies yet       |  |
 ### Networking
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[allow-port-from-namespace-networkpolicy-policy](networking/deny-all-networkpolicy-policy/deny-all-networkpolicy-policy.yaml) | Ensures that all traffic to a namespace is denied by default |
+[deny-all-networkpolicy-policy](networking/deny-all-networkpolicy-policy/deny-all-networkpolicy-policy.yaml) | Ensures that all traffic to a namespace is denied by default |
 [allow-port-from-namespace-networkpolicy-policy](networking/allow-port-from-namespace-networkpolicy-policy/allow-port-from-namespace-networkpolicy-policy.yaml) | Ensures that a custom NetworkPolicy is available in a namespace |
 [gatekeeper-allow-httpsonly](networking/gatekeeper-allow-httpsonly/gatekeeper-allow-httpsonly.yaml) | Ensures that there are *no* http routes | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 [gatekeeper-disallow-external-ip-services](networking/gatekeeper-disallow-external-ip-services/gatekeeper-disallow-external-ip-services.yaml) | Ensures that there are no external ip services configured | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
@@ -62,6 +63,7 @@ Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [gatekeeper-disallow-self-provisioner-policy](resource-exhaustion/gatekeeper-disallow-self-provisioner-policy/gatekeeper-disallow-self-provisioner-policy.yaml) | Ensures that users are not able to provision new namespaces by disabling any ClusterRoleBinding that associates with the `self-provisioner` ClusterRole | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 [limitrange-policy](resource-exhaustion/limitrange-policy/limitrange-policy.yaml) | Ensures that a Limitrange resource is present in a namespace |
+[resourcequota-policy](resource-exhaustion/resourcequota-policy/resourcequota-policy.yaml) | Ensures that a ResourceQuota resource is present in a namespace |
 
 ### Storage
 Policy  | Description | Prerequisites

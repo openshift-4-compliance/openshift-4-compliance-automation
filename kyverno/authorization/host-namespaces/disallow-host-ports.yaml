@@ -7,7 +7,7 @@ metadata:
       Access to host ports allows potential snooping of network traffic and should be forbidden / minimized.
 spec:
   background: true
-  validationFailureAction: enforce
+  validationFailureAction: audit
   rules:
     - name: validate-host-ports-scc
       match:

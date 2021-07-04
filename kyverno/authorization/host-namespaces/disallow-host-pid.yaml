@@ -8,7 +8,7 @@ metadata:
       having visibility to host process space, validate that 'hostPID' is set to 'false'.
 spec:
   background: true
-  validationFailureAction: enforce
+  validationFailureAction: audit
   rules:
     - name: validate-hostPID-scc
       match:

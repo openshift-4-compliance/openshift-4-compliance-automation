@@ -4,7 +4,7 @@ metadata:
   name: disallow-http-routes
 spec:
   background: true
-  validationFailureAction: enforce
+  validationFailureAction: audit
   rules:
     - name: Prevent users from deploying Routes with no https
       match:

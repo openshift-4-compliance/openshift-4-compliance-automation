@@ -9,7 +9,7 @@ metadata:
       disallowing regular users to provision their own namespaces.
 spec:
   background: false
-  validationFailureAction: enforce
+  validationFailureAction: audit
   rules:
     - name: Disallow self-provisioner ClusterRole
       match:
