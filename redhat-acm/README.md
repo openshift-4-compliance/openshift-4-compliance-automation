@@ -31,6 +31,7 @@ Policy  | Description | Prerequisites
 [gatekeeper-disalllow-privileged-scc-usage](./authorization/gatekeeper-disalllow-privileged-scc-usage/gatekeeper-disalllow-privileged-scc-usage.yaml) | Ensures that privilged scc is not being used by unlisted service accounts, users and groups |
 [default-scc-validation-policy](./authorization/default-scc-validation-policy/default-scc-validation-policy.yaml) | Ensures that the defaults SCC's are not modified |
 [prevent-default-serviceaccount-usage](./authorization/gatekeeper-prevent-default-serviceaccount-usage/gatekeeper-prevent-default-serviceaccount-usage.yaml) | Ensures that the `default` serviceaccount is not usable by any pod | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
+[gatekeeper-disallow-host-network](./authorization/gatekeeper-disallow-host-namespaces/gatekeeper-disallow-host-network.yaml) | Ensures that `HostNetwork` and `HostPort` are not set in the pod's definition | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 
 ### ETCD Security
 Policy  | Description | Prerequisites
