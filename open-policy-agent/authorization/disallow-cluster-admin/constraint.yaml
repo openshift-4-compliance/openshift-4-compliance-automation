@@ -1,0 +1,35 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sDisallowClusterAdmin
+metadata:
+  name: no-cluster-admin
+spec:
+  enforcementAction: dryrun
+  match:
+    kinds:
+      - apiGroups: ["rbac.authorization.k8s.io"]
+        kinds: ["ClusterRoleBinding"]
+  parameters:
+    allowedUsers:
+      - name: admin
+      - name: system:masters
+      - name: localhost-recovery-client
+      - name: kube-controller-manager-operator
+      - name: kube-apiserver-operator
+      - name: etcd-operator
+      - name: openshift-kube-scheduler-operator
+      - name: authentication-operator
+      - name: oauth-openshift
+      - name: openshift-apiserver-sa
+      - name: oauth-apiserver-sa
+      - name: kube-storage-version-migrator-sa
+      - name: default
+      - name: csi-snapshot-controller-operator
+      - name: cluster-storage-operator
+      - name: system:admin
+      - name: service-ca-operator
+      - name: installer-sa
+      - name: openshift-controller-manager-operator
+      - name: openshift-config-operator
+      - name: openshift-apiserver-operator
+      - name: kube-storage-version-migrator-operator
+      - name: system:cluster-admins

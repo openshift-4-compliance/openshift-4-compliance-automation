@@ -29,6 +29,7 @@ Policy  | Description | Prerequisites
 [prevent-default-serviceaccount-usage](./authorization/gatekeeper-prevent-default-serviceaccount-usage) | Ensures that the `default` serviceaccount is not usable by any pod |
 [disallow-host-network](./authorization/disallow-host-network) | Ensures that `HostNetwork` and `HostPort` are not set in the pod's definition |
 [disallow-host-namespaces](./authorization/disallow-host-namespaces) | Ensures that `HostIPC` and `HostPID` namespaces are not set in the pod's definition |
+[disallow-cluster-admin](./authorization/disallow-cluster-admin) | Ensures that the `cluster-admin ClusterRole` is not overused in the environment |
 
 ### ETCD Security
 Policy  | Description | Prerequisites

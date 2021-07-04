@@ -14,3 +14,4 @@ resources:
 - trusted-image-sources/disallowedtags/template.yaml
 - authorization/disallow-host-network/template.yaml
 - authorization/disallow-host-namespaces/template.yaml
+- authorization/disallow-cluster-admin/template.yaml
