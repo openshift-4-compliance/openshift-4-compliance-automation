@@ -13,7 +13,7 @@ assignees: ''
 ### Policy Category
 <!-- Security / Best Practice / other -->
 
-### Rational
+### Rationalle
 <!-- Describe the reasoning for applying the policy -->
 
 ### Policy Enforcement
