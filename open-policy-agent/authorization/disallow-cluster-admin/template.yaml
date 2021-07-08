@@ -14,10 +14,10 @@ spec:
       rego: |
         package k8sdisallowclusteradmin
         violation[{"msg": msg}] {
-          input.review.object.roleRef.name == "cluster-admin"
-          allowedUsers := {user | user := input.parameters.allowedUsers[_].name}
-          externalUsers := {user | user := input.review.object.subjects[_].name}
-          forbiddenUsers := externalUsers - allowedUsers
-          count(forbiddenUsers) > 0
-          msg:= sprintf("The User / Group / ServiceAccount %v has cluster-admin privilleges",[forbiddenUsers])
+            input.review.object.roleRef.name == "cluster-admin"
+            allowedSubjects := {subject | subject := input.parameters.allowedSubjects[_]}
+            externalSubjects := {subject | subject := input.review.object.subjects[_]}
+            forbiddenSubjects = externalSubjects - allowedSubjects
+            count(forbiddenSubjects) > 0
+            msg:= sprintf("The %v %v has cluster-admin privilleges",[forbiddenSubjects[_].kind, forbiddenSubjects[_].name])
         }

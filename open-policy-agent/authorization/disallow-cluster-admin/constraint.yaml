@@ -9,27 +9,94 @@ spec:
       - apiGroups: ["rbac.authorization.k8s.io"]
         kinds: ["ClusterRoleBinding"]
   parameters:
-    allowedUsers:
-      - name: admin
+    allowedSubjects:
       - name: system:masters
-      - name: localhost-recovery-client
-      - name: kube-controller-manager-operator
-      - name: kube-apiserver-operator
-      - name: etcd-operator
-      - name: openshift-kube-scheduler-operator
-      - name: authentication-operator
-      - name: oauth-openshift
-      - name: openshift-apiserver-sa
-      - name: oauth-apiserver-sa
-      - name: kube-storage-version-migrator-sa
-      - name: default
-      - name: csi-snapshot-controller-operator
-      - name: cluster-storage-operator
-      - name: system:admin
-      - name: service-ca-operator
-      - name: installer-sa
-      - name: openshift-controller-manager-operator
-      - name: openshift-config-operator
-      - name: openshift-apiserver-operator
-      - name: kube-storage-version-migrator-operator
+        kind: Group
+        apiGroup: rbac.authorization.k8s.io
       - name: system:cluster-admins
+        kind: Group
+        apiGroup: rbac.authorization.k8s.io
+      - name: system:admin
+        kind: User
+        apiGroup: rbac.authorization.k8s.io
+      - name: admin
+        kind: User
+        apiGroup: rbac.authorization.k8s.io
+      - name: cluster-storage-operator
+        kind: ServiceAccount
+        namespace: openshift-cluster-storage-operator
+      - name: default
+        kind: ServiceAccount
+        namespace: openshift-cluster-version
+      - name: csi-snapshot-controller-operator
+        kind: ServiceAccount
+        namespace: openshift-cluster-storage-operator
+      - name: default
+        kind: ServiceAccount
+        namespace: openshift-network-operator
+      - name: default
+        kind: ServiceAccount
+        namespace: openshift-machine-config-operator
+      - name: kube-storage-version-migrator-sa
+        kind: ServiceAccount
+        namespace: openshift-kube-storage-version-migrator
+      - name: oauth-apiserver-sa
+        kind: ServiceAccount
+        namespace: openshift-oauth-apiserver
+      - name: openshift-apiserver-sa
+        kind: ServiceAccount
+        namespace: openshift-apiserver
+      - name: oauth-openshift
+        kind: ServiceAccount
+        namespace: openshift-authentication
+      - name: authentication-operator
+        kind: ServiceAccount
+        namespace: openshift-authentication-operator
+      - name: openshift-kube-scheduler-operator
+        kind: ServiceAccount
+        namespace: openshift-kube-scheduler-operator
+      - name: etcd-operator
+        kind: ServiceAccount
+        namespace: openshift-etcd-operator
+      - name: kube-apiserver-operator
+        kind: ServiceAccount
+        namespace: openshift-kube-apiserver-operator
+      - name: localhost-recovery-client
+        kind: ServiceAccount
+        namespace: openshift-kube-apiserver
+      - name: kube-controller-manager-operator
+        kind: ServiceAccount
+        namespace: openshift-kube-controller-manager-operator
+      - name: localhost-recovery-client
+        kind: ServiceAccount
+        namespace: openshift-kube-controller-manager
+      - name: localhost-recovery-client
+        kind: ServiceAccount
+        namespace: openshift-kube-scheduler
+      - name: kube-storage-version-migrator-operator
+        kind: ServiceAccount
+        namespace: openshift-kube-storage-version-migrator-operator
+      - name: openshift-apiserver-operator
+        kind: ServiceAccount
+        namespace: openshift-apiserver-operator
+      - name: openshift-config-operator
+        kind: ServiceAccount
+        namespace: openshift-config-operator
+      - name: openshift-controller-manager-operator
+        kind: ServiceAccount
+        namespace: openshift-controller-manager-operator
+      - name: installer-sa
+        kind: ServiceAccount
+        namespace: openshift-etcd
+      - name: installer-sa
+        kind: ServiceAccount
+        namespace: openshift-kube-apiserver
+      - name: installer-sa
+        kind: ServiceAccount
+        namespace: openshift-kube-controller-manager
+      - name: installer-sa
+        kind: ServiceAccount
+        namespace: openshift-kube-scheduler
+      - name: service-ca-operator
+        kind: ServiceAccount
+        namespace: openshift-service-ca-operator
