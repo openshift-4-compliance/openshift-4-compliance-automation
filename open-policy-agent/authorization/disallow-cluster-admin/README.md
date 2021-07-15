@@ -40,5 +40,8 @@ oc adm policy add-cluster-role-to-group cluster-admin test-group
 
 # Wait for a few minutes
 oc describe k8sdisallowclusteradmin.constraints.gatekeeper.sh/no-cluster-admin
-
 ```
+
+![Screenshot from 2021-07-15 13-35-17](https://user-images.githubusercontent.com/60185557/125775276-bb15dd95-7a3a-4672-af05-256b33e58767.png)
+
+`Note!` In your environment you should see 3 total violations; In my environment I had another user that caused an extra violation to pop up.
