@@ -12,6 +12,7 @@ resources:
 - networking/httpsonly/template.yaml
 - resource-exhaustion/disallow-self-provisioner/template.yaml
 - trusted-image-sources/disallowedtags/template.yaml
+- resource-exhaustion/pod-resource-limits/template.yaml
 - authorization/disallow-host-network/template.yaml
 - authorization/disallow-host-namespaces/template.yaml
 - authorization/disallow-cluster-admin/template.yaml

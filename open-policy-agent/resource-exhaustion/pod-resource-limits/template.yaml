@@ -1,0 +1,66 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8spodresourcelimit
+  annotations:
+    description: Disallows pods that do not have input.review.object.spec.containers[_].resources.requests and
+      input.review.object.spec.containers[_].resources.limits for both 'cpu' and 'memory' in their definition.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sPodResourceLimit
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8spodresourcelimit
+
+        missing(obj, field) = true {
+            not obj[field]
+        }
+                
+        missing(obj, field) = true {
+            obj[field] == ""
+        }
+
+        violation[{"msg": msg}] {    
+            input.review.kind.kind == "Pod"
+            missing(input.review.object.spec.containers[_].resources.requests, "memory")
+            msg:= sprintf("The 'memory' field is missing at the 'input.review.object.spec.containers[_].resources.requests' path in the %v pod!",[input.review.object.metadata.name])
+        }
+
+        violation[{"msg": msg}] {    
+            input.review.kind.kind == "Pod"
+            missing(input.review.object.spec.containers[_].resources.requests, "cpu")
+            msg:= sprintf("The 'cpu' field is missing at the 'input.review.object.spec.containers[_].resources.requests' path in the %v pod!",[input.review.object.metadata.name])
+        }
+
+        violation[{"msg": msg}] {    
+            input.review.kind.kind == "Pod"
+            missing(input.review.object.spec.containers[_].resources.limits, "memory")
+            msg:= sprintf("The 'memory' field is missing at the 'input.review.object.spec.containers[_].resources.limits' path in the %v pod!",[input.review.object.metadata.name])
+        }
+
+        violation[{"msg": msg}] {    
+            input.review.kind.kind == "Pod"
+            missing(input.review.object.spec.containers[_].resources.limits, "cpu")
+            msg:= sprintf("The 'cpu' field is missing at the 'input.review.object.spec.containers[_].resources.limits' path in the %v pod!",[input.review.object.metadata.name])
+        }
+
+        violation[{"msg": msg}] {    
+            input.review.kind.kind == "Pod"
+            missing(input.review.object.spec.containers[_].resources, "requests")
+            msg:= sprintf("The 'requests' field is missing at the 'input.review.object.spec.containers[_].resources' path in the %v pod!",[input.review.object.metadata.name])
+        }
+
+        violation[{"msg": msg}] {    
+            input.review.kind.kind == "Pod"
+            missing(input.review.object.spec.containers[_].resources, "limits")
+            msg:= sprintf("The 'limits' field is missing at the 'input.review.object.spec.containers[_].resources' path in the %v pod!",[input.review.object.metadata.name])
+        }
+
+        violation[{"msg": msg}] {    
+            input.review.kind.kind == "Pod"
+            missing(input.review.object.spec.containers[_], "resources")
+            msg:= sprintf("The 'resources' field is missing at the 'input.review.object.spec.containers[_]' path in the %v pod!",[input.review.object.metadata.name])
+        }
