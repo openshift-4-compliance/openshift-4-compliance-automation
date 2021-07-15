@@ -1,0 +1,23 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8sdisallowclusteradmin
+  annotations:
+    description: Controls usage of cluster-admin ClusterRole
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sDisallowClusterAdmin
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8sdisallowclusteradmin
+        violation[{"msg": msg}] {
+            input.review.object.roleRef.name == "cluster-admin"
+            allowedSubjects := {subject | subject := input.parameters.allowedSubjects[_]}
+            externalSubjects := {subject | subject := input.review.object.subjects[_]}
+            forbiddenSubjects = externalSubjects - allowedSubjects
+            count(forbiddenSubjects) > 0
+            msg:= sprintf("The %v %v has cluster-admin privilleges",[forbiddenSubjects[_].kind, forbiddenSubjects[_].name])
+        }
