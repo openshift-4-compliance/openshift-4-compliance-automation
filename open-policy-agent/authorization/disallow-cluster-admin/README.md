@@ -45,3 +45,14 @@ oc describe k8sdisallowclusteradmin.constraints.gatekeeper.sh/no-cluster-admin
 ![image](https://user-images.githubusercontent.com/60185557/125775671-566238fc-ecd7-4d4b-9cce-c6d56214e5dd.png)
 
 `Note!` In your environment you should see 3 total violations; In my environment I had another user that caused an extra violation to pop up.
+
+
+`Note!` The policy does not specificy the exact namespace in which the subject is configured (relevant for serviceaccount only. Users & Groups are cluster-wide entities) - but it is written within the ClusterRoleBinding that the violation mention. In order to get the relevant information run the following command:
+
+```bash
+oc describe clusterrolebinding <name-of-the-binding>
+```
+
+Example (based on the output from the previous screenshot)
+
+![image](https://user-images.githubusercontent.com/60185557/125776066-789ce1bd-634c-45ec-b635-1a5e193f23f5.png)
