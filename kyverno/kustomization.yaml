@@ -1,3 +1,5 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 resources:
 - ./authorization/protect-default-scc/protect-default-scc.yaml
 - ./authorization/host-namespaces/disallow-host-ports.yaml
