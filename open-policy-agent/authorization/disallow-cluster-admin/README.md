@@ -1,8 +1,8 @@
 # Prevent Default Serviceaccount
 
-The policy pop an alert (dry-run) once a cluster-admin privilages has been granted to unapproved subjects (users, groups, serviceaccounts).
+The policy initiates an alert once a cluster-admin privilages have been granted to unapproved subjects (users, groups, serviceaccounts).
 
-Cluster-Admin is the most powerful ClusterRole that Openshift has for its users; Once it has been granted to a subject - this subject can perform any operation on the entire cluster; The best practice for managing it appropriatly is to raise an alert for any unauthorized entity that it has been granted to in the environment.
+cluster-admin is the most powerful ClusterRole that Openshift has for its users; Once it has been granted to a subject - this subject can perform any operation on the entire cluster; The best practice for managing it appropriatly is to raise an alert for any unauthorized entity that it has been granted to in the environment.
 
 `This policy has been tested on openshift cluster & oc client version 4.7.0`
 
