@@ -60,6 +60,8 @@ spec:
                     kinds:
                       - apiGroups: ["route.openshift.io"]
                         kinds: ["Route"]
+                    excludedNamespaces: 
+                      - openshift-ingress-canary
     - objectDefinition:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
