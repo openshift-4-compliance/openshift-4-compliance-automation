@@ -1,3 +1,3 @@
 # Certificate Expiry Alert
 
-The policy pop an alert (dry-run) once it's detecting an about-to-expire (crucial) infrastructure certificate
+The policy raises an alert once a system certificate is about to expire.
