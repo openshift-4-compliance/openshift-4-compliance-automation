@@ -79,3 +79,5 @@ spec:
       - openshift-service-ca-operator
       - openshift-user-workload-monitoring
       - openshift-vsphere-infra
+      - default
+      - open-cluster-management-addon-observability
