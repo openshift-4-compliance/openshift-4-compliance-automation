@@ -27,13 +27,13 @@ spec:
         violation[{"msg": msg}] {
             not allow
             not has_key(input.review.object, "automountServiceAccountToken") 
-            msg := "The key automountServiceAccountToken should exist in your serviceAccount object"
+            msg := sprintf("The key `automountServiceAccountToken: false` must be set in the %v ServiceAccount object in the %v Namespace", [input.review.object.metadata.name, input.review.object.metadata.namespace])
         }
         
         violation[{"msg": msg}]{
             not allow
             input.review.object["automountServiceAccountToken"] != false
-            msg := "The automountServiceAccountToken key in your serviceAccount object must be set to `false`"
+            msg := sprintf("The automountServiceAccountToken key in the %v ServiceAccount object in the %v Namespace must be set to `false`", [input.review.object.metadata.name, input.review.object.metadata.namespace])
         }
         
         has_key(x, k) { _ = x[k] }
