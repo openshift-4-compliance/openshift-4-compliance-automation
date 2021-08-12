@@ -25,3 +25,4 @@ resources:
 - ./authorization/gatekeeper-disallow-host-namespaces/gatekeeper-disallow-host-namespaces.yaml
 - ./authorization/gatekeeper-disallow-host-namespaces/gatekeeper-disallow-host-network.yaml
 - ./authorization/gatekeeper-disallow-cluster-admin/gatekeeper-disallow-cluster-admin.yaml
+- ./infrastructure-general/certificate-expiry-alert/policy-ocp4-certs.yaml
