@@ -22,3 +22,4 @@ resources:
 - ./infrastructure-general/gatekeeper-operator-policy/gatekeeper-operator-policy.yaml
 - ./authorization/gatekeeper-disallow-host-namespaces/gatekeeper-disallow-host-namespaces.yaml
 - ./authorization/gatekeeper-disallow-host-namespaces/gatekeeper-disallow-host-network.yaml
+- ./authorization/gatekeeper-disallow-cluster-admin/gatekeeper-disallow-cluster-admin.yaml
