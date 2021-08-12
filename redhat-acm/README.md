@@ -46,7 +46,7 @@ Policy  | Description | Prerequisites
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [gatekeeper-operator-policy](infrastructure-general/gatekeeper-operator-policy/gatekeeper-operator-policy.yaml) | Ensures that the Gatekeeper operator is running |
-[certificate-expiry-alert](infrastructure-general/certificate-expiry-alert/policy-ocp4-certs.yaml) | The policy pop an alert (dry-run) once it's detecting an about-to-expire (crucial) infrastructure certificate |
+[certificate-expiry-alert](infrastructure-general/certificate-expiry-alert/policy-ocp4-certs.yaml) | Raise an alert once a system certificate is about to expire |
 
 ### Monitoring and Observability
 Policy  | Description | Prerequisites
