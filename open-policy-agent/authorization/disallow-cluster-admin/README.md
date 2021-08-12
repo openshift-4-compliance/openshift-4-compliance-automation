@@ -14,7 +14,7 @@ The required procedure to deploy the policy:
 * Note that any openshift-* & kubernetes-* default namespaces are excluded
 4. Run the test commands to make sure the policy works as expected
 
-`You should be logged in as cluster-admin privilaged user`
+`cluster-admin privilage is required to run the next commands`
 
 ## Deploy the template & constraint yamls that define the policy
 
@@ -37,8 +37,14 @@ oc adm policy add-cluster-role-to-user cluster-admin test-user
 oc adm policy add-cluster-role-to-user cluster-admin -z test-sa -n test
 oc adm policy add-cluster-role-to-group cluster-admin test-group
 
-
-# Wait for a few minutes
 oc describe k8sdisallowclusteradmin.constraints.gatekeeper.sh/no-cluster-admin
+```
 
+`Note!` 3 violations should be initiated.
+
+
+`Note!` The policy does not specify the exact namespace in which the subject is configured (relevant for serviceaccount only; Users & Groups are cluster-wide entities). The information regarding the ServiceAccount's namespace is written within the violating ClusterRoleBinding. In order to get the relevant information run the following command:
+
+```bash
+oc describe clusterrolebinding <name-of-the-binding>
 ```
