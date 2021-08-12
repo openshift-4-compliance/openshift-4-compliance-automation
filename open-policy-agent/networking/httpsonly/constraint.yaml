@@ -9,3 +9,5 @@ spec:
     kinds:
       - apiGroups: ["route.openshift.io"]
         kinds: ["Route"]
+    excludedNamespaces: 
+      - openshift-ingress-canary
