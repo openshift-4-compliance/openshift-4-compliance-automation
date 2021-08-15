@@ -1,0 +1,18 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sNoRunAsAnySCC
+metadata:
+  name: scc-mustrunasrange-only
+spec:
+  enforcementAction: dryrun
+  match:
+    kinds:
+      - apiGroups: ["security.openshift.io"]
+        kinds: ["SecurityContextConstraints"]
+  parameters:
+    allowedSCCs:
+      - anyuid
+      - hostmount-anyuid
+      - machine-api-termination-handler
+      - node-exporter
+      - nonroot
+      - privileged

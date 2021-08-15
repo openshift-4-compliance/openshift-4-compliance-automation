@@ -1,0 +1,26 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8snorunasanyscc
+  annotations:
+    description: Requires custom SCCs to have the `MustRunAsRange` type for the `runAsUser` attribute.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sNoRunAsAnySCC
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8snorunasanyscc
+
+        violation[{"msg": msg}] {
+          input.review.object.kind == "SecurityContextConstraints"
+          allowedSCCs := { scc | scc := input.parameters.allowedSCCs[_]}
+          sccNameSet := { input.review.object.metadata.name }
+          validationSet := allowedSCCs - sccNameSet
+          count(validationSet) == count(allowedSCCs)
+          notAllowedType := "MustRunAsRange"
+          not input.review.object.runAsUser.type == notAllowedType
+          msg := sprintf("The SecurityContextConstraints object - %v has a disallowed `runAsUser.type` set for the `RunAsUser` field. The only allowed `runAsUser.type` is `MustRunAsRange`", [input.review.object.metadata.name])
+        }
