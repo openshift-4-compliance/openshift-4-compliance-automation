@@ -1,7 +1,7 @@
 apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sNoRunAsAnySCC
 metadata:
-  name: scc-mustrunasrange-only
+  name: scc-disallow-runasany
 spec:
   enforcementAction: dryrun
   match:

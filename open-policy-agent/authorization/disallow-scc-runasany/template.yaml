@@ -3,7 +3,7 @@ kind: ConstraintTemplate
 metadata:
   name: k8snorunasanyscc
   annotations:
-    description: Requires custom SCCs to have the `MustRunAsRange` type for the `runAsUser` attribute.
+    description: Requires custom SCCs to not have the `RunAsAny` type for the `runAsUser` attribute.
 spec:
   crd:
     spec:
@@ -20,7 +20,7 @@ spec:
           sccNameSet := { input.review.object.metadata.name }
           validationSet := allowedSCCs - sccNameSet
           count(validationSet) == count(allowedSCCs)
-          notAllowedType := "MustRunAsRange"
-          not input.review.object.runAsUser.type == notAllowedType
-          msg := sprintf("The SecurityContextConstraints object - %v has a disallowed `runAsUser.type` set for the `RunAsUser` field. The only allowed `runAsUser.type` is `MustRunAsRange`", [input.review.object.metadata.name])
+          notAllowedType := "RunAsAny"
+          input.review.object.runAsUser.type == notAllowedType
+          msg := sprintf("The SecurityContextConstraints object - %v has a disallowed `runAsUser.type` set for the `RunAsUser` field. The disallowed `runAsUser.type` is %v", [input.review.object.metadata.name, notAllowedType])
         }
