@@ -30,17 +30,12 @@ Policy  | Description | Prerequisites
 [disallow-host-network](./authorization/disallow-host-network) | Ensures that `HostNetwork` and `HostPort` are not set in the pod's definition |
 [disallow-host-namespaces](./authorization/disallow-host-namespaces) | Ensures that `HostIPC` and `HostPID` namespaces are not set in the pod's definition |
 [disallow-cluster-admin](./authorization/disallow-cluster-admin) | Ensures that the `cluster-admin ClusterRole` is not overused in the environment |
+[serviceaccount-automount-token-prevention](./authorization/serviceaccount_automounttoken_prevention) | Ensures that serviceAccounts' tokens are not mountable by default  |
 
 ### ETCD Security
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [verify-etcd-encryption](./etcd-security/verify-etcd-encryption) | Ensures that the etcd is encrypted properly |
-
-### ServiceAccount Management
-Policy  | Description | Prerequisites
-------- | ----------- | -------------
-[prevent_default_serviceaccount_usage](./authorization/prevent_default_serviceaccount_usage) | Ensures that every pod/service/deployment etc. has a unique serviceaccount attached to it which is not 'default' |
-[serviceaccount-automount-token-prevention](./authorization/serviceaccount_automounttoken_prevention) | Ensures that serviceAccounts' tokens are unmountable by default  |
 
 ### Infrastructure General
 Policy  | Description | Prerequisites
