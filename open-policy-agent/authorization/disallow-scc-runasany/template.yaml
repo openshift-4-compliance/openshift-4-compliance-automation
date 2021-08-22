@@ -16,11 +16,11 @@ spec:
 
         violation[{"msg": msg}] {
           input.review.object.kind == "SecurityContextConstraints"
-          allowedSCCs := { scc | scc := input.parameters.allowedSCCs[_]}
-          sccNameSet := { input.review.object.metadata.name }
-          validationSet := allowedSCCs - sccNameSet
-          count(validationSet) == count(allowedSCCs)
-          notAllowedType := "RunAsAny"
-          input.review.object.runAsUser.type == notAllowedType
-          msg := sprintf("The SecurityContextConstraints object - %v has a disallowed `runAsUser.type` set for the `RunAsUser` field. The disallowed `runAsUser.type` is %v", [input.review.object.metadata.name, notAllowedType])
+          not is_included(input.review.object.metadata.name, input.parameters.allowedSCCs)
+          input.review.object.runAsUser.type == "RunAsAny"
+          msg := sprintf("The SecurityContextConstraints object - %v has `runAsUser.type: RunAsAny` set. Change it to `MustRunAsRange` in order to comply with the rootless containers standard", [input.review.object.metadata.name])
+        }
+
+        is_included(scc_name, allowed_list) {
+          scc_name == allowed_list[_]
         }

@@ -14,5 +14,5 @@ spec:
       - hostmount-anyuid
       - machine-api-termination-handler
       - node-exporter
-      - nonroot
       - privileged
+      - kui-proxy-scc
