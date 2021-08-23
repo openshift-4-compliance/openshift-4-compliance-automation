@@ -31,6 +31,7 @@ Policy  | Description | Prerequisites
 [disallow-host-namespaces](./authorization/disallow-host-namespaces) | Ensures that `HostIPC` and `HostPID` namespaces are not set in the pod's definition |
 [disallow-cluster-admin](./authorization/disallow-cluster-admin) | Ensures that the `cluster-admin ClusterRole` is not overused in the environment |
 [serviceaccount-automount-token-prevention](./authorization/serviceaccount_automounttoken_prevention) | Ensures that serviceAccounts' tokens are not mountable by default  |
+[disallow-scc-runasany](./authorization/disallow-scc-runasany) | Requires custom SCCs to not have the `RunAsAny` type for the `runAsUser` attribute. |
 
 ### ETCD Security
 Policy  | Description | Prerequisites

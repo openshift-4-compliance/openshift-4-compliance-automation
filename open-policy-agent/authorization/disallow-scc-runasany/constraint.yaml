@@ -1,0 +1,18 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sNoRunAsAnySCC
+metadata:
+  name: scc-disallow-runasany
+spec:
+  enforcementAction: dryrun
+  match:
+    kinds:
+      - apiGroups: ["security.openshift.io"]
+        kinds: ["SecurityContextConstraints"]
+  parameters:
+    allowedSCCs:
+      - anyuid
+      - hostmount-anyuid
+      - machine-api-termination-handler
+      - node-exporter
+      - privileged
+      - kui-proxy-scc
