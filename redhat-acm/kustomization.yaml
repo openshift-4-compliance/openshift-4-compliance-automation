@@ -28,3 +28,4 @@ resources:
 - ./authorization/gatekeeper-disallow-cluster-admin/gatekeeper-disallow-cluster-admin.yaml
 - ./infrastructure-general/certificate-expiry-alert/policy-ocp4-certs.yaml
 - ./authorization/gatekeeper-prevent-serviceaccount-automounttoken/gatekeeper-prevent-serviceaccount-automounttoken.yaml
+- ./authorization/gatekeeper-disallow-scc-runasany/gatekeeper-disallow-scc-runasany.yaml
