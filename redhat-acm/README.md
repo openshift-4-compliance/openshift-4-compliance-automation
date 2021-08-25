@@ -68,6 +68,7 @@ Policy  | Description | Prerequisites
 [gatekeeper-disallow-self-provisioner-policy](resource-exhaustion/gatekeeper-disallow-self-provisioner-policy/gatekeeper-disallow-self-provisioner-policy.yaml) | Ensures that users are not able to provision new namespaces by disabling any ClusterRoleBinding that associates with the `self-provisioner` ClusterRole | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 [limitrange-policy](resource-exhaustion/limitrange-policy/limitrange-policy.yaml) | Ensures that a Limitrange resource is present in a namespace |
 [resourcequota-policy](resource-exhaustion/resourcequota-policy/resourcequota-policy.yaml) | Ensures that a ResourceQuota resource is present in a namespace |
+[pod-resource-limits](resource-exhaustion/gatekeeper-pod-resource-limits/gatekeeper-pod-resource-limits.yaml) | Ensures that all pods have a resource request / limit associated with them |
 
 ### Storage
 Policy  | Description | Prerequisites
