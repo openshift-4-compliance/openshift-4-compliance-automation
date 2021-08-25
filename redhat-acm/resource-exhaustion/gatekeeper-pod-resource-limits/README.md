@@ -1,4 +1,4 @@
-# Gatekeeper Disallow Pod Resource Limits
+# Gatekeeper Ensure Pod Resource Limits
 
 The policy disallows creating pods/service/deployment/deploymentconfig/replicaset (and every object that includes pod creation in any shape) that is does not have resource limits / requests associated with it.
 
