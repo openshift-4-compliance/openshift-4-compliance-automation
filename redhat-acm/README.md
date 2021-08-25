@@ -35,6 +35,7 @@ Policy  | Description | Prerequisites
 [gatekeeper-disallow-host-network](./authorization/gatekeeper-disallow-host-namespaces/gatekeeper-disallow-host-network.yaml) | Ensures that `HostNetwork` and `HostPort` are not set in the pod's definition | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 [gatekeeper-disallow-cluster-admin](./authorization/gatekeeper-disallow-cluster-admin/gatekeeper-disallow-cluster-admin.yaml) | Raise an alert once the cluster-admin ClusterRole is being granted to unapproved entity in the environment | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 [serviceaccount-automounttoken-prevention](./authorization/gatekeeper-prevent-serviceaccount-automounttoken/gatekeeper-prevent-serviceaccount-automounttoken.yaml) | Ensures that serviceaccount's token is not mountable by default | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
+[gatekeeper-disallow-scc-runasany](./authorization/gatekeeper-disallow-scc-runasany/gatekeeper-disallow-scc-runasany.yaml) | Requires custom SCCs to not have the `RunAsAny` type for the `runAsUser` attribute. | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 
 ### ETCD Security
 Policy  | Description | Prerequisites
