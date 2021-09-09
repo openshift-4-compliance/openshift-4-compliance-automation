@@ -17,3 +17,4 @@ resources:
 - ./authorization/disallow-host-namespaces/template.yaml
 - ./authorization/disallow-cluster-admin/template.yaml
 - ./authorization/disallow-scc-runasany/template.yaml
+- ./authentication/disallow-anonymous-users/template.yaml
