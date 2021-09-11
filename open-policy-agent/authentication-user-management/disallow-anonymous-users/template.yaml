@@ -1,0 +1,28 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8sdisallowanonymous
+  annotations:
+    description: Disallows connections from anonymous users.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sDisallowAnonymous
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8sdisallowanonymous
+        violation[{"msg": msg}] {
+          input.review.object.kind == "ClusterRoleBinding"
+          review(input.review.object.subjects[_])
+          msg := sprintf("Unauthenticated user is not allowed in ClusterRoleBinding %v ", [input.review.object.metadata.name])
+        }
+
+        review(subject) = true {
+          subject.name == "system:unauthenticated"
+        }
+
+        review(subject) = true {
+          subject.name == "system:anonymous"
+        }
