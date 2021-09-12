@@ -1,4 +1,4 @@
-# Pod Resource Limits
+# Disallow Anonymous Authentication
 
 The policy disallows associating the `system:anonymous` User and `system:unauthenticated` Group with any ClusterRole in the cluster.
 
