@@ -18,3 +18,4 @@ resources:
 - ./authorization/disallow-cluster-admin/template.yaml
 - ./authorization/disallow-scc-runasany/template.yaml
 - ./authentication/disallow-anonymous-users/template.yaml
+- ./storage/disallow-emptydir/template.yaml

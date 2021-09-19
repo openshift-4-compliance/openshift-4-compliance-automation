@@ -1,0 +1,22 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sDisallowEmptyDir
+metadata:
+  name: no-emptydir
+spec:
+  enforcementAction: dryrun
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    excludedNamespaces: 
+      - hive
+      - openshift-cloud-credential-operator
+      - openshift-cluster-csi-drivers
+      - open-cluster-management
+      - openshift-image-registry
+      - openshift-monitoring
+      - openshift-marketplace
+      - open-cluster-management-agent
+      - open-cluster-management-agent-addon
+      - openshift-operator-lifecycle-manager
+      - openshift-insights

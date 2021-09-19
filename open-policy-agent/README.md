@@ -66,7 +66,7 @@ Policy  | Description | Prerequisites
 ### Storage
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-No policies yet       |  |
+[disallow-emptydir](./storage/disallow-emptydir) | Ensures that containers are not associated with emptyDir volumes |
 
 ### Trusted Image Sources
 Policy  | Description | Prerequisites
