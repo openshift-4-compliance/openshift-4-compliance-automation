@@ -76,7 +76,7 @@ Policy  | Description | Prerequisites
 ### Storage
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-No policies yet       |  |
+[gatekeeper-disallow-emptydir](storage/gatekeeper-disallow-emptydir/gatekeeper-disallow-emptydir.yaml) | Ensures that containers are not associated with emptyDir volumes | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 
 ### Trusted Image Sources
 Policy  | Description | Prerequisites
