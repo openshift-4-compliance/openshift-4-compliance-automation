@@ -31,3 +31,4 @@ resources:
 - ./authorization/gatekeeper-prevent-serviceaccount-automounttoken/gatekeeper-prevent-serviceaccount-automounttoken.yaml
 - ./authorization/gatekeeper-disallow-scc-runasany/gatekeeper-disallow-scc-runasany.yaml
 - ./infrastructure-general/check-fips-compliance-policy/check-fips-compliance-policy.yaml
+- ./storage/gatekeeper-disallow-emptydir/gatekeeper-disallow-emptydir.yaml
