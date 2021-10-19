@@ -1,4 +1,4 @@
-# Prevent Default Serviceaccount
+# Prevent Default ServiceAccount
 
 The policy disallows creating pods/service/deployment/deploymentconfig/replicaset (and every object that includes pod creation in any shape) that is not associated with a dedicated service account.
 
@@ -14,7 +14,7 @@ The required procedure to deploy the policy:
 * Note that any openshift-* & kubernetes-* default namespaces are excluded
 4. Deploy test pods & deployment object to make sure the policy works as expected
 
-`You should be logged in as cluster-admin privilaged user`
+`You should be logged in as cluster-admin privileged user`
 
 ## Deploy the template & constraint yamls that define the policy
 
@@ -40,7 +40,7 @@ oc apply -f ./test/not_approved_pod_1.yaml -n test
 # No spec.serviceAccountName == "some-sa"
 oc apply -f ./test/approved_pod.yaml -n test
 
-# Examin violation
+# Examine violation
 oc describe k8spoduniqueserviceaccountvalidation.constraints.gatekeeper.sh/pod-unique-serviceaccount-validation -n openshift-gatekeeper-system
 
 # Should work because of namespace excluding

@@ -1,6 +1,6 @@
-# Prevent Default Serviceaccount
+# Disallow Cluster Admin
 
-The policy initiates an alert once a cluster-admin privilages have been granted to unapproved subjects (users, groups, serviceaccounts).
+The policy initiates an alert once a cluster-admin privileges have been granted to unapproved subjects (users, groups, serviceaccounts).
 
 cluster-admin is the most powerful ClusterRole that Openshift has for its users; Once it has been granted to a subject - this subject can perform any operation on the entire cluster; The best practice for managing it appropriatly is to raise an alert for any unauthorized entity that it has been granted to in the environment.
 
@@ -14,7 +14,7 @@ The required procedure to deploy the policy:
 * Note that any openshift-* & kubernetes-* default namespaces are excluded
 4. Run the test commands to make sure the policy works as expected
 
-`cluster-admin privilage is required to run the next commands`
+`cluster-admin privilege is required to run the next commands`
 
 ## Deploy the template & constraint yamls that define the policy
 
