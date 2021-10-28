@@ -71,7 +71,8 @@ Policy  | Description | Prerequisites
 ### Trusted Image Sources
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-[disallowedtags](./trusted-image-sources/disallowedtags) | Ensures that images do not contain a pre-defined tag (by default, the policy disables the `latest` tag) | 
+[disallowedtags](./trusted-image-sources/disallowedtags) | Ensures that images do not contain a pre-defined tag (by default, the policy disables the `latest` tag) |
+[disallowed-registries](./trusted-image-sources/disallowedtagsdisallowed-registries) | Requires setting up allowed image sources (registries). Any other image source is disallowed. |
 
 ## Applying Policies
 The policies can be created by applying the custom resources defined in the `template.yaml` and `contraint.yaml` files to an OpenShift cluster. The files are provided in each policy directory under specific security control.
