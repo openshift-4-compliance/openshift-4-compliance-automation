@@ -1,0 +1,54 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8sdisallowedregistries
+  annotations:
+    description: Requires setting up allowed image sources (registries). Any other image source is disallowed.
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sDisallowedRegistries
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package K8sDisallowedRegisitries
+
+        missing(obj, field) = true {
+            not obj[field]
+        }
+
+        missing(obj, field) = true {
+            obj[field] == ""
+        }
+
+        violation[{"msg": msg}] {
+          input.review.object.kind == "Image"
+          input.review.object.apiVersion == "config.openshift.io/v1"
+          missing(input.review.object.spec, "registrySources")
+          msg := sprintf("%v object must have spec.registrySources.allowedRegistries configured", [input.review.object.kind])
+        }
+
+        violation[{"msg": msg}] {
+          input.review.object.kind == "Image"
+          input.review.object.apiVersion == "config.openshift.io/v1"
+          missing(input.review.object.spec.registrySources, "allowedRegistries")
+          msg := sprintf("%v object must have spec.registrySources.allowedRegistries configured", [input.review.object.kind])
+        }
+
+        violation[{"msg": msg}] {
+          input.review.object.kind == "Image"
+          input.review.object.apiVersion == "config.openshift.io/v1"
+          count(input.review.object.spec.registrySources.allowedRegistries) == 0
+          msg := sprintf("%v object must have at least one registry configured at spec.registrySources.allowedRegistries", [input.review.object.kind])
+        }
+
+        violation[{"msg": msg}] {
+          input.review.object.kind == "Image"
+          input.review.object.apiVersion == "config.openshift.io/v1"
+          allowedRegistries := { registry | registry := input.review.object.parameters.allowedRegistries[_]}
+          presentRegistries := { registry | registry := input.review.object.spec.registrySources.allowedRegistries[_]}
+          forbiddenRegistries := presentRegistries - allowedRegistries
+          count(forbiddenRegistries) > 0
+          msg := sprintf("%v registry definitions are not allowed in the %v resource at spec.registrySources.allowedRegistries", [forbiddenRegistries, input.review.object.kind])
+        }

@@ -1,0 +1,13 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sDisallowedRegistries
+metadata:
+  name: disallow-registries
+spec:
+  enforcementAction: dryrun
+  match:
+    kinds:
+      - apiGroups: ["config.openshift.io"]
+        kinds: ["Image"]
+  parameters:
+    allowedRegistries:
+    - "quay.io"
