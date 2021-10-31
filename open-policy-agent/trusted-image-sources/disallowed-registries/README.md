@@ -1,6 +1,6 @@
 # Disallow Registries
 
-The policy makes sure a list of "Allowed Registries" is associated with the `cluster` Image resource. If a registry is not mentioned in the Image resource, images from this registry will not be pulled for pod creation.
+The policy makes sure a list of "Allowed Registries" is associated with the [cluster Image resource](https://docs.openshift.com/container-platform/4.9/openshift_images/image-configuration.html). If a registry is not mentioned in the Image resource, images from this registry will not be pulled for pod creation.
 
 Managing a list of allowed registries provides control over what code runs on the OpenShift cluster. Anomalous registry instances can contain dangerous unscanned images in them, such images must be avoided.
 
