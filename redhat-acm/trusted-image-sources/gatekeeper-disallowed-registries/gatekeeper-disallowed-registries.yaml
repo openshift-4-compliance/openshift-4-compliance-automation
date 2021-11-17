@@ -1,0 +1,15 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: config-data-policies
+policyDefaults:
+  namespace: default
+policies:
+  - name: config-data
+    manifests:
+      - path: ../../../open-policy-agent/trusted-image-sources/disallowed-registries/template.yaml
+      - path: ../../../open-policy-agent/trusted-image-sources/disallowed-registries/constraint.yaml
+    remediationAction: enforce
+    placement:
+      clusterSelectors:
+        vendor: "OpenShift"

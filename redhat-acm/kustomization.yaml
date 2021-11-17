@@ -19,6 +19,7 @@ resources:
 - ./resource-exhaustion/resourcequota-policy/resourcequota-policy.yaml
 - ./resource-exhaustion/gatekeeper-pod-resource-limits/gatekeeper-pod-resource-limits.yaml
 - ./trusted-image-sources/gatekeeper-disallow-image-tags/gatekeeper-disallow-image-tags.yaml
+- ./trusted-image-sources/gatekeeper-disallowed-registries/gatekeeper-disallowed-registries.yaml
 - ./authentication-user-management/gatekeeper-disallow-anonymous-auth/gatekeeper-disallow-anonymous-auth.yaml
 - ./authentication-user-management/kubeadmin-policy/kubeadmin-policy.yaml
 - ./authentication-user-management/gatekeeper-shorten-tokens/gatekeeper-shorten-tokens.yaml
