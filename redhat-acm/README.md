@@ -82,6 +82,7 @@ Policy  | Description | Prerequisites
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [gatekeeper-disallow-image-tags](trusted-image-sources/gatekeeper-disallow-image-tags/gatekeeper-disallow-image-tags.yaml) | Ensures that images do not contain a pre-defined tag (by default, the policy disables the `latest` tag) | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
+[disallowed-registries](./trusted-image-sources/gatekeeper-disallowed-registries/gatekeeper-disallowed-registries.yaml) | Requires setting up allowed image sources (registries). Any other image source is disallowed. | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
 
 ## Applying Policies
 The policies can be applied to the Advanced Cluster Management hub cluster. By default all policies take effect on all managed clusters with the `environment=dev` label. To apply a policy from the collection, run the next command -
