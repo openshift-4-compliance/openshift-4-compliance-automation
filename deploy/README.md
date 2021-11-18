@@ -1,6 +1,6 @@
 # Deploying policies using the OpenShift Compliance Automation
 
-This section describes how you can use the framework to deploy policies in the repository.
+This section describes how you can use the framework to deploy policies from the repository to your environment.
 
 ### Red Hat Advanced Cluster Management for Kubernetes
 
