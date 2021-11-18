@@ -1,0 +1,2 @@
+generators:
+  - gatekeeper-disallow-host-namespaces.yaml

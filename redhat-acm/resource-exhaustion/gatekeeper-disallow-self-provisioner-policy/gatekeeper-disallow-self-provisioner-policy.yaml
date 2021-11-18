@@ -1,120 +1,16 @@
----
 apiVersion: policy.open-cluster-management.io/v1
-kind: Policy
+kind: PolicyGenerator
 metadata:
   name: policy-gatekeeper-disallow-self-provisioner
-  annotations:
-    policy.open-cluster-management.io/standards: NIST SP 800-53
-    policy.open-cluster-management.io/categories: CM Configuration Management
-    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
-spec:
-  remediationAction: enforce
-  disabled: false
-  policy-templates:
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: policy-gatekeeper-disallow-self-provisioner
-        spec:
-          remediationAction: enforce
-          severity: low
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: templates.gatekeeper.sh/v1beta1
-                kind: ConstraintTemplate
-                metadata:
-                  name: k8sdisallowselfprovisioner
-                  annotations:
-                    description: Disallows self provisioner role to all users.
-                spec:
-                  crd:
-                    spec:
-                      names:
-                        kind: K8sDisallowSelfProvisioner
-                  targets:
-                    - target: admission.k8s.gatekeeper.sh
-                      rego: |
-                        package k8sdisallowselfprovisioner
-                        violation[{"msg": msg}] {
-                          input.review.kind.kind == "ClusterRoleBinding"
-                          input.review.object.roleRef.kind == "ClusterRole"
-                          input.review.object.roleRef.name == "self-provisioner"
-                          count(input.review.object.subjects) > 0
-                          msg := sprintf("Adding the self-provisioner ClusterRole to users / groups is forbidden. The subjects specified in %v can not be added to the self-provisioner ClusterRole", [input.review.object.metadata.name])
-                        }
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: constraints.gatekeeper.sh/v1beta1
-                kind: K8sDisallowSelfProvisioner
-                metadata:
-                  name: no-self-provisioner
-                spec:
-                  enforcementAction: dryrun
-                  match:
-                    kinds:
-                      - apiGroups: ["rbac.authorization.k8s.io"]
-                        kinds: ["ClusterRoleBinding"]
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: policy-gatekeeper-audit-disallow-self-provisioner
-        spec:
-          remediationAction: inform # will be overridden by remediationAction in parent policy
-          severity: low
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: constraints.gatekeeper.sh/v1beta1
-                kind: K8sDisallowSelfProvisioner
-                metadata:
-                  name: no-self-provisioner
-                status:
-                  totalViolations: 0
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: policy-gatekeeper-admission-disallow-self-provisioner
-        spec:
-          remediationAction: inform # will be overridden by remediationAction in parent policy
-          severity: low
-          object-templates:
-            - complianceType: mustnothave
-              objectDefinition:
-                apiVersion: v1
-                kind: Event
-                metadata:
-                  namespace: openshift-gatekeeper-system # set it to the actual namespace where gatekeeper is running if different
-                  annotations:
-                    constraint_action: deny
-                    constraint_kind: K8sDisallowSelfProvisioner
-                    constraint_name: no-self-provisioner
-                    event_type: violation
----
-apiVersion: policy.open-cluster-management.io/v1
-kind: PlacementBinding
-metadata:
-  name: binding-gatekeeper-disallow-self-provisioner
-placementRef:
-  name: placement-policy-gatekeeper-disallow-self-provisioner
-  kind: PlacementRule
-  apiGroup: apps.open-cluster-management.io
-subjects:
-- name: policy-gatekeeper-disallow-self-provisioner
-  kind: Policy
-  apiGroup: policy.open-cluster-management.io
----
-apiVersion: apps.open-cluster-management.io/v1
-kind: PlacementRule
-metadata:
-  name: placement-policy-gatekeeper-disallow-self-provisioner
-spec:
-  clusterConditions:
-  - status: "True"
-    type: ManagedClusterConditionAvailable
-  clusterSelector:
-    matchExpressions:
-      - {key: environment, operator: In, values: ["dev"]}
+policyDefaults:
+  namespace: default
+policies:
+  - name: disallow-self-provisioner
+    manifests:
+      - path: ../../../open-policy-agent/resource-exhaustion/disallow-self-provisioner/template.yaml
+      - path: ../../../open-policy-agent/resource-exhaustion/disallow-self-provisioner/constraint.yaml
+    remediationAction: enforce
+    placement:
+      clusterSelector:
+        matchExpressions:
+          - {key: environment, operator: In, values: ["dev"]}

@@ -1,0 +1,2 @@
+generators:
+  - gatekeeper-allow-httpsonly.yaml

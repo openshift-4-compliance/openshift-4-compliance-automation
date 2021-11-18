@@ -1,0 +1,2 @@
+generators:
+  - gatekeeper-oauth-secured-identity-providers-only.yaml
