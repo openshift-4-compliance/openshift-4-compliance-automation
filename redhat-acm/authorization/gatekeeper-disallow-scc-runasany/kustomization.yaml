@@ -1,0 +1,2 @@
+generators:
+  - gatekeeper-disallow-scc-runasany.yaml

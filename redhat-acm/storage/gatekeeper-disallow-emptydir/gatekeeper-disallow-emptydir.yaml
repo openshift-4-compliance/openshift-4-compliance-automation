@@ -1,133 +1,16 @@
----
 apiVersion: policy.open-cluster-management.io/v1
-kind: Policy
+kind: PolicyGenerator
 metadata:
   name: policy-gatekeeper-disallow-emptydir
-  annotations:
-    policy.open-cluster-management.io/standards: NIST SP 800-53
-    policy.open-cluster-management.io/categories: CM Configuration Management
-    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
-spec:
-  remediationAction: enforce
-  disabled: false
-  policy-templates:
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: policy-gatekeeper-disallow-emptydir
-        spec:
-          remediationAction: enforce
-          severity: low
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: templates.gatekeeper.sh/v1beta1
-                kind: ConstraintTemplate
-                metadata:
-                  name: k8sdisallowemptydir
-                  annotations:
-                    description: Disallows emptyDir volumes in pods.
-                spec:
-                  crd:
-                    spec:
-                      names:
-                        kind: K8sDisallowEmptyDir
-                  targets:
-                    - target: admission.k8s.gatekeeper.sh
-                      rego: |
-                        package k8sdisallowemptydir
-                        violation[{"msg": msg}] {
-                          missing(input.review.object.spec.volumes[_], "emptyDir")
-                          msg := sprintf("Invalid volume association in Pod - %v. emptyDir volumes are not allowed.", [input.review.object.metadata.name])
-                        }
-
-                        missing(obj, field) = true {
-                          obj[field]
-                        }
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: constraints.gatekeeper.sh/v1beta1
-                kind: K8sDisallowEmptyDir
-                metadata:
-                  name: no-emptydir
-                spec:
-                  enforcementAction: dryrun
-                  match:
-                    kinds:
-                      - apiGroups: [""]
-                        kinds: ["Pod"]
-                    excludedNamespaces: 
-                      - hive
-                      - openshift-cloud-credential-operator
-                      - openshift-cluster-csi-drivers
-                      - open-cluster-management
-                      - openshift-image-registry
-                      - openshift-monitoring
-                      - openshift-marketplace
-                      - open-cluster-management-agent
-                      - open-cluster-management-agent-addon
-                      - openshift-operator-lifecycle-manager
-                      - openshift-insights
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: policy-gatekeeper-audit-disallow-emptydir
-        spec:
-          remediationAction: inform # will be overridden by remediationAction in parent policy
-          severity: low
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: constraints.gatekeeper.sh/v1beta1
-                kind: K8sDisallowEmptyDir
-                metadata:
-                  name: no-emptydir
-                status:
-                  totalViolations: 0
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: policy-gatekeeper-admission-disallow-emptydir
-        spec:
-          remediationAction: inform # will be overridden by remediationAction in parent policy
-          severity: low
-          object-templates:
-            - complianceType: mustnothave
-              objectDefinition:
-                apiVersion: v1
-                kind: Event
-                metadata:
-                  namespace: openshift-gatekeeper-system # set it to the actual namespace where gatekeeper is running if different
-                  annotations:
-                    constraint_action: deny
-                    constraint_kind: K8sDisallowEmptyDir
-                    constraint_name: no-emptydir
-                    event_type: violation
----
-apiVersion: policy.open-cluster-management.io/v1
-kind: PlacementBinding
-metadata:
-  name: binding-gatekeeper-disallow-emptydir
-placementRef:
-  name: placement-policy-gatekeeper-disallow-emptydir
-  kind: PlacementRule
-  apiGroup: apps.open-cluster-management.io
-subjects:
-- name: policy-gatekeeper-disallow-emptydir
-  kind: Policy
-  apiGroup: policy.open-cluster-management.io
----
-apiVersion: apps.open-cluster-management.io/v1
-kind: PlacementRule
-metadata:
-  name: placement-policy-gatekeeper-disallow-emptydir
-spec:
-  clusterConditions:
-  - status: "True"
-    type: ManagedClusterConditionAvailable
-  clusterSelector:
-    matchExpressions:
-      - {key: environment, operator: In, values: ["dev"]}
+policyDefaults:
+  namespace: default
+policies:
+  - name: disallow-emptydir
+    manifests:
+      - path: ../../../open-policy-agent/storage/disallow-emptydir/template.yaml
+      - path: ../../../open-policy-agent/storage/disallow-emptydir/constraint.yaml
+    remediationAction: enforce
+    placement:
+      clusterSelector:
+        matchExpressions:
+          - {key: environment, operator: In, values: ["dev"]}

@@ -1,132 +1,16 @@
----
 apiVersion: policy.open-cluster-management.io/v1
-kind: Policy
+kind: PolicyGenerator
 metadata:
   name: policy-gatekeeper-disallow-scc-runasany
-  annotations:
-    policy.open-cluster-management.io/standards: NIST SP 800-53
-    policy.open-cluster-management.io/categories: CM Configuration Management
-    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
-spec:
-  remediationAction: enforce
-  disabled: false
-  policy-templates:
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: policy-gatekeeper-disallow-scc-runasany
-        spec:
-          remediationAction: enforce
-          severity: low
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: templates.gatekeeper.sh/v1beta1
-                kind: ConstraintTemplate
-                metadata:
-                  name: k8snorunasanyscc
-                  annotations:
-                    description: Requires custom SCCs to not have the `RunAsAny` type for the `runAsUser` attribute.
-                spec:
-                  crd:
-                    spec:
-                      names:
-                        kind: K8sNoRunAsAnySCC
-                  targets:
-                    - target: admission.k8s.gatekeeper.sh
-                      rego: |
-                        package k8snorunasanyscc
-
-                        violation[{"msg": msg}] {
-                          input.review.object.kind == "SecurityContextConstraints"
-                          not is_included(input.review.object.metadata.name, input.parameters.allowedSCCs)
-                          input.review.object.runAsUser.type == "RunAsAny"
-                          msg := sprintf("The SecurityContextConstraints object - %v has `runAsUser.type: RunAsAny` set. Change it to `MustRunAsRange` in order to comply with the rootless containers standard", [input.review.object.metadata.name])
-                        }
-
-                        is_included(scc_name, allowed_list) {
-                          scc_name == allowed_list[_]
-                        }
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: constraints.gatekeeper.sh/v1beta1
-                kind: K8sNoRunAsAnySCC
-                metadata:
-                  name: scc-disallow-runasany
-                spec:
-                  enforcementAction: dryrun
-                  match:
-                    kinds:
-                      - apiGroups: ["security.openshift.io"]
-                        kinds: ["SecurityContextConstraints"]
-                  parameters:
-                    allowedSCCs:
-                      - anyuid
-                      - hostmount-anyuid
-                      - machine-api-termination-handler
-                      - node-exporter
-                      - privileged
-                      - kui-proxy-scc
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: policy-gatekeeper-audit-disallow-scc-runasany
-        spec:
-          remediationAction: inform # will be overridden by remediationAction in parent policy
-          severity: low
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: constraints.gatekeeper.sh/v1beta1
-                kind: K8sNoRunAsAnySCC
-                metadata:
-                  name: scc-disallow-runasany
-                status:
-                  totalViolations: 0
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: policy-gatekeeper-admission-disallow-scc-runasany
-        spec:
-          remediationAction: inform # will be overridden by remediationAction in parent policy
-          severity: low
-          object-templates:
-            - complianceType: mustnothave
-              objectDefinition:
-                apiVersion: v1
-                kind: Event
-                metadata:
-                  namespace: openshift-gatekeeper-system # set it to the actual namespace where gatekeeper is running if different
-                  annotations:
-                    constraint_action: deny
-                    constraint_kind: K8sNoRunAsAnySCC
-                    constraint_name: scc-disallow-runasany
-                    event_type: violation
----
-apiVersion: policy.open-cluster-management.io/v1
-kind: PlacementBinding
-metadata:
-  name: binding-policy-gatekeeper-disallow-scc-runasany
-placementRef:
-  name: placement-policy-gatekeeper-disallow-scc-runasany
-  kind: PlacementRule
-  apiGroup: apps.open-cluster-management.io
-subjects:
-  - name: policy-gatekeeper-disallow-scc-runasany
-    kind: Policy
-    apiGroup: policy.open-cluster-management.io
----
-apiVersion: apps.open-cluster-management.io/v1
-kind: PlacementRule
-metadata:
-  name: placement-policy-gatekeeper-disallow-scc-runasany
-spec:
-  clusterConditions:
-    - status: "True"
-      type: ManagedClusterConditionAvailable
-  clusterSelector:
-    matchExpressions:
-      - { key: environment, operator: In, values: ["dev"] }
+policyDefaults:
+  namespace: default
+policies:
+  - name: disallow-scc-runasany
+    manifests:
+      - path: ../../../open-policy-agent/authorization/disallow-scc-runasany/template.yaml
+      - path: ../../../open-policy-agent/authorization/disallow-scc-runasany/constraint.yaml
+    remediationAction: enforce
+    placement:
+      clusterSelector:
+        matchExpressions:
+          - {key: environment, operator: In, values: ["dev"]}
