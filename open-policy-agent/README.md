@@ -83,3 +83,31 @@ For example, applying 'kubeadmin' temporary user removal validation policy
 $ oc apply -f https://raw.githubusercontent.com/openshift-4-compliance/openshift-4-compliance-automation/master/open-policy-agent/authentication-user-management/delete-kubeadmin/template.yaml
 $ oc apply -f https://raw.githubusercontent.com/openshift-4-compliance/openshift-4-compliance-automation/master/open-policy-agent/authentication-user-management/delete-kubeadmin/constraint.yaml
 ```
+
+### Using GitOps
+You can choose to enforce specific policy groups by including the Kustomize.yaml at the root of `/open-policy-agent` and adding the following patch
+```
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- <PATH_TO_FOLDER>
+
+patchesJson6902:
+- target:
+    labelSelector: policy-group=<GROUP_NAME>
+  patch: |-
+    - op: replace
+      path: "/spec/enforcementAction"
+      value: deny
+```
+
+You can also import this as an artifact to your repo instead of adding the code to it using the following Kustomize.yaml
+```
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- https://github.com/openshift-4-compliance/openshift-4-compliance-automation.git//open-policy-agent?ref=<TAG>
+```
