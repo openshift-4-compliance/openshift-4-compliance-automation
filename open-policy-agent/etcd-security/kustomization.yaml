@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ./verify-etcd-encryption/template.yaml
+- ./verify-etcd-encryption/constraint.yaml
+commonLabels:
+  policy-group: etcd-security

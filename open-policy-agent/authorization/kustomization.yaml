@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ./disallow-privileged-scc-usage/template.yaml
+- ./disallow-privileged-scc-usage/constraint.yaml
+- ./prevent-default-serviceaccount-usage/template.yaml
+- ./prevent-default-serviceaccount-usage/constraint.yaml
+- ./disallow-host-network/template.yaml
+- ./disallow-host-network/constraint.yaml
+- ./disallow-host-namespaces/template.yaml
+- ./disallow-host-namespaces/constraint.yaml
+- ./disallow-cluster-admin/template.yaml
+- ./disallow-cluster-admin/constraint.yaml
+- ./disallow-scc-runasany/template.yaml
+- ./disallow-scc-runasany/constraint.yaml
+commonLabels:
+  policy-group: authorization

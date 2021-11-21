@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ./disallow-self-provisioner/template.yaml
+- ./disallow-self-provisioner/constraint.yaml
+- ./pod-resource-limits/template.yaml
+- ./pod-resource-limits/constraint.yaml
+commonLabels:
+  policy-group: resource-exhaustion

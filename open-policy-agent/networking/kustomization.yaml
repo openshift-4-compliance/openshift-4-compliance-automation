@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ./block-nodeport-services/template.yaml
+- ./block-nodeport-services/constraint.yaml
+- ./external-ips/template.yaml
+- ./external-ips/constraint.yaml
+- ./httpsonly/template.yaml
+- ./httpsonly/constraint.yaml
+commonLabels:
+  policy-group: networking
