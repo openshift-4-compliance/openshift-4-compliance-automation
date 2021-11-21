@@ -102,6 +102,23 @@ patchesJson6902:
       value: deny
 ```
 
+You can enforce specific policies by including the Kustomize.yaml at the root of `/open-policy-agent` and adding the following patch
+```
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- <PATH_TO_FOLDER>
+
+patchesJson6902:
+- target:
+    name: <POLICY_NAME>
+  patch: |-
+    - op: replace
+      path: "/spec/enforcementAction"
+      value: deny
+```
+
 You can also import this as an artifact to your repo instead of adding the code to it using the following Kustomize.yaml
 ```
 ---
