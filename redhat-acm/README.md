@@ -20,8 +20,9 @@ Policy  | Description | Prerequisites
 ------- | ----------- | -------------
 [kubeadmin-policy](authentication-user-management/kubeadmin-policy/kubeadmin-policy.yaml) | Validates the removal of the kubeadmin temporary user |
 [group-policy](authentication-user-management/group-policy/group-policy.yaml) | Ensures that a group is created with the defined users in it |
-[gatekeeper-shorten-tokens](authentication-user-management/gatekeeper-shorten-tokens/gatekeeper-shorten-tokens.yaml) | Ensure that authentication tokens have a restricted lifespan |
+[gatekeeper-shorten-tokens](authentication-user-management/gatekeeper-shorten-tokens/gatekeeper-shorten-tokens.yaml) | Ensure that authentication tokens have a restricted lifespan (Gatekeeper) |
 [gatekeeper-disallow-anonymous-auth](authentication-user-management/gatekeeper-disallow-anonymous-auth/gatekeeper-disallow-anonymous-auth.yaml) | Ensures there are no anonymous users associated with any ClusterRole | The [GateKeeper](https://github.com/open-policy-agent/gatekeeper) operator needs to be installed
+[shorten-tokens-policy](authentication-user-management/shorten-tokens-policy/shorten-tokens-policy.yaml) | Ensure that authentication tokens have a restricted lifespan (Configuration Policy Controller) |
 
 ### Authorization
 Policy  | Description | Prerequisites
