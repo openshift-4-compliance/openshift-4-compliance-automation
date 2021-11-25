@@ -24,6 +24,7 @@ resources:
 - ./authentication-user-management/kubeadmin-policy/kubeadmin-policy.yaml
 - ./authentication-user-management/gatekeeper-shorten-tokens
 - ./authentication-user-management/group-policy/group-policy.yaml
+- ./authentication-user-management/shorten-tokens-policy/shorten-tokens-policy.yaml
 - ./infrastructure-general/gatekeeper-operator-policy/gatekeeper-operator-policy.yaml
 - ./authorization/gatekeeper-disallow-host-namespaces
 - ./authorization/gatekeeper-disallow-host-network

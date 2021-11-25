@@ -1,0 +1,58 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  annotations:
+    policy.open-cluster-management.io/categories: AC Access Control
+    policy.open-cluster-management.io/controls: AC-2 Account Management
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+  name: policy-shorten-token
+  namespace: rhacm-policies
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-shorten-token
+        spec:
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: config.openshift.io/v1
+                kind: OAuth
+                metadata:
+                  name: cluster
+                spec:
+                  tokenConfig:
+                    accessTokenMaxAgeSeconds: 29000
+          remediationAction: inform
+          severity: high
+  remediationAction: inform
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-shorten-token
+  namespace: rhacm-policies
+placementRef:
+  apiGroup: apps.open-cluster-management.io
+  kind: PlacementRule
+  name: placement-policy-shorten-token
+subjects:
+  - apiGroup: policy.open-cluster-management.io
+    kind: Policy
+    name: policy-shorten-token
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: placement-policy-shorten-token
+  namespace: rhacm-policies
+spec:
+  clusterConditions:
+    - status: 'True'
+      type: ManagedClusterConditionAvailable
+  clusterSelector:
+        matchExpressions:
+          - {key: environment, operator: In, values: ["dev"]}
