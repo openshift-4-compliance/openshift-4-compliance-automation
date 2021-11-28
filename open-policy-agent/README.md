@@ -84,31 +84,35 @@ $ oc apply -f https://raw.githubusercontent.com/openshift-4-compliance/openshift
 $ oc apply -f https://raw.githubusercontent.com/openshift-4-compliance/openshift-4-compliance-automation/master/open-policy-agent/authentication-user-management/delete-kubeadmin/constraint.yaml
 ```
 
-### Using GitOps
-You can choose to enforce specific policy groups by including the Kustomize.yaml at the root of `/open-policy-agent` and adding the following patch
+## Applying policies using GitOps
+You can modify which policies to enforce/dryrun or include at all using kustomize.
+
+**By default all policies are included as dryrun**.
+
+### Import this kustomization
+#### By extending this project
 ```
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- <PATH_TO_FOLDER>
-
-patchesJson6902:
-- target:
-    labelSelector: policy-group=<GROUP_NAME>
-  patch: |-
-    - op: replace
-      path: "/spec/enforcementAction"
-      value: deny
+- <PATH_TO_/open-policy-agent_FOLDER>
 ```
 
-You can enforce specific policies by including the Kustomize.yaml at the root of `/open-policy-agent` and adding the following patch
+#### By importing this kustomization to your repo
 ```
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-- <PATH_TO_FOLDER>
+- https://github.com/openshift-4-compliance/openshift-4-compliance-automation.git//open-policy-agent?ref=<TAG>
+```
+
+### Modify this kustomization
+#### Enforce specific policies
+```
+...
 
 patchesJson6902:
 - target:
@@ -119,12 +123,37 @@ patchesJson6902:
       value: deny
 ```
 
-You can also import this as an artifact to your repo instead of adding the code to it using the following Kustomize.yaml
+#### Enforce a group of policies
 ```
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
+...
 
-resources:
-- https://github.com/openshift-4-compliance/openshift-4-compliance-automation.git//open-policy-agent?ref=<TAG>
+patchesJson6902:
+- target:
+    labelSelector: policy-group=<GROUP_NAME>
+  patch: |-
+    - op: replace
+      path: "/spec/enforcementAction"
+      value: deny
+```
+#### Remove specific policies
+```
+...
+
+patchesStrategicMerge:
+- |-
+  metadata:
+    name: <POLICY_NAME>
+  $patch: delete
+```
+
+#### Remove a group of policies
+```
+...
+
+patchesStrategicMerge:
+- |-
+  metadata:
+    labels:
+      policy-group=<GROUP_NAME>
+  $patch: delete
 ```
