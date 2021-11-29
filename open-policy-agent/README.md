@@ -85,9 +85,9 @@ $ oc apply -f https://raw.githubusercontent.com/openshift-4-compliance/openshift
 ```
 
 ## Applying policies using GitOps
-You can modify which policies to enforce/dryrun or include at all using kustomize.
+You can modify which policies to enforce using kustomize.
 
-**By default all policies are included as dryrun**.
+**By default all policies are included as dryrun. Removal isn't supported, although an alternative is specified [here](https://kubectl.docs.kubernetes.io/faq/kustomize/eschewedfeatures/#removal-directives)**.
 
 ### Import this kustomization
 #### By extending this project
@@ -107,6 +107,8 @@ kind: Kustomization
 
 resources:
 - https://github.com/openshift-4-compliance/openshift-4-compliance-automation.git//open-policy-agent?ref=<TAG>
+
+...
 ```
 
 ### Modify this kustomization
@@ -129,31 +131,27 @@ patchesJson6902:
 
 patchesJson6902:
 - target:
+    name: .*
+    group: constraints.gatekeeper.sh
+    version: v1beta1
     labelSelector: policy-group=<GROUP_NAME>
   patch: |-
     - op: replace
       path: "/spec/enforcementAction"
       value: deny
 ```
-#### Remove specific policies
+
+#### Enforce all policies
 ```
 ...
 
-patchesStrategicMerge:
-- |-
-  metadata:
-    name: <POLICY_NAME>
-  $patch: delete
-```
-
-#### Remove a group of policies
-```
-...
-
-patchesStrategicMerge:
-- |-
-  metadata:
-    labels:
-      policy-group=<GROUP_NAME>
-  $patch: delete
+patchesJson6902:
+- target:
+    name: .*
+    group: constraints.gatekeeper.sh
+    version: v1beta1
+  patch: |-
+    - op: replace
+      path: "/spec/enforcementAction"
+      value: deny
 ```
