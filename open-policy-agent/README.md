@@ -85,9 +85,13 @@ $ oc apply -f https://raw.githubusercontent.com/openshift-4-compliance/openshift
 ```
 
 ## Applying policies using GitOps
-You can modify which policies to enforce using kustomize.
+You can include in `dryrun` mode either all policies or as policy groups.
+You can change to `enforce` mode either all policies, as policy groups, or individually.
 
-**By default all policies are included as dryrun. Removal isn't supported, although an alternative is specified [here](https://kubectl.docs.kubernetes.io/faq/kustomize/eschewedfeatures/#removal-directives)**.
+
+You can't include specific policies in dry run, you can use the alternative workflow suggested at the end of the paragraph in [this link](https://kubectl.docs.kubernetes.io/faq/kustomize/eschewedfeatures/#removal-directives).
+
+
 
 ### Import this kustomization
 #### By extending this project
@@ -96,7 +100,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+# All policies
 - <PATH_TO_/open-policy-agent_FOLDER>
+# Specific groups
+- <PATH_TO_/open-policy-agent_FOLDER/policy-folder>
+...
 ```
 
 #### By importing this kustomization to your repo
@@ -106,8 +114,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+# All policies
 - https://github.com/openshift-4-compliance/openshift-4-compliance-automation.git//open-policy-agent?ref=<TAG>
-
+# Specific groups
+- https://github.com/openshift-4-compliance/openshift-4-compliance-automation.git//open-policy-agent/policy-folder?ref=<TAG>
 ...
 ```
 
