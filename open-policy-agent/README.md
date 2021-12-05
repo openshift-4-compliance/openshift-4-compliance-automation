@@ -85,11 +85,11 @@ $ oc apply -f https://raw.githubusercontent.com/openshift-4-compliance/openshift
 ```
 
 ## Applying policies using GitOps
-You can include in `dryrun` mode either all policies or as policy groups.
-You can change to `enforce` mode either all policies, as policy groups, or individually.
+You can use the `dryrun` enforcement mode in either all policies or in policy groups.
+You can use the `deny` enforcement mode in either all policies, in policy groups, or individually.
 
 
-You can't include specific policies in dry run, you can use the alternative workflow suggested at the end of the paragraph in [this link](https://kubectl.docs.kubernetes.io/faq/kustomize/eschewedfeatures/#removal-directives).
+You can't include specific policies in `dryrun` enforcement mode, you can use the alternative workflow suggested at the end of the paragraph in [this link](https://kubectl.docs.kubernetes.io/faq/kustomize/eschewedfeatures/#removal-directives).
 
 
 
@@ -128,7 +128,7 @@ resources:
 
 patchesJson6902:
 - target:
-    name: <POLICY_NAME>
+    name: <POLICY_CONSTRAINT_RESOURCE_NAME>
   patch: |-
     - op: replace
       path: "/spec/enforcementAction"
@@ -144,7 +144,7 @@ patchesJson6902:
     name: .*
     group: constraints.gatekeeper.sh
     version: v1beta1
-    labelSelector: policy-group=<GROUP_NAME>
+    labelSelector: policy-group=<POLICY_GROUP_NAME>
   patch: |-
     - op: replace
       path: "/spec/enforcementAction"
