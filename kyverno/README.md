@@ -65,7 +65,7 @@ No policies yet       |  |
 ### Trusted Image Sources
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-No policies yet       |  | 
+[replace-image-registry](trusted-image-sources/replace-image-registry/replace-image-registry.yaml) | Ensures only secured registries are used by pods in a cluster |
 
 ## Applying Policies
 The policies can be created by applying the custom resources defined in the cluster policy 'yaml' files to an OpenShift cluster. The files are provided in each policy directory under specific security control.

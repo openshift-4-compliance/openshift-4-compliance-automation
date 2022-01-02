@@ -9,3 +9,4 @@ resources:
 - ./networking/block-nodeport-services/block-nodeport-services.yaml
 - ./networking/httpsonly/httpsonly.yaml
 - ./resource-exhaustion/disallow-self-provisioner/disallow-self-provisioner.yaml
+- ./trusted-image-sources/replace-image-registry/replace-image-registry.yaml
