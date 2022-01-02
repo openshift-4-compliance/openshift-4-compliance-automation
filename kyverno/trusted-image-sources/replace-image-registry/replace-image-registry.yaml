@@ -1,0 +1,24 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: replace-image-registry
+  annotations:
+    policies.kyverno.io/description: >-
+      Modifies the registry name to an authorized organizational registry. Unmaintained
+      registries may be vulnerable and contain unauthorized images. This example modifies
+      the registry name to `quay.io`. 
+spec:
+  background: false
+  rules:
+    - name: replace-image-registry
+      match:
+        resources:
+          kinds:
+          - Pod
+      mutate:
+        patchStrategicMerge:
+          spec:
+            containers:
+            - (name): "*"
+              image: |-
+                {{ regex_replace_all('^[^/]+', '{{@}}', 'quay.io') }}
