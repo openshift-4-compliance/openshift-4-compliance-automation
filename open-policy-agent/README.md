@@ -83,3 +83,85 @@ For example, applying 'kubeadmin' temporary user removal validation policy
 $ oc apply -f https://raw.githubusercontent.com/openshift-4-compliance/openshift-4-compliance-automation/master/open-policy-agent/authentication-user-management/delete-kubeadmin/template.yaml
 $ oc apply -f https://raw.githubusercontent.com/openshift-4-compliance/openshift-4-compliance-automation/master/open-policy-agent/authentication-user-management/delete-kubeadmin/constraint.yaml
 ```
+
+## Applying policies using GitOps
+You can use the `dryrun` enforcement mode in either all policies or in policy groups.
+You can use the `deny` enforcement mode in either all policies, in policy groups, or individually.
+
+
+You can't include specific policies in `dryrun` enforcement mode, you can use the alternative workflow suggested at the end of the paragraph in [this link](https://kubectl.docs.kubernetes.io/faq/kustomize/eschewedfeatures/#removal-directives).
+
+
+
+### Import this kustomization
+#### By extending this project
+```
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+# All policies
+- <PATH_TO_/open-policy-agent_FOLDER>
+# Specific groups
+- <PATH_TO_/open-policy-agent_FOLDER/policy-folder>
+...
+```
+
+#### By importing this kustomization to your repo
+```
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+# All policies
+- https://github.com/openshift-4-compliance/openshift-4-compliance-automation.git//open-policy-agent?ref=<TAG>
+# Specific groups
+- https://github.com/openshift-4-compliance/openshift-4-compliance-automation.git//open-policy-agent/policy-folder?ref=<TAG>
+...
+```
+
+### Modify this kustomization
+#### Enforce specific policies
+```
+...
+
+patchesJson6902:
+- target:
+    name: <POLICY_CONSTRAINT_RESOURCE_NAME>
+  patch: |-
+    - op: replace
+      path: "/spec/enforcementAction"
+      value: deny
+```
+
+#### Enforce a group of policies
+```
+...
+
+patchesJson6902:
+- target:
+    name: .*
+    group: constraints.gatekeeper.sh
+    version: v1beta1
+    labelSelector: policy-group=<POLICY_GROUP_NAME>
+  patch: |-
+    - op: replace
+      path: "/spec/enforcementAction"
+      value: deny
+```
+
+#### Enforce all policies
+```
+...
+
+patchesJson6902:
+- target:
+    name: .*
+    group: constraints.gatekeeper.sh
+    version: v1beta1
+  patch: |-
+    - op: replace
+      path: "/spec/enforcementAction"
+      value: deny
+```

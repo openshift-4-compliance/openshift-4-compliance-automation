@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ./delete-kubeadmin/template.yaml
+- ./delete-kubeadmin/constraint.yaml
+- ./shorten-tokens/template.yaml
+- ./shorten-tokens/constraint.yaml
+- ./oauth-secured-identity-providers-only/template.yaml
+- ./oauth-secured-identity-providers-only/constraint.yaml
+- ./disallow-anonymous-users/template.yaml
+- ./disallow-anonymous-users/constraint.yaml
+commonLabels:
+  policy-group: authentication-user-management

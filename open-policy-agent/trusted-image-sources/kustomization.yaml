@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ./disallowed-registries/template.yaml
+- ./disallowed-registries/constraint.yaml
+- ./disallowed-tags/template.yaml
+- ./disallowed-tags/constraint.yaml
+commonLabels:
+  policy-group: trusted-image-sources
