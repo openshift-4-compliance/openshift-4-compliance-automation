@@ -1,0 +1,12 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: k8sNamespaceRegulation
+metadata:
+  name: pod-namespace-regulation
+spec:
+  enforcementAction: dryrun
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+  parameters:
+    namespaces: ["default", "kube-public"]
