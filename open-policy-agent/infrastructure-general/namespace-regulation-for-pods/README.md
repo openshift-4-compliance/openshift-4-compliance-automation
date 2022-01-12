@@ -18,15 +18,14 @@ The required procedure to deploy the policy:
 oc apply -f template.yaml -n openshift-gatekeeper-system
 oc apply -f constraint.yaml -n openshift-gatekeeper-system
 
-oc get constrainttemplate/k8sdisallowanonymous -n openshift-gatekeeper-system
-oc describe k8sdisallowanonymous -n openshift-gatekeeper-system
+oc get constrainttemplate/k8snamespaceregulation -n openshift-gatekeeper-system
+oc describe k8snamespaceregulation -n openshift-gatekeeper-system
 ```
 
-## Deploy ClusterRoleBinding object to make sure the policy works as expected
+## Deploy Pod object to make sure the policy works as expected
 ```bash
 
 # Should be rejected
-# ClusterRoleBinding has system:unauthenticated in its subjects
-oc apply -f ./test/disallowed-clusterrolebinding.yaml
+oc apply -f ./test/default-pod.yaml
 
 ```
