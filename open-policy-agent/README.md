@@ -42,7 +42,7 @@ Policy  | Description | Prerequisites
 ### Infrastructure General
 Policy  | Description | Prerequisites
 ------- | ----------- | -------------
-No policies yet       |  | 
+[namespace-regulation-for-pods](./infrastructure-general/namespace-regulation-for-pods) | The policy disallows pods from running on specific namespaces. The disallowed namespaces must be provided as a parameter.  | 
 
 ### Monitoring and Observability
 Policy  | Description | Prerequisites
