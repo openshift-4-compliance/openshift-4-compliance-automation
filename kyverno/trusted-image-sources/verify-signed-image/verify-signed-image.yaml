@@ -7,7 +7,7 @@ metadata:
       Check that an image is signed and verified against a public key.
       Unsigned images initiate a violation and fail to create.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   background: false
   rules:
     - name: verify-image
