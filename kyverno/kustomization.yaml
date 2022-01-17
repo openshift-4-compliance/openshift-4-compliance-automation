@@ -10,3 +10,4 @@ resources:
 - ./networking/httpsonly/httpsonly.yaml
 - ./resource-exhaustion/disallow-self-provisioner/disallow-self-provisioner.yaml
 - ./trusted-image-sources/replace-image-registry/replace-image-registry.yaml
+- ./trusted-image-sources/verify-signed-image/verify-signed-image.yaml
