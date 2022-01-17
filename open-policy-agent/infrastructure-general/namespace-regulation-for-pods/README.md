@@ -3,6 +3,7 @@
 The policy disallows pods from running on specific namespaces. The disallowed namespaces must be provided as a parameter.
 
 Running workload on undesired namespace can be a potential security risk as they might run without being monitored and regulated.
+Placing objects in the default namespace, for example, makes application of RBAC and other controls more difficult.
 
 `This policy has been tested on openshift cluster & oc client version 4.9.0`
 
