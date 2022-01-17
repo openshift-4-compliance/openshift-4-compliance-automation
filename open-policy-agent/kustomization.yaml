@@ -20,3 +20,4 @@ resources:
 - ./authorization/disallow-scc-runasany/template.yaml
 - ./authentication/disallow-anonymous-users/template.yaml
 - ./storage/disallow-emptydir/template.yaml
+- ./infrastructure-general/namespace-regulation-for-pods/template.yaml
