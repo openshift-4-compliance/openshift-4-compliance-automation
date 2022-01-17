@@ -15,18 +15,18 @@ The required procedure to deploy the policy:
 ## Deploy the template & constraint yamls that define the policy
 
 ```bash
-oc apply -f template.yaml -n openshift-gatekeeper-system
-oc apply -f constraint.yaml -n openshift-gatekeeper-system
+oc apply -f template.yaml
+oc apply -f constraint.yaml
 
 oc get constrainttemplate/k8snamespaceregulation -n openshift-gatekeeper-system
-oc describe k8snamespaceregulation -n openshift-gatekeeper-system
+oc describe k8snamespaceregulation
 ```
 
 ## Deploy Pod object to make sure the policy works as expected
 ```bash
 
 # Create Pod in default namespace
-# Should be rejected
-oc apply -f ./test/default-pod.yaml
+# You should only see violations as the policy is not enforced
+oc apply -f ./test/example-disallowed.yaml
 
 ```

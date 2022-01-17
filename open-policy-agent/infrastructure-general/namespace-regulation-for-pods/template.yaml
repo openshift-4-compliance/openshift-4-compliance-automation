@@ -3,20 +3,12 @@ kind: ConstraintTemplate
 metadata:
   name: k8snamespaceregulation
   annotations:
-    description: Disallows pods that request to run in specific namespaces, the list of disallowed namespaces provided as a parameter array from the constraint
+    description: Disallows pods that request to run in specific namespaces, the list of disallowed namespaces is configured in the constraint
 spec:
   crd:
     spec:
       names:
         kind: k8sNamespaceRegulation
-      validation:
-        # Schema for the `parameters` field
-        openAPIV3Schema:
-          properties:
-            namespaces:
-              type: array
-              items:
-                type: string
   targets:
     - target: admission.k8s.gatekeeper.sh
       rego: |
@@ -24,6 +16,5 @@ spec:
 
         violation[{"msg": msg}] {
           input.review.kind.kind == "Pod"
-          input.parameters.namespaces[i] == input.review.object.metadata.namespace
-          msg := sprintf("Pod '%v' can't be created in '%v' namespace", [input.review.object.metadata.name, input.review.object.metadata.namespace])
+          msg := sprintf("Pod '%v' can not be created in '%v' namespace", [input.review.object.metadata.name, input.review.object.metadata.namespace])
         }

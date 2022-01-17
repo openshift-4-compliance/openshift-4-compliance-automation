@@ -8,5 +8,6 @@ spec:
     kinds:
       - apiGroups: [""]
         kinds: ["Pod"]
-  parameters:
-    namespaces: ["default", "kube-public"]
+    namespaces: 
+      - default
+      - kube-public
