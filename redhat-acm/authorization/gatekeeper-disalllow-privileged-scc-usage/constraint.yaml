@@ -1,0 +1,20 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sNoPrivScc
+metadata:
+  name: no-privileged-sccs
+spec:
+  enforcementAction: dryrun
+  match:
+    kinds:
+      - apiGroups: ["security.openshift.io"]
+        kinds: ["SecurityContextConstraints"]
+      - apiGroups: ["rbac.authorization.k8s.io"]
+        kinds: ["ClusterRoleBinding"]
+  parameters:
+    allowedUsers:
+      - "system:admin"
+      - "system:serviceaccount:openshift-infra:build-controller"
+    allowedGroups:
+      - "system:cluster-admins"
+      - "system:nodes"
+      - "system:masters"
