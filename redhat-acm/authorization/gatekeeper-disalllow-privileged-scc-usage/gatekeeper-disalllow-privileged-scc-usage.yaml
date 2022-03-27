@@ -7,7 +7,7 @@ policyDefaults:
 policies:
   - name: disallow-privileged-scc-usage
     manifests:
-      - path: apply
+      - path: ../../../open-policy-agent/authorization/disallow-privileged-scc-usage
     remediationAction: enforce
     placement:
       clusterSelector:
