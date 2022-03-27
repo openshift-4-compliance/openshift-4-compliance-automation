@@ -7,8 +7,7 @@ policyDefaults:
 policies:
   - name: disallow-privileged-scc-usage
     manifests:
-      - path: template.yaml
-      - path: constraint.yaml
+      - path: ../../../open-policy-agent/authorization/disallow-privileged-scc-usage
     remediationAction: enforce
     placement:
       clusterSelector:
